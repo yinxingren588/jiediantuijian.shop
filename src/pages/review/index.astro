@@ -1,0 +1,258 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FAQSection from '../../components/FAQSection.astro';
+import { airports, calculatePerGBCost } from '../../data/airports';
+import { getAirportReviewDetail } from '../../data/reviews';
+
+const allReviews = airports.map(airport => ({
+  airport,
+  detail: getAirportReviewDetail(airport),
+  perGb: calculatePerGBCost(airport),
+}));
+
+const reviewHubFAQs = [
+  {
+    question: '本站的机场评测数据是如何采集与核验的？',
+    answer: '本站编辑部搭建了分布在电信、联通与移动多地千兆宽带的自动化探测节点，重点在晚间 20:00 至 23:00 晚高峰拥堵时段对各机场核心专线与中继节点发起连续双向丢包测试、iperf3 吞吐采样与 4K 超高清视频缓冲压测。同时每周定期比对官方资费和优惠码有效性，坚决剔除虚假高倍率扣量水分。'
+  },
+  {
+    question: '为什么每一个品牌都有独立的评测页面？',
+    answer: '不同用户的需求差异极大：有的用户追求绝对的晚高峰零丢包（如涉外视频会议与外服游戏），有的用户侧重极低月付门槛（如学生与轻度查资料），还有的用户高度依赖纯净双ISP住宅IP解锁ChatGPT与Netflix。为29个品牌建立独立评测档案，能够让读者深入查看各品牌真实的底层网络拓扑、测速跑分、优缺点分析与避坑指南。'
+  },
+  {
+    question: '如何获取各评测页面的专属优惠码？',
+    answer: '在任意评测卡片或详细评测页中，带有【券: 代码】标识的区域均支持“点击一键复制”。复制后前往官方结账页面直接粘贴即可享受现金立减或折扣抵扣。'
+  }
+];
+---
+
+<BaseLayout
+  title="2026机场评测大全 - 29款主流机场节点真实深度技术评测与横评档案"
+  description="2026最新29款主流机场节点全量实测与独立技术评测中心。收录全网主流专线与中转机场，涵盖IEPL/IPLC物理拓扑、晚高峰测速跑分基准、双ISP原生解锁矩阵、最新价格与专属优惠码一键复制。"
+  breadcrumbs={[
+    { name: '机场评测中心', url: '/review/' },
+  ]}
+>
+  <div class="py-6 space-y-12">
+    <!-- Hero Banner -->
+    <header class="text-center max-w-3xl mx-auto space-y-4">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-800 border border-purple-200 shadow-xs">
+        <span>★ 2026 独立机场评测中心</span>
+        <span class="text-purple-400">·</span>
+        <span>收录全部 29 款主流品牌独立评测</span>
+      </div>
+
+      <h1 class="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+        主流机场节点真实深度评测中心
+      </h1>
+
+      <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
+        拒绝单一品牌软文与虚假评分。本站对全部 29 款主流服务商进行全周期实机监测，每一款品牌均配有<strong>独立的深度技术评测报告、测速跑分基准表、优缺点客观分析及专属优惠码</strong>。
+      </p>
+
+      <!-- Search & Filter Controls -->
+      <div class="pt-4 flex flex-wrap items-center justify-center gap-2 text-xs">
+        <button
+          type="button"
+          data-filter="all"
+          class="filter-btn active px-4 py-2 rounded-xl font-bold transition-all shadow-xs cursor-pointer bg-purple-700 text-white"
+        >
+          全部品牌评测 ({allReviews.length})
+        </button>
+        <button
+          type="button"
+          data-filter="stable"
+          class="filter-btn px-4 py-2 rounded-xl font-semibold transition-all shadow-xs cursor-pointer bg-white hover:bg-purple-50 text-slate-700 border border-purple-200"
+        >
+          专线稳定推荐
+        </button>
+        <button
+          type="button"
+          data-filter="budget"
+          class="filter-btn px-4 py-2 rounded-xl font-semibold transition-all shadow-xs cursor-pointer bg-white hover:bg-purple-50 text-slate-700 border border-purple-200"
+        >
+          平价低预算
+        </button>
+        <button
+          type="button"
+          data-filter="ai"
+          class="filter-btn px-4 py-2 rounded-xl font-semibold transition-all shadow-xs cursor-pointer bg-white hover:bg-purple-50 text-slate-700 border border-purple-200"
+        >
+          ChatGPT与AI专用
+        </button>
+        <button
+          type="button"
+          data-filter="streaming"
+          class="filter-btn px-4 py-2 rounded-xl font-semibold transition-all shadow-xs cursor-pointer bg-white hover:bg-purple-50 text-slate-700 border border-purple-200"
+        >
+          4K流媒体解锁
+        </button>
+        <button
+          type="button"
+          data-filter="beginner"
+          class="filter-btn px-4 py-2 rounded-xl font-semibold transition-all shadow-xs cursor-pointer bg-white hover:bg-purple-50 text-slate-700 border border-purple-200"
+        >
+          新手友好入门
+        </button>
+      </div>
+    </header>
+
+    <!-- Grid of All 29 Airport Reviews -->
+    <section>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="review-grid">
+        {allReviews.map(({ airport, detail, perGb }, index) => (
+          <article
+            class="review-card bg-white rounded-3xl p-6 border border-purple-200/80 hover:border-purple-400 hover:shadow-lg transition-all duration-300 flex flex-col justify-between space-y-5 group relative"
+            data-categories={airport.categories.join(' ')}
+            data-name={airport.name.toLowerCase()}
+          >
+            <!-- Top Row: Rank, Line & Coupon -->
+            <div>
+              <div class="flex items-start justify-between gap-3 pb-3 border-b border-slate-100">
+                <div class="space-y-1">
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-slate-900 text-white font-mono text-xs font-bold">
+                      {index + 1}
+                    </span>
+                    <h2 class="text-xl font-extrabold text-slate-900 tracking-tight group-hover:text-purple-700 transition">
+                      <a href={`/review/${airport.slug}/`}>
+                        {airport.name}
+                      </a>
+                    </h2>
+                  </div>
+                  <div class="flex items-center gap-1.5 flex-wrap pt-1">
+                    <span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-purple-50 text-purple-700 border border-purple-200">
+                      {airport.lineType}
+                    </span>
+                    {airport.couponCode && (
+                      <button
+                        type="button"
+                        data-copy-coupon={airport.couponCode}
+                        title={`点击复制专属优惠码：${airport.couponCode}`}
+                        class="px-2 py-0.5 rounded text-[11px] font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-mono transition cursor-pointer shadow-xs active:scale-95 flex items-center gap-1"
+                      >
+                        <span>券: {airport.couponCode}</span>
+                        <span class="text-[9px] text-rose-500 font-sans">📋</span>
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                <!-- Rating badge -->
+                <div class="text-right shrink-0 bg-slate-900 text-white px-2.5 py-1.5 rounded-xl font-mono text-center">
+                  <span class="text-[10px] text-slate-400 block">综合评分</span>
+                  <span class="text-base font-extrabold text-amber-400">{airport.overallScore}</span>
+                </div>
+              </div>
+
+              <!-- Tagline & Core Summary -->
+              <p class="text-xs text-slate-600 mt-3 font-medium line-clamp-2 leading-relaxed">
+                {airport.tagline}
+              </p>
+
+              <!-- Pricing & Traffic Specs Box -->
+              <div class="grid grid-cols-3 gap-2 my-4 p-3 rounded-2xl bg-purple-50/50 border border-purple-100 text-center">
+                <div>
+                  <span class="text-[10px] text-slate-500 block">起步价格</span>
+                  <span class="text-sm font-extrabold text-purple-700 font-mono">
+                    ¥{airport.startingPrice}
+                  </span>
+                  <span class="text-[10px] text-slate-400 block">/月起</span>
+                </div>
+                <div>
+                  <span class="text-[10px] text-slate-500 block">入门流量</span>
+                  <span class="text-sm font-bold text-slate-800 font-mono">
+                    {airport.plans[0]?.trafficGB}GB
+                  </span>
+                  <span class="text-[10px] text-slate-400 block">/月可用</span>
+                </div>
+                <div>
+                  <span class="text-[10px] text-slate-500 block">真实单价</span>
+                  <span class="text-sm font-bold text-slate-700 font-mono">
+                    ¥{perGb}
+                  </span>
+                  <span class="text-[10px] text-slate-400 block">/GB</span>
+                </div>
+              </div>
+
+              <!-- Protocols & Regions preview -->
+              <div class="space-y-1.5 text-xs text-slate-600">
+                <div class="flex items-center gap-1">
+                  <span class="text-slate-400 shrink-0">支持协议：</span>
+                  <span class="font-mono text-purple-800 truncate">{airport.protocols.join('、')}</span>
+                </div>
+                <div class="flex items-center gap-1">
+                  <span class="text-slate-400 shrink-0">落地覆盖：</span>
+                  <span class="truncate">{airport.regions.slice(0, 4).join('、')} 等</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons: 详细评测 & 官网直达 -->
+            <div class="pt-4 border-t border-slate-100 flex items-center gap-2">
+              <a
+                href={`/review/${airport.slug}/`}
+                class="flex-1 text-center py-2.5 px-3 rounded-xl text-xs font-bold bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200 transition shadow-xs flex items-center justify-center gap-1"
+              >
+                <span>阅读详细评测</span>
+                <span>→</span>
+              </a>
+              <a
+                href={airport.affiliateUrl}
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+                class="flex-1 text-center py-2.5 px-3 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white transition shadow-xs flex items-center justify-center gap-1"
+              >
+                <span>直达官网</span>
+                <svg class="w-3 h-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="space-y-4">
+      <h2 class="text-2xl font-bold text-slate-900 text-center">
+        机场评测中心常见疑问解答
+      </h2>
+      <FAQSection items={reviewHubFAQs} />
+    </section>
+  </div>
+</BaseLayout>
+
+<script is:inline>
+  (function() {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.review-card');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        filterBtns.forEach(b => {
+          b.classList.remove('bg-purple-700', 'text-white', 'active');
+          b.classList.add('bg-white', 'text-slate-700', 'border', 'border-purple-200');
+        });
+        this.classList.add('bg-purple-700', 'text-white', 'active');
+        this.classList.remove('bg-white', 'text-slate-700', 'border');
+
+        const filter = this.getAttribute('data-filter');
+
+        cards.forEach(card => {
+          if (filter === 'all') {
+            card.style.display = 'flex';
+          } else {
+            const categories = card.getAttribute('data-categories') || '';
+            if (categories.includes(filter)) {
+              card.style.display = 'flex';
+            } else {
+              card.style.display = 'none';
+            }
+          }
+        });
+      });
+    });
+  })();
+</script>

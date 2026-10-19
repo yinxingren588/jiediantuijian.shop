@@ -283,6 +283,69 @@ const homeFAQs = [
     </div>
   </section>
 
+  <!-- Section 8: 最新独立深度评测 (29款品牌评测入口) -->
+  <section class="my-16">
+    <div class="mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-semibold text-purple-700 uppercase tracking-wider block mb-1">权威技术横评</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+          最新主流机场独立深度技术评测报告
+        </h2>
+        <p class="text-sm text-slate-500 mt-1">
+          本站对全网 29 款服务商建立独立评测档案，涵盖底层专线拓扑、晚高峰丢包跑分与双 ISP 解锁矩阵：
+        </p>
+      </div>
+      <a href="/review/" class="text-sm font-bold text-purple-700 hover:underline flex items-center gap-1 shrink-0">
+        查看全部 29 款品牌深度评测
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {airports.slice(0, 3).map(airport => (
+        <div class="bg-white rounded-3xl p-6 border border-purple-200/80 shadow-xs hover:border-purple-400 hover:shadow-md transition flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+              <h3 class="text-lg font-bold text-slate-900">
+                <a href={`/review/${airport.slug}/`} class="hover:text-purple-700 transition">
+                  {airport.name}
+                </a>
+              </h3>
+              <span class="px-2 py-0.5 rounded text-xs font-semibold bg-purple-50 text-purple-700 border border-purple-200">
+                {airport.lineType}
+              </span>
+            </div>
+            <p class="text-xs text-slate-600 mt-3 line-clamp-2 leading-relaxed">
+              {airport.tagline}
+            </p>
+            <div class="mt-3 flex items-center justify-between text-xs font-mono">
+              <span class="text-purple-700 font-bold">起步 ¥{airport.startingPrice}/月</span>
+              <span class="text-slate-500">实测评分 ★ {airport.overallScore}</span>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-slate-100 flex items-center gap-2">
+            <a
+              href={`/review/${airport.slug}/`}
+              class="flex-1 text-center py-2 px-3 rounded-xl text-xs font-bold bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200 transition"
+            >
+              阅读详细评测 →
+            </a>
+            <a
+              href={airport.affiliateUrl}
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              class="text-center py-2 px-3 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white transition"
+            >
+              官网直达
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
   <!-- Guides Center (Section 9) -->
   <section class="my-16">
     <div class="mb-8 flex items-center justify-between">

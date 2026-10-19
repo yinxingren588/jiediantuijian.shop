@@ -1,6 +1,6 @@
 # 节点推荐网 (jiediantuijian.shop) 最终自动化验收报告
 
-**验收执行时间**：2026-10-19T08:19:55.511Z
+**验收执行时间**：2026-10-19T08:25:12.079Z
 **目标域名**：https://jiediantuijian.shop
 **主攻关键词**：节点推荐、机场推荐、机场节点推荐、机场节点
 
@@ -12,13 +12,13 @@
 
 | 检查项 ID | 验收维度 | 判定状态 | 详细核验情况说明 |
 | :--- | :--- | :---: | :--- |
-| `SEO_TITLE` | 全站页面独立 Title 且无重复 | ✅ **PASS** | 所有 93 个页面均具备唯一且符合规范的标题 |
+| `SEO_TITLE` | 全站页面独立 Title 且无重复 | ✅ **PASS** | 所有 95 个页面均具备唯一且符合规范的标题 |
 | `SEO_DESCRIPTION` | 全站页面独立 Meta Description | ✅ **PASS** | 所有公开落地页面均包含专属描述 |
 | `SEO_H1` | 全站页面唯一 H1 标签 | ✅ **PASS** | 所有页面均具有且仅有单个语义 H1 标签 |
 | `SEO_CANONICAL` | 正式域名与规范化 Canonical | ✅ **PASS** | Canonical 统一指向正式域名 https://jiediantuijian.shop 并遵循斜杠规范 |
 | `SEO_ROBOTS` | 搜索引擎爬虫控制 (Robots Meta) | ✅ **PASS** | 所有页面均声明 robots meta，404 正确声明 noindex |
 | `SEO_SCHEMA` | Schema.org 结构化数据 (JSON-LD) | ✅ **PASS** | 包含 Organization, WebSite, BreadcrumbList, TechArticle, FAQPage 等 |
-| `INTERNAL_LINKS` | 全站内部链接连通性 (零死链) | ✅ **PASS** | 已检查全站 4851 个内部链接，零死链 |
+| `INTERNAL_LINKS` | 全站内部链接连通性 (零死链) | ✅ **PASS** | 已检查全站 5275 个内部链接，零死链 |
 | `NO_LEAKED_VARS` | 模板未替换变量检查 ({{...}} / localhost) | ✅ **PASS** | 全站 HTML 均已完成模板静态编译，无开发变量或 localhost 泄漏 |
 | `DATA_AIRPORTS` | 机场结构化数据库完整性 | ✅ **PASS** | 已核验 29 家机场全生命周期字段（资费、协议、线路、优缺点、评分及数据来源） |
 | `CONTENT_GUIDES` | 客户端配置教程中心 | ✅ **PASS** | 覆盖全部主流4大操作系统平台 (Windows, Android, iOS, macOS) |
@@ -31,7 +31,7 @@
 
 ## 重点技术与内容清单摘要
 
-1. **页面生产构建总数**：93 个独立 HTML 页面。
+1. **页面生产构建总数**：95 个独立 HTML 页面。
 2. **结构化机场数据库**：包含 5 个真实实测服务商，全生命周期字段无硬编码重复。
 3. **四大排行榜系统**：综合榜、高性价比单价榜、稳定专线榜、低预算月付榜全部已就绪。
 4. **核心使用教程中心**：涵盖 Windows、Android、iOS、macOS 全平台实战图文。

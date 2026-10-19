@@ -1,0 +1,140 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FAQSection from '../../components/FAQSection.astro';
+import { airports, calculatePerGBCost } from '../../data/airports';
+
+const allAirports = airports.map(airport => ({
+  airport,
+  perGb: calculatePerGBCost(airport),
+}));
+
+const airportDirFAQs = [
+  {
+    question: '机场资料库与独立评测报告有什么区别？',
+    answer: '机场资料库（/airport/[slug]/）着重收录各品牌官方资费、核心协议、设备限制与基础档案信息，适合需要快速查阅品牌规格与资费明细的用户；而独立深度评测（/review/[slug]/）则包含底层物理拓扑、晚高峰实机丢包跑分基准、流媒体AI双ISP解锁矩阵与详细避坑指南。'
+  },
+  {
+    question: '如何根据资料库信息快速挑选适合自己的机场？',
+    answer: '建议首先明确自己的主力宽带（电信/联通/移动）与核心使用场景（如 4K 影音、ChatGPT 生产力或极低成本备用）。对稳定性要求高者优先选用 IEPL/IPLC 纯专线品牌；预算敏感者可在“平价低预算”区间挑选 ¥10 以下高性价比方案。'
+  }
+];
+---
+
+<BaseLayout
+  title="机场品牌资料库大全 - 2026全部29款机场节点档案与官方资费"
+  description="2026年收录全部29款主流机场节点基础资料库大全。提供官方套餐资费、节点线路、协议兼容性、适用人群与读者专属优惠券核验档案。"
+  breadcrumbs={[
+    { name: '机场资料库', url: '/airport/' },
+  ]}
+>
+  <div class="py-6 space-y-12">
+    <!-- Header -->
+    <header class="text-center max-w-3xl mx-auto space-y-4">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-bold bg-brand-50 text-brand-700 border border-brand-200 shadow-xs">
+        <span>📚 机场品牌资料库</span>
+        <span class="text-brand-300">·</span>
+        <span>29 款品牌全收录</span>
+      </div>
+
+      <h1 class="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+        2026 机场节点品牌资料库大全
+      </h1>
+
+      <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
+        收录全部 29 款主流机场节点的官方档案、套餐资费表、底层架构特性与读者专属优惠码。点击任意品牌可直接进入<strong>独立档案页与深度技术评测</strong>。
+      </p>
+    </header>
+
+    <!-- 29 Airport Cards -->
+    <section>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {allAirports.map(({ airport, perGb }, idx) => (
+          <div class="bg-white rounded-3xl p-6 border border-surface-border hover:border-brand-400 hover:shadow-lg transition-all duration-300 flex flex-col justify-between space-y-4 group">
+            <div>
+              <div class="flex items-start justify-between gap-3 pb-3 border-b border-slate-100">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="w-6 h-6 rounded-full bg-slate-100 text-slate-700 font-mono text-xs font-bold flex items-center justify-center">
+                      {idx + 1}
+                    </span>
+                    <h2 class="text-lg font-bold text-slate-900 group-hover:text-brand-600 transition">
+                      <a href={`/airport/${airport.slug}/`}>
+                        {airport.name}
+                      </a>
+                    </h2>
+                  </div>
+                  <div class="flex items-center gap-1.5 mt-2 flex-wrap">
+                    <span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-brand-50 text-brand-700 border border-brand-200">
+                      {airport.lineType}
+                    </span>
+                    {airport.couponCode && (
+                      <button
+                        type="button"
+                        data-copy-coupon={airport.couponCode}
+                        title={`点击复制专属优惠码：${airport.couponCode}`}
+                        class="px-2 py-0.5 rounded text-[11px] font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-mono transition cursor-pointer shadow-xs active:scale-95 flex items-center gap-1"
+                      >
+                        <span>券: {airport.couponCode}</span>
+                        <span class="text-[9px] text-rose-500 font-sans">📋</span>
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                <div class="text-right shrink-0 bg-slate-900 text-white px-2.5 py-1.5 rounded-xl font-mono text-center">
+                  <span class="text-[10px] text-slate-400 block">综合评分</span>
+                  <span class="text-base font-extrabold text-amber-400">{airport.overallScore}</span>
+                </div>
+              </div>
+
+              <p class="text-xs text-slate-600 mt-3 line-clamp-2 leading-relaxed">
+                {airport.description}
+              </p>
+
+              <div class="mt-4 p-3 rounded-2xl bg-slate-50 border border-slate-100 grid grid-cols-2 gap-2 text-center text-xs">
+                <div>
+                  <span class="text-slate-400 text-[10px] block">起步价格</span>
+                  <span class="font-mono font-bold text-brand-600 text-sm">¥{airport.startingPrice}/月</span>
+                </div>
+                <div>
+                  <span class="text-slate-400 text-[10px] block">单GB折算</span>
+                  <span class="font-mono font-bold text-slate-700 text-sm">¥{perGb}/GB</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-3 border-t border-slate-100 flex items-center gap-2">
+              <a
+                href={`/airport/${airport.slug}/`}
+                class="flex-1 text-center py-2 px-3 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-800 transition"
+              >
+                品牌资料档案
+              </a>
+              <a
+                href={`/review/${airport.slug}/`}
+                class="flex-1 text-center py-2 px-3 rounded-xl text-xs font-bold bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200 transition"
+              >
+                深度技术评测
+              </a>
+              <a
+                href={airport.affiliateUrl}
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+                class="text-center py-2 px-3 rounded-xl text-xs font-bold bg-slate-900 text-white hover:bg-slate-800 transition"
+              >
+                官网
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="space-y-4">
+      <h2 class="text-2xl font-bold text-slate-900 text-center">
+        机场品牌资料库常见疑问
+      </h2>
+      <FAQSection items={airportDirFAQs} />
+    </section>
+  </div>
+</BaseLayout>
