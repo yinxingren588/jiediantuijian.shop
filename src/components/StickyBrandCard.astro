@@ -1,0 +1,196 @@
+---
+import type { Airport } from '../data/airports';
+
+export interface Props {
+  airport: Airport;
+  perGb: number | string;
+}
+
+const { airport, perGb } = Astro.props;
+---
+
+<div class="sticky-brand-card space-y-4">
+  <!-- Main Floating Spec Card -->
+  <div class="bg-white/95 backdrop-blur-md rounded-3xl p-5 sm:p-6 border-2 border-purple-200/90 shadow-xl shadow-purple-500/5 space-y-4 transition-all">
+    <!-- Header: Name, Line, Score -->
+    <div class="flex items-start justify-between gap-3 pb-3 border-b border-slate-100">
+      <div>
+        <div class="flex items-center gap-2 flex-wrap">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <h3 class="text-xl font-black text-slate-900 tracking-tight">
+            {airport.name}
+          </h3>
+          <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-purple-50 text-purple-700 border border-purple-200">
+            {airport.lineType}
+          </span>
+        </div>
+        <p class="text-xs text-slate-500 mt-1 line-clamp-1">
+          {airport.tagline}
+        </p>
+      </div>
+
+      <div class="text-right shrink-0 bg-slate-900 text-white px-2.5 py-1.5 rounded-xl font-mono text-center shadow-xs">
+        <span class="text-[9px] text-slate-400 block uppercase">综合评分</span>
+        <span class="text-base font-black text-amber-400">★ {airport.overallScore}</span>
+      </div>
+    </div>
+
+    <!-- Pricing & Traffic Specs Grid -->
+    <div class="grid grid-cols-2 gap-2 p-3 rounded-2xl bg-gradient-to-br from-purple-50/70 to-indigo-50/50 border border-purple-100 text-center">
+      <div class="p-1.5 bg-white/70 rounded-xl">
+        <span class="text-[10px] text-slate-500 block font-medium">起步价格</span>
+        <span class="text-base font-black text-purple-700 font-mono">
+          ¥{airport.startingPrice}
+        </span>
+        <span class="text-[10px] text-slate-400"> /月起</span>
+      </div>
+
+      <div class="p-1.5 bg-white/70 rounded-xl">
+        <span class="text-[10px] text-slate-500 block font-medium">月度流量</span>
+        <span class="text-base font-black text-slate-900 font-mono">
+          {airport.plans[0]?.trafficGB || 100}G
+        </span>
+        <span class="text-[10px] text-slate-400"> /月可用</span>
+      </div>
+
+      <div class="p-1.5 bg-white/70 rounded-xl">
+        <span class="text-[10px] text-slate-500 block font-medium">真实单价</span>
+        <span class="text-sm font-bold text-slate-700 font-mono">
+          ¥{perGb}
+        </span>
+        <span class="text-[10px] text-slate-400"> /GB</span>
+      </div>
+
+      <div class="p-1.5 bg-white/70 rounded-xl">
+        <span class="text-[10px] text-slate-500 block font-medium">设备限制</span>
+        <span class="text-xs font-bold text-slate-800 truncate block mt-0.5">
+          {airport.deviceLimit || '多端并发'}
+        </span>
+      </div>
+    </div>
+
+    <!-- Coupon Section -->
+    <div>
+      {airport.couponCode ? (
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-bold text-slate-800 flex items-center gap-1">
+              <span>🎁</span>
+              <span>读者专属优惠券</span>
+            </span>
+            <span class="text-[11px] text-rose-600 font-semibold bg-rose-50 px-1.5 py-0.5 rounded">
+              可直接抵扣
+            </span>
+          </div>
+          <button
+            type="button"
+            data-copy-coupon={airport.couponCode}
+            title={`点击复制专属优惠码：${airport.couponCode}`}
+            class="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-rose-50 via-amber-50 to-rose-50 hover:from-rose-100 hover:to-amber-100 border-2 border-dashed border-rose-300 font-mono font-black text-rose-700 text-sm transition-all cursor-pointer flex items-center justify-between shadow-xs active:scale-[0.98] group"
+          >
+            <span class="flex items-center gap-1.5">
+              <span class="text-xs font-sans font-bold text-slate-700">券码:</span>
+              <span class="tracking-wider">{airport.couponCode}</span>
+            </span>
+            <span class="text-[11px] bg-rose-600 text-white px-2 py-0.5 rounded-md font-sans group-hover:bg-rose-700 transition flex items-center gap-1 shadow-xs">
+              <span>📋 复制</span>
+            </span>
+          </button>
+          <p class="text-[10px] text-slate-400 text-center">
+            点击复制后，在结账页面输入即可享受专属折扣
+          </p>
+        </div>
+      ) : (
+        <div class="p-2.5 rounded-xl bg-emerald-50/70 border border-emerald-200 text-center text-xs text-emerald-800 font-medium">
+          ✓ 当前已是官方直供特惠价（无需输入优惠码）
+        </div>
+      )}
+    </div>
+
+    <!-- Core Reason & Advantages -->
+    <div class="space-y-2 pt-1 border-t border-slate-100">
+      <div class="text-xs font-bold text-slate-900 flex items-center gap-1">
+        <span>⭐</span>
+        <span>核心优势聚焦：</span>
+      </div>
+      <p class="text-xs text-purple-900 font-medium bg-purple-50/80 p-2.5 rounded-xl border border-purple-100 leading-relaxed">
+        {airport.coreReason}
+      </p>
+
+      <ul class="space-y-1.5 text-xs text-slate-600 pt-1">
+        {airport.advantages.slice(0, 3).map(adv => (
+          <li class="flex items-start gap-1.5 leading-snug">
+            <span class="text-emerald-500 font-bold shrink-0">✓</span>
+            <span>{adv}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <!-- Unlocking & Protocols Tags -->
+    <div class="pt-2 border-t border-slate-100 space-y-1.5 text-[11px]">
+      <div class="flex items-center justify-between text-slate-600">
+        <span class="text-slate-400">解锁支持：</span>
+        <span class="text-slate-800 font-medium truncate max-w-[200px]">
+          {airport.aiSupport?.slice(0, 2).join('、')} · {airport.streamingSupport?.[0] || '4K流媒体'}
+        </span>
+      </div>
+      <div class="flex items-center justify-between text-slate-600">
+        <span class="text-slate-400">主流协议：</span>
+        <span class="font-mono text-purple-700 font-semibold truncate max-w-[200px]">
+          {airport.protocols.slice(0, 3).join(' / ')}
+        </span>
+      </div>
+    </div>
+
+    <!-- Main CTA Buttons -->
+    <div class="pt-2 space-y-2">
+      <a
+        href={airport.affiliateUrl}
+        target="_blank"
+        rel="noopener noreferrer nofollow"
+        class="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-700 hover:from-purple-700 hover:to-indigo-700 text-white font-extrabold text-sm transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2 group active:scale-[0.98]"
+      >
+        <span>前往 {airport.name} 官网直达</span>
+        <svg class="w-4 h-4 group-hover:translate-x-0.5 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </a>
+
+      <div class="grid grid-cols-2 gap-2 text-xs">
+        <a
+          href="/compare/"
+          class="py-2 px-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 text-center font-medium border border-slate-200 transition"
+        >
+          ⚖️ 参数多维比对
+        </a>
+        <a
+          href="/ranking/overall/"
+          class="py-2 px-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 text-center font-medium border border-slate-200 transition"
+        >
+          🏆 综合实力榜
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Table of Contents Mini Card -->
+  <div class="bg-white/80 backdrop-blur-md rounded-2xl p-4 border border-purple-100 shadow-xs space-y-2 text-xs">
+    <div class="font-bold text-slate-800 flex items-center justify-between pb-1.5 border-b border-slate-100">
+      <span>📑 本篇评测快速直达</span>
+      <span class="text-[10px] text-purple-600 font-mono">11个章节</span>
+    </div>
+    <div class="grid grid-cols-2 gap-1 text-[11px] text-slate-600">
+      <a href="#brand-overview" class="hover:text-purple-600 py-0.5 truncate">1. 品牌与基础设施</a>
+      <a href="#network-topology" class="hover:text-purple-600 py-0.5 truncate">2. 专线拓扑解析</a>
+      <a href="#protocols-security" class="hover:text-purple-600 py-0.5 truncate">3. 协议与加密</a>
+      <a href="#pricing-plans" class="hover:text-purple-600 py-0.5 truncate font-semibold text-purple-700">4. 官方套餐资费</a>
+      <a href="#speed-benchmarks" class="hover:text-purple-600 py-0.5 truncate font-semibold text-purple-700">5. 晚高峰测速跑分</a>
+      <a href="#ai-streaming" class="hover:text-purple-600 py-0.5 truncate">6. AI与流媒体解锁</a>
+      <a href="#pros-cons" class="hover:text-purple-600 py-0.5 truncate">7. 客观优缺点分析</a>
+      <a href="#buying-advice" class="hover:text-purple-600 py-0.5 truncate">8. 选购与避坑建议</a>
+      <a href="#setup-guide" class="hover:text-purple-600 py-0.5 truncate">9. 客户端配置指南</a>
+      <a href="#faqs" class="hover:text-purple-600 py-0.5 truncate">10. 常见问答 FAQ</a>
+    </div>
+  </div>
+</div>

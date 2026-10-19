@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import FAQSection from '../../components/FAQSection.astro';
+import StickyBrandCard from '../../components/StickyBrandCard.astro';
 import { airports, calculatePerGBCost } from '../../data/airports';
 import { getAirportReviewDetail } from '../../data/reviews';
 
@@ -28,7 +29,9 @@ const otherAirports = airports.filter(a => a.id !== airport.id).slice(0, 3);
     { name: `${airport.name} 深度技术评测`, url: `/review/${airport.slug}/` },
   ]}
 >
-  <article class="py-6 max-w-4xl mx-auto space-y-12">
+  <div class="py-4">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <article class="lg:col-span-8 space-y-12 min-w-0">
     <!-- Header Meta & Title -->
     <header class="border-b border-purple-200/60 pb-8 space-y-4">
       <div class="flex flex-wrap items-center gap-2 text-xs">
@@ -149,7 +152,7 @@ const otherAirports = airports.filter(a => a.id !== airport.id).slice(0, 3);
     </header>
 
     <!-- Chapter 1: 品牌定位与基础设施概况 -->
-    <section class="space-y-4">
+    <section id="brand-overview" class="scroll-mt-24 space-y-4">
       <h2 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
         <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-purple-600 text-white text-xs font-bold">1</span>
         <span>品牌背景、市场定位与基础设施概况</span>
@@ -168,7 +171,7 @@ const otherAirports = airports.filter(a => a.id !== airport.id).slice(0, 3);
     </section>
 
     <!-- Chapter 2: 底层网络拓扑与专线物理架构深度解析 -->
-    <section class="space-y-4">
+    <section id="network-topology" class="scroll-mt-24 space-y-4">
       <h2 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
         <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-purple-600 text-white text-xs font-bold">2</span>
         <span>底层网络拓扑与专线物理架构深度解析</span>
@@ -193,7 +196,7 @@ const otherAirports = airports.filter(a => a.id !== airport.id).slice(0, 3);
     </section>
 
     <!-- Chapter 3: 协议栈、数据加密与抗审查安全体系 -->
-    <section class="space-y-4">
+    <section id="protocols-security" class="scroll-mt-24 space-y-4">
       <h2 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
         <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-purple-600 text-white text-xs font-bold">3</span>
         <span>协议栈技术、数据加密与抗深度包检测 (DPI) 机制</span>
@@ -224,7 +227,7 @@ const otherAirports = airports.filter(a => a.id !== airport.id).slice(0, 3);
     </section>
 
     <!-- Chapter 4: 套餐资费体系与每 GB 真实成本测算 -->
-    <section class="space-y-4">
+    <section id="pricing-plans" class="scroll-mt-24 space-y-4">
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
         <h2 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
           <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-purple-600 text-white text-xs font-bold">4</span>
@@ -276,7 +279,7 @@ const otherAirports = airports.filter(a => a.id !== airport.id).slice(0, 3);
     </section>
 
     <!-- Chapter 5: 晚高峰实机测速基准与全球节点表现 -->
-    <section class="space-y-4">
+    <section id="speed-benchmarks" class="scroll-mt-24 space-y-4">
       <h2 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
         <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-purple-600 text-white text-xs font-bold">5</span>
         <span>晚高峰实机测速基准与全球核心节点表现 (20:00 - 23:00)</span>
@@ -319,7 +322,7 @@ const otherAirports = airports.filter(a => a.id !== airport.id).slice(0, 3);
     </section>
 
     <!-- Chapter 6: 流媒体与 AI 大模型原生解锁实测矩阵 -->
-    <section class="space-y-4">
+    <section id="ai-streaming" class="scroll-mt-24 space-y-4">
       <h2 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
         <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-purple-600 text-white text-xs font-bold">6</span>
         <span>流媒体与 AI 大模型原生双 ISP 解锁实测矩阵</span>
@@ -350,7 +353,7 @@ const otherAirports = airports.filter(a => a.id !== airport.id).slice(0, 3);
     </section>
 
     <!-- Chapter 7: 客观优缺点对比分析 -->
-    <section class="space-y-4">
+    <section id="pros-cons" class="scroll-mt-24 space-y-4">
       <h2 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
         <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-purple-600 text-white text-xs font-bold">7</span>
         <span>客观优缺点深度分析 (优点 vs 潜在注意事项)</span>
@@ -392,7 +395,7 @@ const otherAirports = airports.filter(a => a.id !== airport.id).slice(0, 3);
     </section>
 
     <!-- Chapter 8: 适合人群与网络工程师选购建议 -->
-    <section class="p-6 sm:p-8 rounded-3xl bg-white border border-purple-200/80 shadow-xs space-y-6">
+    <section id="buying-advice" class="scroll-mt-24 p-6 sm:p-8 rounded-3xl bg-white border border-purple-200/80 shadow-xs space-y-6">
       <h2 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
         <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-purple-600 text-white text-xs font-bold">8</span>
         <span>适合人群定位与资深网络工程师避坑建议</span>
@@ -425,7 +428,7 @@ const otherAirports = airports.filter(a => a.id !== airport.id).slice(0, 3);
     </section>
 
     <!-- Chapter 9: 全平台客户端 3 分钟极速配置指引 -->
-    <section class="space-y-4">
+    <section id="setup-guide" class="scroll-mt-24 space-y-4">
       <h2 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
         <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-purple-600 text-white text-xs font-bold">9</span>
         <span>主流操作系统客户端 3 分钟配置实操指南</span>
@@ -455,7 +458,7 @@ const otherAirports = airports.filter(a => a.id !== airport.id).slice(0, 3);
     </section>
 
     <!-- Chapter 10: 常见问题深度解答 (FAQ) -->
-    <section class="space-y-4">
+    <section id="faqs" class="scroll-mt-24 space-y-4">
       <h2 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
         <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-purple-600 text-white text-xs font-bold">10</span>
         <span>常见疑问深度解答 (FAQ)</span>
@@ -464,7 +467,7 @@ const otherAirports = airports.filter(a => a.id !== airport.id).slice(0, 3);
     </section>
 
     <!-- Chapter 11: 同类型竞品机场横向比对 -->
-    <section class="space-y-4">
+    <section id="competitors" class="scroll-mt-24 space-y-4">
       <div class="flex items-center justify-between">
         <h2 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
           <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-purple-600 text-white text-xs font-bold">11</span>
@@ -541,4 +544,11 @@ const otherAirports = airports.filter(a => a.id !== airport.id).slice(0, 3);
       </a>
     </div>
   </article>
+
+  <!-- Right-hand Sticky Floating Brand Card -->
+  <aside class="hidden lg:block lg:col-span-4 sticky top-24 space-y-6">
+    <StickyBrandCard airport={airport} perGb={perGb} />
+  </aside>
+</div>
+</div>
 </BaseLayout>
