@@ -9,6 +9,7 @@ const navItems = [
   { name: '机场对比', href: '/compare/' },
   { name: '使用教程', href: '/guides/' },
   { name: '博客文章', href: '/blog/' },
+  { name: '联系我们', href: '/contact/' },
 ];
 
 function isActive(href: string) {
@@ -36,11 +37,11 @@ function isActive(href: string) {
       </div>
 
       <!-- Desktop Nav -->
-      <nav class="hidden md:flex items-center gap-1 lg:gap-2">
+      <nav class="hidden md:flex items-center gap-0.5 lg:gap-1.5 xl:gap-2">
         {navItems.map(item => (
           <a
             href={item.href}
-            class={`px-3 py-2 rounded-md text-sm font-medium transition ${
+            class={`px-2 lg:px-3 py-2 rounded-md text-xs lg:text-sm font-medium transition ${
               isActive(item.href)
                 ? 'text-brand-600 bg-brand-50'
                 : 'text-slate-700 hover:text-brand-600 hover:bg-slate-50'
