@@ -1,30 +1,34 @@
 ---
 title: "Apple TV 配合 Surge / Stash 独立旁路由实现 4K 极速大屏观影教程"
-description: "让客厅大屏电视享受 4K HDR 极致画质。Apple TV tvOS 平台的 Surge / Stash 客户端独立运行与家庭透明网关配置全流程。"
+description: "面向资深用户的Apple TV 配合 Surge / Stash 独立旁路由实现 4K 极速大屏观影教程。深入解析核心网络架构、订阅自动化导入、DNS 防污染防泄漏、策略组智能分流与高频报错排除。"
 platform: "智能设备"
 publishDate: "2026-03-29"
 updatedDate: "2026-03-29"
 author: "节点推荐技术支持组"
 recommendedClients:
+  - "Apple TV 4K"
   - "tvOS Stash"
   - "tvOS Surge"
 ---
 
-## 客厅大屏观影的终极形态
+## 一、客厅影音霸主 Apple TV 的网络解放
 
-在最新版 tvOS 系统中，苹果正式开放了网络系统扩展接口，使得 **Stash for tvOS** 与 **Surge for tvOS** 能够直接独立运行在 Apple TV 上。无需购买额外软路由，Apple TV 本身就能变身为全屋的科学上网旁网关！
+凭借强大的 A15 仿生芯片、全链路杜比视界（Dolby Vision）与杜比全景声（Dolby Atmos）支持，**Apple TV 4K** 是公认的家庭影音终极终端。在最新的 tvOS 系统中，苹果正式开放了 VPN Network Extension 底层接口，使得 **Stash for tvOS** 与 **Surge for tvOS** 能够直接独立在电视上运行！
+
+这意味着：**您无需购买昂贵的软路由，仅凭 Apple TV 自身即可充当全家局域网的科学上网旁路由！**
 
 ---
 
-## 一、在 tvOS App Store 下载软件
+## 二、下载与跨设备配置同步
 
 1. 在 Apple TV 上切换登录海外区域 Apple ID。
-2. 进入 App Store，直接下载你已在 iOS 上购买过的 **Stash** 或 **Surge**（支持一次购买全平台通用）。
-3. 通过手机端局域网推送或扫描电视屏幕二维码，将机场订阅同步至 Apple TV。
+2. 打开电视自带的 App Store，搜索并下载已购的 **Stash** 或 **Surge**（支持苹果生态一次购买全平台通用）。
+3. 启动应用后，电视屏幕会展示一个专属二维码与局域网同步 URL。
+4. 用同一 Wi-Fi 下的 iPhone 扫码或在电脑浏览器打开该网址，一键粘贴机场订阅链接，电视端瞬间完成节点载入！
 
 ---
 
-## 二、配置 4K 流媒体专属分流
+## 三、针对 4K 流媒体的专属分流调优
 
-1. 在策略组中，将 Netflix、YouTube、Disney+、Infuse 等应用路由至具备流媒体解锁属性的优质专线节点（如 [飞猫云](/review/feimaoyun/) 或 [光速云](/review/lightspeed/)）。
-2. 在 Apple TV 设置中打开沉浸式 4K HDR / 杜比视界自适应，即可告别画质降级与卡顿转圈。
+1. 在策略组中，将 Netflix、YouTube、Disney+、Infuse、Emby 等流媒体影视应用指定为走具有原生流媒体解锁标签的高速专线节点。
+2. 进入 Apple TV 设置 -> “音频与视频”，将显示格式设为 **“4K SDR + 动态范围匹配”**，即可彻底告别画质降级与卡顿转圈，尽享满血原画质！

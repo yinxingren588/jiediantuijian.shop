@@ -1,24 +1,24 @@
 ---
 title: "Android 平台 NekoBox 教程：支持 Hysteria2、TUIC 与内网直连"
-description: "安卓平台最全能的通用客户端之一 NekoBox 使用指南。多核心切换、全协议支持、自定义分流与防封锁实操。"
+description: "面向资深用户的Android 平台 NekoBox 教程：支持 Hysteria2、TUIC 与内网直连。深入解析核心网络架构、订阅自动化导入、DNS 防污染防泄漏、策略组智能分流与高频报错排除。"
 platform: "Android"
 publishDate: "2026-03-29"
 updatedDate: "2026-03-29"
 author: "节点推荐技术支持组"
 recommendedClients:
-  - "NekoBox"
+  - "NekoBox for Android"
   - "Sing-box Core"
+  - "Hysteria2"
 ---
 
-## NekoBox for Android 的全能特性
+## 一、安卓全协议全能神器 NekoBox
 
-对于需要应对复杂恶劣网络环境的安卓用户，**NekoBox for Android** 几乎集成了所有前沿黑科技：支持内核自由切换、全面支持 Hysteria2、TUIC、ShadowTLS 等新协议，且完全免费开源无广告。
+**NekoBox for Android** 是安卓平台极客玩家公认最全能的通用客户端。它集成了 Sing-box 与 Xray 双内核能力，原生支持新一代抗恶劣链路丢包的 **Hysteria2** 与 **TUIC v5** 协议。
 
 ---
 
-## 一、配置添加与测速
+## 二、订阅同步与节点健康排查
 
-1. 下载安装 `NekoBox-arm64-v8a.apk`。
-2. 点击右上角“+”号选择“从剪贴板导入”或“添加订阅”。
-3. 导入后长按列表可全选进行“真实网络延迟测试”。
-4. 在左侧菜单中开启“绕过局域网及大陆”，即可实现最佳日常分流体验。
+1. 安装官方最新版 APK，点击右上角加号选择“添加订阅”。
+2. 粘贴订阅链接并更新，长按节点列表可一键发起“真实网络延时 (HTTP HEAD)”批量测试。
+3. 在侧边栏开启“绕过局域网及大陆”，让手机在享受低延迟跨境专线的同时，国内微信与支付宝完全保持免流高速直连。

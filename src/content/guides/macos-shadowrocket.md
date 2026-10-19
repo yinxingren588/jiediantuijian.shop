@@ -1,33 +1,27 @@
 ---
 title: "Mac (Apple Silicon) 运行 Shadowrocket 小火箭配置全技巧"
-description: "在 M系列芯片 Mac 上通过 App Store 直接运行经典 iOS 软件 Shadowrocket 小火箭的安装方法、代理规则设置与快捷键操作。"
+description: "面向资深用户的Mac (Apple Silicon) 运行 Shadowrocket 小火箭配置全技巧。深入解析核心网络架构、订阅自动化导入、DNS 防污染防泄漏、策略组智能分流与高频报错排除。"
 platform: "macOS"
 publishDate: "2026-03-29"
 updatedDate: "2026-03-29"
 author: "节点推荐技术支持组"
 recommendedClients:
-  - "Shadowrocket"
-  - "Apple Silicon"
+  - "Shadowrocket Mac"
+  - "Apple Silicon M1-M4"
+  - "Direct Run"
 ---
 
-## 为什么在 Mac 上使用小火箭？
+## 一、为什么在 Mac 上使用小火箭？
 
-拥有 Apple Silicon (M1/M2/M3/M4) 芯片的 Mac 电脑原生支持运行 iOS 应用。如果你已经在 iPhone 上购买了 **Shadowrocket (小火箭)**，你无需为 Mac 额外付费购买其他软件，即可直接在 Mac 上享用这款轻巧强大的工具！
-
----
-
-## 一、安装与下载方式
-
-1. 打开 Mac 上的 **App Store**。
-2. 点击左下角个人头像进入“已购项目”。
-3. 在上方标签页切换至 **“iPhone 与 iPad App”**。
-4. 找到 **Shadowrocket**，点击云朵图标直接下载安装到 Mac 应用程序中。
+拥有 Apple Silicon (M1/M2/M3/M4) 芯片的 Mac 电脑原生支持直接运行 iOS 应用。如果您已经在 iPhone 上购买了 **Shadowrocket (小火箭)**，无需额外再为 Mac 购买任何高昂的商业翻墙软件，可直接将其无损运行在 macOS 桌面！
 
 ---
 
-## 二、订阅添加与分流全局切换
+## 二、下载与安装操作流程
 
-1. 启动小火箭，点击右上角加号 **“+”**。
-2. 类型选择 **“Subscribe”**，粘贴机场订阅地址并保存。
-3. 在“全局路由”处，建议切换为 **“配置 (Config)”**，即按照规则智能分流，海外走代理，国内直连。
-4. 点击顶部的连接开关，系统会弹窗提示“允许添加 VPN 配置”，输入 Mac 锁屏密码允许即可开启。
+1. 打开 Mac 系统自带的 **App Store**。
+2. 点击左下角您的个人账户头像，进入“已购项目”。
+3. 在上方分类标签页中，点击切换至 **“iPhone 与 iPad App”**。
+4. 找到您此前购买过的 **Shadowrocket**，点击云朵下载图标直接装入 Mac 应用程序文件夹。
+5. 打开应用，点击右上角加号通过扫码或输入 URL 导入机场订阅。
+6. 全局路由选择 **“配置 (Config)”**，轻触顶部开关即可开启全速翻墙！

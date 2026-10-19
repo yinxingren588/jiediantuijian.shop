@@ -1,26 +1,26 @@
 ---
 title: "Android 平台 SFA (Sing-box for Android) 现代网络分流实战"
-description: "在安卓手机上发挥 Sing-box 的极致效能。SFA 客户端的安装、订阅配置导入、DNS 防污染配置与前后台长效省电保活方案。"
+description: "面向资深用户的Android 平台 SFA (Sing-box for Android) 现代网络分流实战。深入解析核心网络架构、订阅自动化导入、DNS 防污染防泄漏、策略组智能分流与高频报错排除。"
 platform: "Android"
 publishDate: "2026-03-29"
 updatedDate: "2026-03-29"
 author: "节点推荐技术支持组"
 recommendedClients:
-  - "SFA"
   - "Sing-box for Android"
+  - "SFA"
+  - "Go-native"
 ---
 
-## SFA：极度省电与高速传输的安卓新星
+## 一、SFA 客户端的超低功耗与极致性能
 
-**Sing-box for Android (SFA)** 是官方专门针对安卓系统打造的原生客户端。得益于内核的高效设计，SFA 在日常待机时的耗电量与发热量远低于传统的代理应用，尤其适合续航敏感的用户。
+**Sing-box for Android (SFA)** 是官方针对 Android 平台开发的原生通用客户端。得益于 Go 语言内核在网络数据包流转上的高度优化，SFA 解决了传统客户端在安卓手机上发热量大、耗电严重的顽疾，单进程待机耗电几乎可以忽略不计。
 
 ---
 
-## 一、配置导入与参数设置
+## 二、配置导入与分流实战
 
-1. 在 Google Play 商店或 GitHub 下载并安装官方 APK。
-2. 打开 SFA，切换到 **“Profiles (配置)”** 标签。
-3. 点击 **“New Profile”**，选择类型为 Remote (远程)，填入你的 Sing-box 订阅链接。
-4. 点击右上角 Update 更新订阅，更新完毕后切换到 Dashboard 页面点击开关即可连通。
-
-配合本站 [平价性价比榜单](/ranking/value/) 中的大流量机场，SFA 是移动端超高清视频播放的理想搭档。
+1. 从官方 GitHub 下载正版 `SFA-arm64-v8a.apk` 并完成安装。
+2. 打开 SFA，切换到 **“Profiles (配置)”** 标签页，点击右上角加号。
+3. 选择“Remote (远程配置)”，填入机场提供的 Sing-box 原生订阅 URL，开启自动更新。
+4. 切换至 **“Dashboard (仪表盘)”**，点击中心主开关，授予系统底层 VPN 权限。
+5. SFA 内置先进的 Fake-IP 解析与 Sniffing 域名嗅探机制，海外应用瞬间秒开，国内应用丝滑直连。
