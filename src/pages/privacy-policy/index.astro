@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="隐私政策 - 节点推荐网数据与隐私保护条款"
+  description="节点推荐网（jiediantuijian.shop）关于用户隐私保护、Cookie使用与数据安全的政策说明。"
+  breadcrumbs={[
+    { name: '隐私政策', url: '/privacy-policy/' },
+  ]}
+>
+  <div class="py-6 max-w-article mx-auto space-y-8">
+    <header class="border-b border-slate-200 pb-8">
+      <div class="inline-block px-3 py-1 rounded-full bg-brand-50 border border-brand-200 text-brand-700 text-xs font-semibold mb-3">
+        隐私与数据合规
+      </div>
+      <h1 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+        隐私政策 (Privacy Policy)
+      </h1>
+      <p class="text-sm sm:text-base text-slate-600 leading-relaxed mt-4">
+        生效日期：2026年1月1日 · 节点推荐网高度重视并承诺保护访问者的个人隐私权益。
+      </p>
+    </header>
+
+    <div class="prose prose-slate max-w-none text-sm text-slate-700 leading-relaxed space-y-6">
+      <h2>一、我们收集哪些信息？</h2>
+      <p>
+        节点推荐网作为静态资讯网站，在正常浏览过程中<strong>不会要求读者注册任何账号、不会强制收集真实姓名、手机号码或身份证等高敏感个人身份信息</strong>。
+      </p>
+      <p>在访问过程中，我们的服务器或基础 CDN 提供商（如 Cloudflare）可能会自动记录标准的基础网络访问日志，包括：</p>
+      <ul>
+        <li>您的粗略地理位置（基于 IP 计算的国家或城市级别代码）。</li>
+        <li>浏览器类型、操作系统版本与访问时间戳。</li>
+        <li>访问的页面路径与上一级来源页面（Referrer）。</li>
+      </ul>
+
+      <h2>二、Cookie 的使用机制</h2>
+      <p>
+        我们仅在必要场景下使用轻量级 Cookie 或浏览器本地存储（LocalStorage）：
+      </p>
+      <ul>
+        <li>用于记住您在“机场节点对比工具”中所勾选的待对比机场选项，以便在您刷新页面时不丢失临时配置。</li>
+        <li>用于进行匿名的网站访问量统计，以帮助我们优化页面加载速度与改善用户阅读体验。</li>
+      </ul>
+      <p>您随时可以通过浏览器的隐私设置禁用或清除所有 Cookie，这不会影响您正常浏览本站的任何文章与评测内容。</p>
+
+      <h2>三、第三方链接与服务商隐私政策</h2>
+      <p>
+        本站文章中包含指向各机场官方网站、GitHub 开源客户端仓库等第三方站点的链接。我们无法控制第三方站点的隐私实践与数据收集行为。当您离开本站跳转至第三方网站时，请务必参阅该第三方网站自身的隐私政策条款。
+      </p>
+
+      <h2>四、政策变更与修订</h2>
+      <p>
+        我们保留根据法律法规要求或网站功能演进随时修订本隐私政策的权利。最新修订的版本将直接在本页面公布并标注更新日期。
+      </p>
+    </div>
+  </div>
+</BaseLayout>

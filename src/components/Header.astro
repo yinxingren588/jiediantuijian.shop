@@ -1,0 +1,114 @@
+---
+const currentPath = Astro.url.pathname;
+
+const navItems = [
+  { name: '首页', href: '/' },
+  { name: '机场推荐', href: '/recommend/stable/' },
+  { name: '机场排行', href: '/ranking/overall/' },
+  { name: '机场评测', href: '/review/flycloud/' },
+  { name: '机场对比', href: '/compare/' },
+  { name: '使用教程', href: '/guides/windows/' },
+  { name: '博客文章', href: '/blog/' },
+];
+
+function isActive(href: string) {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href.slice(0, -1));
+}
+---
+
+<header class="sticky top-0 z-50 w-full bg-white/95 backdrop-blur border-b border-surface-border">
+  <div class="max-w-content mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <div class="flex items-center gap-3">
+        <a href="/" class="flex items-center gap-2 group">
+          <div class="w-9 h-9 rounded-lg bg-brand-600 flex items-center justify-center text-white shadow-sm group-hover:bg-brand-700 transition">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+            </svg>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-lg font-bold text-slate-900 tracking-tight leading-none">节点推荐网</span>
+            <span class="text-[11px] text-slate-500 font-mono tracking-wider">JIEDIANTUIJIAN.SHOP</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-1 lg:gap-2">
+        {navItems.map(item => (
+          <a
+            href={item.href}
+            class={`px-3 py-2 rounded-md text-sm font-medium transition ${
+              isActive(item.href)
+                ? 'text-brand-600 bg-brand-50'
+                : 'text-slate-700 hover:text-brand-600 hover:bg-slate-50'
+            }`}
+          >
+            {item.name}
+          </a>
+        ))}
+      </nav>
+
+      <!-- Search & Action -->
+      <div class="flex items-center gap-2">
+        <a
+          href="/compare/"
+          class="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg bg-brand-50 text-brand-700 hover:bg-brand-100 transition border border-brand-200"
+        >
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          </svg>
+          节点比价PK
+        </a>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button
+          type="button"
+          id="mobile-menu-btn"
+          class="md:hidden p-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100 focus:outline-none"
+          aria-label="打开导航菜单"
+        >
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu Dropdown -->
+  <div id="mobile-menu" class="hidden md:hidden border-b border-surface-border bg-white px-4 pt-2 pb-4 space-y-1 shadow-lg">
+    {navItems.map(item => (
+      <a
+        href={item.href}
+        class={`block px-3 py-2.5 rounded-md text-base font-medium ${
+          isActive(item.href)
+            ? 'text-brand-600 bg-brand-50 font-semibold'
+            : 'text-slate-700 hover:bg-slate-50'
+        }`}
+      >
+        {item.name}
+      </a>
+    ))}
+    <div class="pt-2 border-t border-slate-100">
+      <a
+        href="/compare/"
+        class="block text-center w-full py-2.5 rounded-lg bg-brand-600 text-white font-medium text-sm shadow-sm"
+      >
+        进入机场对比工具
+      </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  if (btn && menu) {
+    btn.addEventListener('click', () => {
+      menu.classList.toggle('hidden');
+    });
+  }
+</script>

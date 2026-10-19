@@ -1,0 +1,168 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import type { BreadcrumbItem } from '../components/Breadcrumbs.astro';
+
+export interface Props {
+  title: string;
+  description: string;
+  publishDate: string;
+  updatedDate?: string;
+  author?: string;
+  category?: string;
+  tags?: string[];
+  breadcrumbs?: BreadcrumbItem[];
+}
+
+const {
+  title,
+  description,
+  publishDate,
+  updatedDate = publishDate,
+  author = '节点推荐技术组',
+  category,
+  tags = [],
+  breadcrumbs = [],
+} = Astro.props;
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'TechArticle',
+  headline: title,
+  description: description,
+  author: {
+    '@type': 'Organization',
+    name: author,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: '节点推荐网',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://jiediantuijian.shop/favicon.svg',
+    },
+  },
+  datePublished: publishDate,
+  dateModified: updatedDate,
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': Astro.url.href,
+  },
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  breadcrumbs={breadcrumbs}
+  ogType="article"
+  publishDate={publishDate}
+  updatedDate={updatedDate}
+  schema={articleSchema}
+>
+  <div class="max-w-content mx-auto py-4">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <!-- Main Content (Article) -->
+      <article class="lg:col-span-8 max-w-article mx-auto lg:mx-0 w-full bg-white p-6 sm:p-10 rounded-2xl border border-surface-border shadow-xs">
+        <!-- Header -->
+        <header class="border-b border-slate-100 pb-6 mb-8">
+          {category && (
+            <div class="inline-block px-2.5 py-1 rounded bg-brand-50 text-brand-700 text-xs font-semibold mb-3">
+              {category}
+            </div>
+          )}
+          <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+            {title}
+          </h1>
+
+          <div class="flex flex-wrap items-center gap-y-2 gap-x-4 mt-4 text-xs text-slate-500">
+            <span class="flex items-center gap-1">
+              <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              {author}
+            </span>
+            <span>·</span>
+            <span class="flex items-center gap-1">
+              <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              发布: {publishDate}
+            </span>
+            {updatedDate && updatedDate !== publishDate && (
+              <>
+                <span>·</span>
+                <span class="text-brand-600 font-medium">核验更新: {updatedDate}</span>
+              </>
+            )}
+          </div>
+
+          <!-- Quick Summary Callout -->
+          <div class="mt-6 p-4 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-700 leading-relaxed">
+            <span class="font-semibold text-slate-900 block mb-1">📌 本篇摘要与核心导读：</span>
+            {description}
+          </div>
+        </header>
+
+        <!-- Prose Body -->
+        <div class="prose prose-slate max-w-none prose-headings:font-bold prose-headings:text-slate-900 prose-a:text-brand-600 hover:prose-a:text-brand-700 prose-img:rounded-xl">
+          <slot />
+        </div>
+
+        <!-- Tags & Update Disclaimer -->
+        <div class="mt-12 pt-6 border-t border-slate-100 space-y-4">
+          {tags.length > 0 && (
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-xs text-slate-500">相关标签:</span>
+              {tags.map(tag => (
+                <span class="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs">
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
+
+          <div class="bg-blue-50/60 rounded-xl p-4 border border-blue-100 text-xs text-slate-600 space-y-1">
+            <p class="font-semibold text-blue-900">声明与保障：</p>
+            <p>本站所有技术评测与教程均基于编辑部实操环境验证。如遇网络变动或客户端版本升级导致界面差异，欢迎通过联系页面向我们反馈以更新本文。</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- Sidebar -->
+      <aside class="lg:col-span-4 space-y-6">
+        <!-- Quick Nav Card -->
+        <div class="bg-white p-5 rounded-2xl border border-surface-border shadow-xs sticky top-24">
+          <h3 class="text-base font-bold text-slate-900 mb-4 pb-2 border-b border-slate-100 flex items-center justify-between">
+            <span>核心导航推荐</span>
+            <span class="text-xs font-normal text-brand-600 bg-brand-50 px-2 py-0.5 rounded">实测库</span>
+          </h3>
+
+          <div class="space-y-3 text-sm">
+            <a href="/ranking/overall/" class="block p-3 rounded-xl bg-slate-50 hover:bg-brand-50 border border-slate-100 hover:border-brand-200 transition group">
+              <div class="font-medium text-slate-900 group-hover:text-brand-600">🏆 2026年度综合实力排行榜</div>
+              <div class="text-xs text-slate-500 mt-1">综合测速、晚高峰丢包与性价比多维榜单</div>
+            </a>
+            <a href="/ranking/value/" class="block p-3 rounded-xl bg-slate-50 hover:bg-brand-50 border border-slate-100 hover:border-brand-200 transition group">
+              <div class="font-medium text-slate-900 group-hover:text-brand-600">💰 高性价比每GB单价榜</div>
+              <div class="text-xs text-slate-500 mt-1">自动折算倍率，找出真正划算的大流量套餐</div>
+            </a>
+            <a href="/compare/" class="block p-3 rounded-xl bg-slate-50 hover:bg-brand-50 border border-slate-100 hover:border-brand-200 transition group">
+              <div class="font-medium text-slate-900 group-hover:text-brand-600">⚖️ 机场节点多维对比工具</div>
+              <div class="text-xs text-slate-500 mt-1">自由挑选2-4家机场进行参数与资费横评</div>
+            </a>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-slate-100">
+            <h4 class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">各端配置指南</h4>
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <a href="/guides/windows/" class="p-2 rounded-lg bg-slate-50 hover:bg-slate-100 text-center font-medium text-slate-700">Windows 客户端</a>
+              <a href="/guides/android/" class="p-2 rounded-lg bg-slate-50 hover:bg-slate-100 text-center font-medium text-slate-700">Android 安卓端</a>
+              <a href="/guides/ios/" class="p-2 rounded-lg bg-slate-50 hover:bg-slate-100 text-center font-medium text-slate-700">iOS 苹果端</a>
+              <a href="/guides/macos/" class="p-2 rounded-lg bg-slate-50 hover:bg-slate-100 text-center font-medium text-slate-700">macOS 电脑端</a>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</BaseLayout>

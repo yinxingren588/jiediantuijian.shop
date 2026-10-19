@@ -1,0 +1,30 @@
+---
+import { getCollection, render } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+
+export async function getStaticPaths() {
+  const terms = await getCollection('glossary');
+  return terms.map(term => ({
+    params: { slug: term.id.replace(/\.(md|mdx)$/, '') },
+    props: { term },
+  }));
+}
+
+const { term } = Astro.props;
+const { Content } = await render(term);
+---
+
+<ArticleLayout
+  title={term.data.title}
+  description={term.data.description}
+  publishDate={term.data.publishDate}
+  updatedDate={term.data.updatedDate}
+  category={term.data.category}
+  tags={[term.data.term]}
+  breadcrumbs={[
+    { name: '专业词典', url: '/glossary/' },
+    { name: term.data.term, url: `/glossary/${term.id.replace(/\.(md|mdx)$/, '')}/` },
+  ]}
+>
+  <Content />
+</ArticleLayout>

@@ -1,0 +1,79 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = (await getCollection('blog')).sort((a, b) => 
+  new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime()
+);
+---
+
+<BaseLayout
+  title="技术博客与选购指南 - 机场推荐网深度分析"
+  description="汇集节点推荐编辑部的深度技术文章、选购避坑指南、晚高峰测速解析、ChatGPT访问受限排查与机场跑路防范策略。"
+  breadcrumbs={[
+    { name: '技术博客', url: '/blog/' },
+  ]}
+>
+  <div class="py-6 space-y-8">
+    <header class="border-b border-slate-200 pb-8">
+      <div class="inline-block px-3 py-1 rounded-full bg-brand-50 border border-brand-200 text-brand-700 text-xs font-semibold mb-3">
+        深度分析与技术实录
+      </div>
+      <h1 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+        技术博客与选购避坑指南
+      </h1>
+      <p class="text-sm sm:text-base text-slate-600 leading-relaxed mt-4 max-w-3xl">
+        从网络协议底层原理到真实商业模式剖析，我们为你提供客观、深刻、具备长期指导价值的网络选购与故障排查技术专栏。
+      </p>
+    </header>
+
+    <div class="space-y-6">
+      {allPosts.map(post => {
+        const slug = post.id.replace(/\.(md|mdx)$/, '');
+        return (
+          <article class="bg-white p-6 sm:p-8 rounded-3xl border border-surface-border shadow-xs hover:border-brand-400 hover:shadow-sm transition">
+            <div class="flex flex-wrap items-center gap-2 mb-3">
+              <span class="px-2.5 py-0.5 rounded bg-brand-50 text-brand-700 font-bold text-xs">
+                {post.data.category}
+              </span>
+              <span class="text-xs text-slate-400">·</span>
+              <span class="text-xs text-slate-500">发布于 {post.data.publishDate}</span>
+              {post.data.updatedDate && (
+                <>
+                  <span class="text-xs text-slate-400">·</span>
+                  <span class="text-xs text-brand-600 font-medium">更新于 {post.data.updatedDate}</span>
+                </>
+              )}
+            </div>
+
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mb-3">
+              <a href={`/blog/${slug}/`} class="hover:text-brand-600 transition">
+                {post.data.title}
+              </a>
+            </h2>
+
+            <p class="text-sm text-slate-600 leading-relaxed mb-4">
+              {post.data.description}
+            </p>
+
+            <div class="flex items-center justify-between pt-4 border-t border-slate-100 text-xs">
+              <div class="flex flex-wrap gap-1.5">
+                {post.data.tags.map(tag => (
+                  <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-600">
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+              <a
+                href={`/blog/${slug}/`}
+                class="font-semibold text-brand-600 hover:text-brand-700 flex items-center gap-1"
+              >
+                阅读全文 →
+              </a>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</BaseLayout>

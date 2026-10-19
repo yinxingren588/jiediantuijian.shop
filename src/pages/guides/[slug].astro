@@ -1,0 +1,31 @@
+---
+import { getCollection, render } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+
+export async function getStaticPaths() {
+  const guides = await getCollection('guides');
+  return guides.map(guide => ({
+    params: { slug: guide.id.replace(/\.(md|mdx)$/, '') },
+    props: { guide },
+  }));
+}
+
+const { guide } = Astro.props;
+const { Content } = await render(guide);
+---
+
+<ArticleLayout
+  title={guide.data.title}
+  description={guide.data.description}
+  publishDate={guide.data.publishDate}
+  updatedDate={guide.data.updatedDate}
+  author={guide.data.author}
+  category="客户端配置教程"
+  tags={guide.data.recommendedClients}
+  breadcrumbs={[
+    { name: '使用教程', url: '/guides/windows/' },
+    { name: guide.data.title, url: `/guides/${guide.id.replace(/\.(md|mdx)$/, '')}/` },
+  ]}
+>
+  <Content />
+</ArticleLayout>

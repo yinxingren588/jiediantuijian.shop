@@ -1,0 +1,33 @@
+{
+  "name": "jiediantuijian.shop",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "indexnow": "tsx scripts/indexnow.ts",
+    "audit:seo": "tsx scripts/audit-seo.ts",
+    "check:links": "tsx scripts/check-links.ts",
+    "validate:content": "tsx scripts/validate-content.ts",
+    "qa": "tsx scripts/audit-seo.ts && tsx scripts/check-links.ts && tsx scripts/validate-content.ts"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/mdx": "^4.1.0",
+    "@astrojs/sitemap": "^3.2.1",
+    "@astrojs/tailwind": "^6.0.2",
+    "astro": "^5.4.0",
+    "lucide-astro": "^0.556.0",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.16",
+    "@types/node": "^22.13.0",
+    "tsx": "^4.19.2"
+  }
+}

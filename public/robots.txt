@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+# Bingbot explicit allowance
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Disallow internal search parameters or temp paths
+Disallow: /api/
+Disallow: /draft/
+
+Sitemap: https://jiediantuijian.shop/sitemap-index.xml

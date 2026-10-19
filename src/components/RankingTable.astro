@@ -1,0 +1,136 @@
+---
+import type { Airport } from '../data/airports';
+import { calculatePerGBCost } from '../data/airports';
+
+export interface Props {
+  items: {
+    airport: Airport;
+    rank: number;
+    score: number;
+    highlight: string;
+  }[];
+  title?: string;
+}
+
+const { items, title } = Astro.props;
+
+const tableRows = items.map(({ airport, rank, score, highlight }) => {
+  const basePlan = airport.plans[0];
+  const perGb = calculatePerGBCost(airport);
+  return {
+    airport,
+    rank,
+    score,
+    highlight,
+    basePlan,
+    perGb,
+  };
+});
+---
+
+<div class="bg-white rounded-2xl border border-surface-border shadow-xs overflow-hidden">
+  {title && (
+    <div class="px-6 py-4 border-b border-surface-border bg-slate-50/50 flex items-center justify-between">
+      <h3 class="font-bold text-slate-900 text-base">{title}</h3>
+      <span class="text-xs text-slate-500 font-mono">核验更新: 2026年第一季度实测</span>
+    </div>
+  )}
+
+  <div class="overflow-x-auto">
+    <table class="w-full text-left text-sm border-collapse min-w-[720px]">
+      <thead>
+        <tr class="bg-slate-100/70 border-b border-slate-200 text-xs font-semibold text-slate-600">
+          <th class="py-3 px-4 w-16 text-center">排名</th>
+          <th class="py-3 px-4">机场品牌</th>
+          <th class="py-3 px-4">线路架构</th>
+          <th class="py-3 px-4">起步价格 / 月流量</th>
+          <th class="py-3 px-4">每GB折算</th>
+          <th class="py-3 px-4">适合人群定位</th>
+          <th class="py-3 px-4 text-center">操作详情</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        {tableRows.map((row) => (
+          <tr class="hover:bg-blue-50/30 transition-colors">
+            <!-- Rank -->
+            <td class="py-4 px-4 text-center">
+              <span class={`inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-black ${
+                row.rank === 1 ? 'bg-amber-400 text-slate-950 shadow-xs' :
+                row.rank === 2 ? 'bg-slate-300 text-slate-900' :
+                row.rank === 3 ? 'bg-amber-700/70 text-white' :
+                'bg-slate-100 text-slate-600'
+              }`}>
+                {row.rank}
+              </span>
+            </td>
+
+            <!-- Brand -->
+            <td class="py-4 px-4">
+              <div class="font-bold text-slate-900 text-base">
+                <a href={`/airport/${row.airport.slug}/`}>
+                  {row.airport.name}
+                </a>
+              </div>
+              <div class="text-xs text-slate-500 mt-0.5 line-clamp-1">
+                {row.highlight}
+              </div>
+            </td>
+
+            <!-- Line Type -->
+            <td class="py-4 px-4">
+              <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-700">
+                {row.airport.lineType}
+              </span>
+            </td>
+
+            <!-- Price & Traffic -->
+            <td class="py-4 px-4">
+              <div class="font-bold text-brand-600 font-mono">
+                ¥{row.airport.startingPrice} <span class="text-xs font-normal text-slate-500">/月起</span>
+              </div>
+              <div class="text-xs text-slate-500 font-mono">
+                {row.basePlan ? `${row.basePlan.trafficGB} GB/月` : '详见套餐'}
+              </div>
+            </td>
+
+            <!-- Per GB -->
+            <td class="py-4 px-4">
+              <span class="font-mono text-slate-700 font-semibold text-xs">
+                ¥{row.perGb} /GB
+              </span>
+            </td>
+
+            <!-- Suitable For -->
+            <td class="py-4 px-4">
+              <div class="flex flex-wrap gap-1 max-w-[200px]">
+                {row.airport.suitableFor.slice(0, 2).map((item) => (
+                  <span class="text-[11px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </td>
+
+            <!-- Action Link -->
+            <td class="py-4 px-4 text-center">
+              <div class="flex items-center justify-center gap-2">
+                <a
+                  href={`/review/${row.airport.slug}/`}
+                  class="inline-block px-3 py-1.5 rounded-lg text-xs font-semibold text-brand-600 hover:bg-brand-50 border border-brand-200 transition"
+                >
+                  实测评测
+                </a>
+                <a
+                  href={`/airport/${row.airport.slug}/`}
+                  class="inline-block px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-600 text-white hover:bg-brand-700 transition"
+                >
+                  查看详情
+                </a>
+              </div>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="编辑政策与评测准则 - 节点推荐网客观公正声明"
+  description="详细说明节点推荐网的内容来源、推荐标准、排行依据、更新机制与联盟推广商业合作披露。坚守客观中立与用户利益至上原则。"
+  breadcrumbs={[
+    { name: '编辑政策与评测准则', url: '/editorial-policy/' },
+  ]}
+>
+  <div class="py-6 max-w-article mx-auto space-y-8">
+    <header class="border-b border-slate-200 pb-8">
+      <div class="inline-block px-3 py-1 rounded-full bg-brand-50 border border-brand-200 text-brand-700 text-xs font-semibold mb-3">
+        评测合规与准则
+      </div>
+      <h1 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+        编辑政策与商业合作披露
+      </h1>
+      <p class="text-sm sm:text-base text-slate-600 leading-relaxed mt-4">
+        本站始终坚持“实事求是、数据说话、独立客观”的原则。以下是我们的核心内容准则与商业合作披露。
+      </p>
+    </header>
+
+    <div class="prose prose-slate max-w-none text-sm text-slate-700 leading-relaxed space-y-6">
+      <h2>一、内容与评测数据来源</h2>
+      <p>
+        本站收录的所有机场服务商数据均来源于以下三大可核验渠道：
+      </p>
+      <ol>
+        <li><strong>服务商官方公开资料</strong>：包括官网公开资费表、服务条款（TOS）以及官方 Telegram 运维频道的机房公告。</li>
+        <li><strong>编辑部实机双向监测</strong>：使用自主部署的监控服务器，在长三角、珠三角双线网络环境下，对节点发起定时的晚高峰 ping、iperf3 吞吐与丢包率采样。</li>
+        <li><strong>第三方权威工具核验</strong>：流媒体解锁状态使用开源脚本定期验证；落地 IP 属性与欺诈分使用 IPinfo、Scamalytics 等专业数据库进行比对。</li>
+      </ol>
+
+      <h2>二、推荐与入选标准</h2>
+      <p>
+        并不是所有提交申请的机场都能进入本站的推荐名单。一家机场必须至少满足以下红线标准方可收录：
+      </p>
+      <ul>
+        <li><strong>具备真实可用的月付周期</strong>：严禁仅支持年付或强制两年付的套现型机场进入精选推荐。</li>
+        <li><strong>节点可用率 SLA ≥ 98%</strong>：在连续 14 天的初测周期内，核心节点不能发生超过 6 小时以上的无公告全网瘫痪。</li>
+        <li><strong>资费与倍率透明公开</strong>：节点列表必须明码标价倍率，严禁在后台暗中扣量。</li>
+      </ul>
+
+      <h2>三、排行榜评分模型与计算规则</h2>
+      <p>
+        本站综合排行榜与性价比排行榜完全依托数学加权模型计算，绝不根据商业佣金高低调整排名次序：
+      </p>
+      <ul>
+        <li><strong>综合实力榜</strong>：稳定性 (30%) + 峰值带宽 (25%) + 折算单价 (20%) + 售后时效 (15%) + 解锁丰富度 (10%)。</li>
+        <li><strong>高性价比榜</strong>：按套餐月费除以专线实际折算可用流量得出真实单价，由低到高严格排序。</li>
+      </ul>
+
+      <h2>四、内容更新与修正机制</h2>
+      <p>
+        由于网络中继服务具有强时效性：
+      </p>
+      <ul>
+        <li>我们坚持<strong>每周定期对套餐资费与节点状态进行巡检</strong>。</li>
+        <li>一旦发现某家机场出现大面积晚高峰断流且超过 7 天未予修复，我们将在其资料页标注“警示”或直接下架。</li>
+        <li>读者如发现某项参数滞后，可通过 <a href="/contact/">联系页面</a> 反馈，我们核实后会在 24 小时内更新修正。</li>
+      </ul>
+
+      <h2>五、商业合作关系与联盟推广（Affiliate）披露</h2>
+      <p>
+        为了覆盖本站服务器租赁、实测宽带以及长期监测节点的运营成本，本站部分页面包含带有推荐跟踪标识的联盟推广链接（Affiliate Links）。
+      </p>
+      <p>
+        <strong>这意味着：</strong>
+        如果您通过本站的链接点击进入服务商官网并购买了套餐，我们可能会从服务商处获得微薄的推广佣金。
+      </p>
+      <div class="p-4 rounded-xl bg-blue-50/70 border border-blue-200 text-xs text-blue-900 space-y-1">
+        <strong>我们的郑重承诺：</strong>
+        <p>1. 商业合作绝不影响任何一家机场的评分、评测结论或排行榜次序。</p>
+        <p>2. 您通过本站链接购买套餐不会产生任何额外费用，甚至在某些特定活动期还能获得专属优惠折扣。</p>
+        <p>3. 我们始终把读者的真实使用体验放在首位，即便存在合作关系的品牌，其客观存在的不足与缺点也同样会明确公示。</p>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

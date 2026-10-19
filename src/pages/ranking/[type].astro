@@ -1,0 +1,141 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RankingTable from '../../components/RankingTable.astro';
+import AirportCard from '../../components/AirportCard.astro';
+import { getRankings, airports } from '../../data/airports';
+
+export function getStaticPaths() {
+  const rankingDefs = [
+    {
+      type: 'overall',
+      name: '综合实力排行榜',
+      title: '2026年度机场节点综合实力排行榜 - 性能/稳定性/性价比全维度评分',
+      h1: '2026年度机场节点综合排行榜与多维评分细则',
+      description: '基于全网实测数据建立的2026年度机场节点综合排行榜。涵盖晚高峰抗拥堵、下行带宽、每GB折算成本与流媒体AI解锁等全维度客观打分。',
+      quickConclusion: '在综合表现中，采用企业级专线与BGP中继的服务商综合优势显著。FlyCloud与SpeedCat凭借超低晚高峰丢包率领跑综合榜，而WestData以极致单价与海量流量位列高性价比前列。',
+      methodology: '评分模型构成：晚高峰网络可用率与丢包表现(30%) + 峰值带宽与测速吞吐(25%) + 每GB折算单价(20%) + 客服售后工单响应时效(15%) + AI与流媒体解锁覆盖(10%)。'
+    },
+    {
+      type: 'value',
+      name: '性价比每GB单价榜',
+      title: '2026高性价比机场节点推荐排行榜 - 每GB单价与流量折算实测对比',
+      h1: '性价比机场节点排行榜：每GB成本与套餐价值精选',
+      description: '精准计算每GB真实可用单价的高性价比机场排行榜。彻底剔除高倍率扣量水分，以真实可用流量与套餐价格计算每分钱的实际购买力。',
+      quickConclusion: '性价比榜单重点打击“高倍率虚假宣传”。按实际折算单价计算，WestData以低至0.05-0.09元/GB的超低均价夺冠，适合大流量与长时间挂机下载需求。',
+      methodology: '单价核算标准：真实每GB单价 = 基础月付套餐费用 / (标称流量 ÷ 核心专线节点平均实际倍率)。未提供真实月付或倍率严重浮动者不计入排名。'
+    },
+    {
+      type: 'budget',
+      name: '低预算平价排行榜',
+      title: '便宜低价机场排行榜 - 百兆流量与月付低门槛真实排序',
+      h1: '便宜低价机场节点排行榜：入门月付与备用方案',
+      description: '严格按月付起步价格升序排列的便宜平价机场排行榜。让初次入门与低预算用户以个位数价格体验顺畅网络，拒绝虚假年付套路。',
+      quickConclusion: '对于只想以最低试错成本尝试网络或寻找主力梯队故障备用方案的用户，LightSpeed以月付9.9元起步成为试错成本最低的选择。',
+      methodology: '排名依据：以官方公开的最低可购买月付周期金额为准（不计入必须绑定年付的折合价格），重点考核月付门槛的真实可下单性。'
+    },
+    {
+      type: 'stable',
+      name: '高稳定性专线排行榜',
+      title: '抗封锁高稳定性机场节点排行榜 - 晚高峰零丢包专线品牌',
+      h1: '稳定性机场排行榜：抗封锁架构与网络可用率横评',
+      description: '专注于全IEPL/IPLC内网专线与企业级跨境光纤的稳定性机场排行榜。针对每天20:00至23:00晚高峰进行长周期丢包率压测。',
+      quickConclusion: '在稳定性维度，全IEPL内网专线表现压倒性领先于普通公网中转。SpeedCat（华为云CC专线）与FlyCloud在晚高峰测试中丢包率均控制在1%以内，完全不卡顿。',
+      methodology: '稳定性评分标准：在连续7天晚高峰（20:00-23:00）针对境外节点发起连续Ping与iperf3双向测速，以平均丢包率、延迟抖动方差与SLA连通率综合计算。'
+    },
+  ];
+
+  return rankingDefs.map(def => ({
+    params: { type: def.type },
+    props: { def },
+  }));
+}
+
+const { def } = Astro.props;
+const rankingItems = getRankings(def.type as any);
+---
+
+<BaseLayout
+  title={def.title}
+  description={def.description}
+  breadcrumbs={[
+    { name: '机场排行榜', url: '/ranking/overall/' },
+    { name: def.name, url: `/ranking/${def.type}/` },
+  ]}
+>
+  <div class="py-6 space-y-10">
+    <!-- Header -->
+    <header class="border-b border-slate-200 pb-8">
+      <div class="inline-block px-3 py-1 rounded-full bg-brand-50 border border-brand-200 text-brand-700 text-xs font-semibold mb-3">
+        {def.name} · 2026年度榜单
+      </div>
+      <h1 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+        {def.h1}
+      </h1>
+      <p class="text-sm sm:text-base text-slate-600 leading-relaxed mt-4 max-w-3xl">
+        {def.description}
+      </p>
+
+      <!-- Quick Conclusion Box -->
+      <div class="mt-6 p-5 rounded-2xl bg-amber-50/70 border border-amber-200/80 text-sm text-slate-800 space-y-2">
+        <div class="font-bold text-amber-900 flex items-center gap-2">
+          <span>💡</span>
+          <span>评测室快速结论与核心建议：</span>
+        </div>
+        <p class="leading-relaxed text-xs sm:text-sm text-amber-950">
+          {def.quickConclusion}
+        </p>
+      </div>
+    </header>
+
+    <!-- Subnav Tabs -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-2 text-xs font-semibold">
+      <span class="text-slate-500 shrink-0">排行榜分类：</span>
+      <a href="/ranking/overall/" class={`px-3 py-1.5 rounded-lg shrink-0 transition ${def.type === 'overall' ? 'bg-brand-600 text-white' : 'bg-white border text-slate-700 hover:bg-slate-50'}`}>🏆 综合实力榜</a>
+      <a href="/ranking/value/" class={`px-3 py-1.5 rounded-lg shrink-0 transition ${def.type === 'value' ? 'bg-brand-600 text-white' : 'bg-white border text-slate-700 hover:bg-slate-50'}`}>💰 性价比单价榜</a>
+      <a href="/ranking/stable/" class={`px-3 py-1.5 rounded-lg shrink-0 transition ${def.type === 'stable' ? 'bg-brand-600 text-white' : 'bg-white border text-slate-700 hover:bg-slate-50'}`}>🛡️ 晚高峰稳定榜</a>
+      <a href="/ranking/budget/" class={`px-3 py-1.5 rounded-lg shrink-0 transition ${def.type === 'budget' ? 'bg-brand-600 text-white' : 'bg-white border text-slate-700 hover:bg-slate-50'}`}>🏷️ 低预算月付榜</a>
+    </div>
+
+    <!-- Ranking Table -->
+    <section class="space-y-4">
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl font-bold text-slate-900 tracking-tight">已核验品牌排名与参数横评</h2>
+        <span class="text-xs text-slate-500">更新时间：2026年3月最新核验</span>
+      </div>
+      <RankingTable items={rankingItems} />
+    </section>
+
+    <!-- Scoring Methodology -->
+    <section class="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+      <h3 class="text-base font-bold text-slate-900">📋 排名计算依据与评分细则公开</h3>
+      <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+        {def.methodology}
+      </p>
+      <div class="pt-2 text-xs text-slate-500 flex flex-wrap gap-4">
+        <span>数据来源：实测网络丢包率、官方资费表、多省双宽带监测</span>
+        <span>·</span>
+        <span>拒绝任何未经实操验证的商业刷榜行为</span>
+      </div>
+    </section>
+
+    <!-- Detailed Brand Summaries -->
+    <section class="space-y-6">
+      <h2 class="text-xl font-bold text-slate-900 tracking-tight">入选品牌深度概况与人群定位</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {rankingItems.slice(0, 3).map(({ airport }) => (
+          <AirportCard airport={airport} featured={airport.overallScore >= 9.3} />
+        ))}
+      </div>
+    </section>
+
+    <!-- Internal Linking Footer -->
+    <div class="pt-8 border-t border-slate-200">
+      <h3 class="text-sm font-bold text-slate-900 mb-3">延伸阅读与工具：</h3>
+      <div class="flex flex-wrap gap-3 text-xs">
+        <a href="/compare/" class="px-3 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium">⚖️ 自主挑选机场参数多维PK</a>
+        <a href="/recommend/stable/" class="px-3 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium">🛡️ 查看稳定专线推荐专题</a>
+        <a href="/blog/latency-vs-speed-bandwidth/" class="px-3 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium">📊 Ping延迟低不等于速度快深度解析</a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

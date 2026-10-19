@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="关于我们 - 节点推荐网团队背景与评测使命"
+  description="了解节点推荐网（jiediantuijian.shop）的团队宗旨与评测使命。坚持实机网络监测与真实资费核验，为中文网络用户提供中立可靠的节点指南。"
+  breadcrumbs={[
+    { name: '关于我们', url: '/about/' },
+  ]}
+>
+  <div class="py-6 max-w-article mx-auto space-y-8">
+    <header class="border-b border-slate-200 pb-8">
+      <div class="inline-block px-3 py-1 rounded-full bg-brand-50 border border-brand-200 text-brand-700 text-xs font-semibold mb-3">
+        E-E-A-T 透明声明
+      </div>
+      <h1 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+        关于节点推荐网 (jiediantuijian.shop)
+      </h1>
+      <p class="text-sm sm:text-base text-slate-600 leading-relaxed mt-4">
+        一个专注于中文互联网环境的网络中继、机场节点推荐与技术评测的独立资讯平台。
+      </p>
+    </header>
+
+    <div class="prose prose-slate max-w-none text-sm text-slate-700 leading-relaxed space-y-6">
+      <h2>我们的使命与宗旨</h2>
+      <p>
+        在当今的中文网络圈中，各种所谓的“机场导航站”充斥着粗制滥造的广告脚本、虚假的测速跑分截图以及不负责任的长期套餐推销。许多初次接触科学上网的新手因为信息不对称，购买了高倍率扣量或濒临跑路的劣质服务，不仅蒙受资金损失，还严重耽误工作与学习。
+      </p>
+      <p>
+        <strong>节点推荐网（jiediantuijian.shop）</strong> 的创立宗旨非常明确：
+        <strong>以实测数据说话，剔除营销泡沫，建立公开透明的选购与评测标准。</strong>
+      </p>
+
+      <h2>我们是如何进行评测的？</h2>
+      <ol class="space-y-2">
+        <li><strong>实机多网络测试</strong>：我们在国内部署了中国电信、中国联通和中国移动三大运营商的多点探测节点，重点在每天 20:00 - 23:00 的晚高峰时段进行持续网络丢包与延迟测试。</li>
+        <li><strong>真实流量倍率折算</strong>：在计算每 GB 单价时，坚决剔除标称流量水分，严格按照主流专线节点实际倍率折算“真实可用容量”。</li>
+        <li><strong>真实平台解锁验证</strong>：对 ChatGPT、Claude、Netflix 4K 等核心服务进行持续的风控探测与 IP 纯净度抽查。</li>
+      </ol>
+
+      <h2>我们的核心原则</h2>
+      <ul>
+        <li><strong>拒绝虚构评分</strong>：没有经过实机测试的指标一律标记为“尚未核实”或“官方公开资料”，绝不凭空臆造。</li>
+        <li><strong>坚持月付倡导</strong>：在全站所有教程和推荐中，我们一贯劝导用户避免长期超长合约，推行“主备双机场”安全容灾策略。</li>
+        <li><strong>客观披露商业关系</strong>：关于本站维系运营所需的联盟佣金机制，我们在 <a href="/editorial-policy/">编辑政策与商业披露</a> 页面进行了 100% 透明公开。</li>
+      </ul>
+    </div>
+  </div>
+</BaseLayout>

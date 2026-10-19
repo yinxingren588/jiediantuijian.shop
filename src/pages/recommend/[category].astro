@@ -1,0 +1,195 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AirportCard from '../../components/AirportCard.astro';
+import FAQSection from '../../components/FAQSection.astro';
+import { airports, getAirportsByCategory } from '../../data/airports';
+
+export function getStaticPaths() {
+  const categories = [
+    {
+      category: 'stable',
+      name: '稳定优先 · 内网专线精选',
+      title: '稳定机场节点推荐 - IPLC/IEPL内网专线抗封锁低延迟机场精选',
+      h1: '稳定机场节点推荐：内网专线与高可用服务评测',
+      description: '精选全IEPL与IPLC企业内网专线机场节点。晚高峰极低丢包、不走公网审查防火墙，为涉外商务、外贸电商与长期稳定需求提供严苛网络评测与选购方案。',
+      criteria: '入选标准：必须具备真实签约的企业级跨境专线光纤，全天晚高峰（20:00-23:00）平均丢包率低于 1.5%，且具备多机房容灾中继能力。',
+      faqs: [
+        {
+          question: "为什么专线机场的稳定性远超普通公网机场？",
+          answer: "因为IEPL/IPLC走的是运营商点对点物理专用光缆，直接在边境两端机房内网互联，完全避开了公网国际出口拥堵和GFW的深度包检测（DPI），全天候网络抖动极低。"
+        },
+        {
+          question: "专线机场遇到突发故障通常如何应对？",
+          answer: "成熟的专线机场通常部署了华南（深港）、华东（沪日）和华北等多地入口冗余。当其中一条海缆或机房维护时，系统会自动将流量秒级无缝漂移到备用入口。"
+        }
+      ]
+    },
+    {
+      category: 'budget',
+      name: '低预算 · 平价亲民清单',
+      title: '便宜低预算机场节点推荐 - 平价亲民且高可用性机场清单',
+      h1: '低预算平价机场节点精选：高容错与保活方案',
+      description: '精选月付9.9元至20元之间的高性价比低预算机场节点。适合学生党、轻度外网浏览与作为主力专线之后的双机场容灾备用方案。',
+      criteria: '入选标准：必须提供低门槛月付（不强制绑定年付），每GB单价透明合理，且在基础网页浏览和日常视频播放中具备合格可用率。',
+      faqs: [
+        {
+          question: "低预算便宜机场会经常断连跑路吗？",
+          answer: "部分极度超售的不良小机场确实存在跑路隐患。因此本站精选的平价机场均要求具备合格运营历史，并强烈建议用户始终坚持‘按月付款’，即使遇到不可抗力也无资金风险。"
+        },
+        {
+          question: "便宜机场可以看4K高清视频吗？",
+          answer: "在白天闲时通常都能流畅看4K；但在晚高峰20:00-23:00由于公网入口承载压力较大，建议切换到1080P以获得更平滑流畅的体验。"
+        }
+      ]
+    },
+    {
+      category: 'premium',
+      name: '高端专线 · 旗舰大带宽',
+      title: '高端专线机场节点推荐 - 企业级BGP与旗舰级专线节点评测',
+      h1: '高端专线机场节点精选：极致晚高峰与大带宽体验',
+      description: '专为跨境企业团队、高码率超高清媒体工作者及外服游戏玩家打造的高端旗舰专线节点。提供千兆独享管道、高并发SLA保障与企业级专属售后。',
+      criteria: '入选标准：拥有华为云CC/腾讯云骨干内网专线支持，千兆端口冗余储备，晚高峰跑满4K/8K视频，提供高优先级工单与VIP群组支持。',
+      faqs: [
+        {
+          question: "高端专线机场适合哪些具体群体？",
+          answer: "主要适合对网络中断零容忍的跨境电商团队、外企跨国视频会议、重度AI开发者及追求极致顺滑视听体验的资深极客。"
+        },
+        {
+          question: "高端机场是否支持企业发票与多设备共享？",
+          answer: "旗舰级套餐通常支持多并发IP不限制，并可提供企业合同、对公转账与正规增值税发票报销服务。"
+        }
+      ]
+    },
+    {
+      category: 'ai',
+      name: 'ChatGPT & AI 专用',
+      title: 'ChatGPT与AI专用机场节点推荐 - 原生IP解锁不降智稳定访问',
+      h1: 'AI专用机场节点推荐：支持ChatGPT与Claude原生原生解锁',
+      description: '解决OpenAI、ChatGPT Plus、Claude 3.5 Sonnet与Midjourney访问受限及IP阻断问题。精选纯净双ISP住宅IP落地节点，杜绝Access Denied与账号降智。',
+      criteria: '入选标准：落地IP必须通过主流欺诈度数据库（IPinfo/Scamalytics）低风控检测，全天候稳定打开OpenAI与Claude网页端，API调用不封锁。',
+      faqs: [
+        {
+          question: "为什么香港节点打不开ChatGPT网页版？",
+          answer: "这是因为OpenAI官方政策并未将香港列入受支持地区，因此会主动对香港机房IP进行地域封锁。使用AI服务请务必切换至美国、日本或新加坡节点。"
+        },
+        {
+          question: "如何确认节点是否触发了ChatGPT‘降智’？",
+          answer: "在ChatGPT中尝试生成图片（DALL-E 3）或询问复杂逻辑推理。如果无法生图或回答极其简略，说明当前IP可能已被风控降权，建议更换为双ISP原生节点。"
+        }
+      ]
+    },
+    {
+      category: 'streaming',
+      name: '4K 流媒体全解锁',
+      title: '4K流媒体解锁机场节点推荐 - Netflix/Disney+/YouTube极速体验',
+      h1: '流媒体专用机场节点推荐：4K超清与多地区原生IP解析',
+      description: '为海外影视爱好者精选的4K流媒体极速节点。全面解锁Netflix非自制剧、Disney+ IMAX增强版、YouTube Premium、HBO Max及Spotify，超大带宽秒开。',
+      criteria: '入选标准：主流节点支持自动化原生流媒体DNS流式解锁，晚高峰测速带宽稳定在 50Mbps 以上，支持多地区片库自由切换。',
+      faqs: [
+        {
+          question: "Netflix提示‘正在使用代理/解锁工具’怎么解决？",
+          answer: "这是Netflix检测到了机房广播IP。可更换到机场专为流媒体设置的‘原生解锁’节点，并清除浏览器或电视客户端的播放缓存重新登录。"
+        },
+        {
+          question: "观看4K HDR甚至Dolby Vision需要节点多少带宽？",
+          answer: "Netflix 4K实测稳定码率大约在15-25Mbps。为保障快进与缓冲流畅，建议节点下行带宽不低于50Mbps。"
+        }
+      ]
+    },
+    {
+      category: 'beginner',
+      name: '新手入门 · 一键导入',
+      title: '新手入门机场节点推荐 - 一键导入与多平台支持小白首选指南',
+      h1: '新手入门机场节点推荐：简易配置与省心选购手册',
+      description: '专为首次接触科学上网的小白用户量身推荐。后台界面简洁明了，支持一键导入Clash/小火箭订阅，提供全平台详尽新手图文，支持极低门槛月付。',
+      criteria: '入选标准：用户后台具备极简直观的“一键导入客户端”按钮，拥有详尽的基础图文教程，资费透明无隐形扣费套路。',
+      faqs: [
+        {
+          question: "新手刚买完机场怎么在手机或电脑上用起来？",
+          answer: "本站专门准备了各平台图文配置指南，请根据你的设备直接查看教程中心：Windows教程、Android教程、iOS小火箭教程或macOS教程。"
+        },
+        {
+          question: "新手买套餐选多少流量合适？",
+          answer: "如果只是查资料、收发邮件和日常文字沟通，每月50G~100G足够；如果经常看YouTube或刷推特视频，建议选择150G~200G以上的套餐。"
+        }
+      ]
+    },
+  ];
+
+  return categories.map(cat => ({
+    params: { category: cat.category },
+    props: { cat },
+  }));
+}
+
+const { cat } = Astro.props;
+const matchedAirports = getAirportsByCategory(cat.category as any);
+---
+
+<BaseLayout
+  title={cat.title}
+  description={cat.description}
+  breadcrumbs={[
+    { name: '机场推荐专题', url: '/recommend/stable/' },
+    { name: cat.name, url: `/recommend/${cat.category}/` },
+  ]}
+>
+  <div class="py-6 space-y-8">
+    <!-- Header -->
+    <header class="border-b border-slate-200 pb-8">
+      <div class="inline-block px-3 py-1 rounded-full bg-brand-50 border border-brand-200 text-brand-700 text-xs font-semibold mb-3">
+        {cat.name}
+      </div>
+      <h1 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+        {cat.h1}
+      </h1>
+      <p class="text-sm sm:text-base text-slate-600 leading-relaxed mt-4 max-w-3xl">
+        {cat.description}
+      </p>
+
+      <!-- Criteria Box -->
+      <div class="mt-6 p-4 rounded-xl bg-blue-50/60 border border-blue-100 text-xs sm:text-sm text-slate-700 flex items-start gap-3">
+        <span class="text-brand-600 font-bold shrink-0">🎯 选录准则：</span>
+        <span>{cat.criteria}</span>
+      </div>
+    </header>
+
+    <!-- Category Nav Bar -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-2 text-xs font-semibold">
+      <span class="text-slate-500 shrink-0">切换专题：</span>
+      <a href="/recommend/stable/" class={`px-3 py-1.5 rounded-lg shrink-0 transition ${cat.category === 'stable' ? 'bg-brand-600 text-white' : 'bg-white border text-slate-700 hover:bg-slate-50'}`}>稳定专线</a>
+      <a href="/recommend/budget/" class={`px-3 py-1.5 rounded-lg shrink-0 transition ${cat.category === 'budget' ? 'bg-brand-600 text-white' : 'bg-white border text-slate-700 hover:bg-slate-50'}`}>低预算平价</a>
+      <a href="/recommend/premium/" class={`px-3 py-1.5 rounded-lg shrink-0 transition ${cat.category === 'premium' ? 'bg-brand-600 text-white' : 'bg-white border text-slate-700 hover:bg-slate-50'}`}>高端旗舰</a>
+      <a href="/recommend/ai/" class={`px-3 py-1.5 rounded-lg shrink-0 transition ${cat.category === 'ai' ? 'bg-brand-600 text-white' : 'bg-white border text-slate-700 hover:bg-slate-50'}`}>ChatGPT AI专用</a>
+      <a href="/recommend/streaming/" class={`px-3 py-1.5 rounded-lg shrink-0 transition ${cat.category === 'streaming' ? 'bg-brand-600 text-white' : 'bg-white border text-slate-700 hover:bg-slate-50'}`}>4K流媒体</a>
+      <a href="/recommend/beginner/" class={`px-3 py-1.5 rounded-lg shrink-0 transition ${cat.category === 'beginner' ? 'bg-brand-600 text-white' : 'bg-white border text-slate-700 hover:bg-slate-50'}`}>新手入门</a>
+    </div>
+
+    <!-- Airport List -->
+    <section class="space-y-6">
+      <h2 class="text-xl font-bold text-slate-900 tracking-tight">精选入选品牌与数据档案</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {matchedAirports.map(airport => (
+          <AirportCard airport={airport} featured={airport.overallScore >= 9.3} />
+        ))}
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <FAQSection
+      title={`${cat.name} · 核心答疑`}
+      subtitle="针对当前分类使用场景中最常见的问题解答"
+      items={cat.faqs}
+    />
+
+    <!-- Internal Linking Footer -->
+    <div class="pt-8 border-t border-slate-200">
+      <h3 class="text-sm font-bold text-slate-900 mb-3">相关指引与工具推荐：</h3>
+      <div class="flex flex-wrap gap-3 text-xs">
+        <a href="/ranking/overall/" class="px-3 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium">🏆 查看 2026 综合排行榜</a>
+        <a href="/compare/" class="px-3 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium">⚖️ 进入机场参数在线比对</a>
+        <a href="/blog/how-to-choose-reliable-airport/" class="px-3 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium">📘 新手选购与避坑全指南</a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

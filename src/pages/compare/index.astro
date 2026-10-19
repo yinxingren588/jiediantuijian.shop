@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ComparisonTool from '../../components/ComparisonTool.astro';
+import FAQSection from '../../components/FAQSection.astro';
+
+const compareFAQs = [
+  {
+    question: "如何使用对比工具挑选最适合自己的机场？",
+    answer: "首先勾选你在预算范围内的 2 到 4 家机场候选品牌。重点对比“每GB单价”以评估真实流量价值，对比“线路架构”以确定晚高峰抗丢包能力，若是使用 ChatGPT 或观看 Netflix，需重点检查‘AI支持’与‘流媒体支持’列。"
+  },
+  {
+    question: "为什么不同机场的单GB成本相差多倍？",
+    answer: "因为底层服务器线路成本不同。全IEPL/IPLC内网专线光纤月租极为昂贵，每GB单价在0.15~0.25元属于正常区间；而多线BGP公网中转由于流量采购规模大，每GB单价可压缩至0.05~0.08元左右。"
+  },
+  {
+    question: "对比表格中的数据是如何保持更新的？",
+    answer: "本站数据均来自各机场官方最新公开控制台资费表，并结合编辑部每月实测更新。如遇机场临时调整套餐，数据将在下次周更巡检中同步刷新。"
+  }
+];
+---
+
+<BaseLayout
+  title="机场节点在线对比工具 - 价格/流量/线路/协议多维横向PK"
+  description="自由挑选2-4家主流机场节点进行在线多维参数横评。涵盖月付价格、起步流量、每GB折算成本、协议支持、节点地区覆盖、AI与流媒体解锁深度PK。"
+  breadcrumbs={[
+    { name: '机场对比工具', url: '/compare/' },
+  ]}
+>
+  <div class="py-6 space-y-10">
+    <!-- Header -->
+    <header class="border-b border-slate-200 pb-8">
+      <div class="inline-block px-3 py-1 rounded-full bg-brand-50 border border-brand-200 text-brand-700 text-xs font-semibold mb-3">
+        在线比对系统 · 数据源同步更新
+      </div>
+      <h1 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+        机场节点横向对比工具：自主挑选 2-4 家参数 PK
+      </h1>
+      <p class="text-sm sm:text-base text-slate-600 leading-relaxed mt-4 max-w-3xl">
+        拒绝主观推销。在下方自由选择你感兴趣的机场品牌，系统将自动汇总其起步价格、每GB真实成本、线路类型、设备限制、AI/流媒体解锁支持及核心优缺点，助你做出最理性的选购决策。
+      </p>
+    </header>
+
+    <!-- Main Dynamic Tool -->
+    <ComparisonTool />
+
+    <!-- FAQ -->
+    <FAQSection items={compareFAQs} />
+  </div>
+</BaseLayout>

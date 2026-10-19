@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="联系我们 - 反馈建议与商务合作渠道"
+  description="联系节点推荐网编辑部。欢迎提交数据更正、节点失效反馈、评测申请与正规商业合作。"
+  breadcrumbs={[
+    { name: '联系我们', url: '/contact/' },
+  ]}
+>
+  <div class="py-6 max-w-article mx-auto space-y-8">
+    <header class="border-b border-slate-200 pb-8">
+      <div class="inline-block px-3 py-1 rounded-full bg-brand-50 border border-brand-200 text-brand-700 text-xs font-semibold mb-3">
+        沟通与反馈
+      </div>
+      <h1 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+        联系节点推荐网
+      </h1>
+      <p class="text-sm sm:text-base text-slate-600 leading-relaxed mt-4">
+        无论你是普通读者发现数据有误，还是机场服务商申请加入实测库，均可通过以下方式与我们取得联系。
+      </p>
+    </header>
+
+    <div class="space-y-6 text-sm text-slate-700">
+      <div class="p-6 rounded-2xl bg-white border border-surface-border shadow-xs space-y-3">
+        <h2 class="text-lg font-bold text-slate-900">📧 官方电子邮箱</h2>
+        <p class="text-slate-600">
+          读者反馈、数据修正与纠错沟通：<br/>
+          <span class="font-mono font-bold text-brand-600 text-base">support@jiediantuijian.shop</span>
+        </p>
+        <p class="text-xs text-slate-400">
+          * 我们通常会在 1-2 个工作日内查阅并回复读者来信。
+        </p>
+      </div>
+
+      <div class="p-6 rounded-2xl bg-white border border-surface-border shadow-xs space-y-4">
+        <h2 class="text-lg font-bold text-slate-900">📝 节点评测申请与纠错说明</h2>
+        <p class="leading-relaxed">
+          如果您是机场运营方并希望将您的品牌纳入本站的实测数据库，或者您发现本站展示的套餐资费与您官网现有定价存在差异，请在来信中提供：
+        </p>
+        <ul class="list-disc list-inside space-y-1 text-xs text-slate-600">
+          <li>您的官网正式域名与公开控制台资费说明页面。</li>
+          <li>技术架构证明（如 IEPL 专线入口与落地服务器测试 IP 范围）。</li>
+          <li>用于编辑部为期两周晚高峰丢包率抽测的测试账号。</li>
+        </ul>
+        <p class="text-xs text-amber-800 bg-amber-50 p-3 rounded-xl border border-amber-200">
+          <strong>特别说明：</strong>本站不接受任何“付费买榜”或“要求强行删除客观缺点”的商业要求。所有评测数据均必须接受客观网络监测。
+        </p>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

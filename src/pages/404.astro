@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="404 - 页面未找到 - 节点推荐网"
+  description="抱歉，您访问的页面不存在或已被移除。请返回节点推荐网首页或查阅核心排行榜。"
+  noindex={true}
+>
+  <div class="py-16 text-center max-w-lg mx-auto space-y-6">
+    <div class="w-20 h-20 mx-auto rounded-3xl bg-blue-50 text-brand-600 flex items-center justify-center text-3xl font-extrabold font-mono">
+      404
+    </div>
+
+    <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+      抱歉，您访问的页面不存在
+    </h1>
+
+    <p class="text-sm text-slate-600 leading-relaxed">
+      该页面可能已被移动、更名，或者输入的网址有误。建议您从以下核心入口继续浏览：
+    </p>
+
+    <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+      <a
+        href="/"
+        class="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-semibold text-xs transition shadow-xs"
+      >
+        返回网站首页
+      </a>
+      <a
+        href="/ranking/overall/"
+        class="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition"
+      >
+        2026综合排行榜
+      </a>
+      <a
+        href="/compare/"
+        class="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition"
+      >
+        机场在线对比
+      </a>
+      <a
+        href="/guides/windows/"
+        class="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition"
+      >
+        客户端配置教程
+      </a>
+    </div>
+  </div>
+</BaseLayout>

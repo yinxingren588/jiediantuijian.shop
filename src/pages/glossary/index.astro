@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allTerms = await getCollection('glossary');
+---
+
+<BaseLayout
+  title="节点专业技术术语百科词典 - 机场节点概念通俗解析"
+  description="汇集网络代理与科学上网领域的专业术语。权威通俗解析什么是机场节点、IPLC/IEPL内网专线区别、节点倍率折算及分流规则TUN模式。"
+  breadcrumbs={[
+    { name: '专业术语词典', url: '/glossary/' },
+  ]}
+>
+  <div class="py-6 space-y-8">
+    <header class="border-b border-slate-200 pb-8">
+      <div class="inline-block px-3 py-1 rounded-full bg-brand-50 border border-brand-200 text-brand-700 text-xs font-semibold mb-3">
+        网络词汇速查
+      </div>
+      <h1 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+        专业技术术语百科词典
+      </h1>
+      <p class="text-sm sm:text-base text-slate-600 leading-relaxed mt-4 max-w-3xl">
+        深入浅出剖析网络技术专业词汇。弄清底层网络名词，让你不再被商家的虚夸宣传所忽悠，建立清醒客观的认知。
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {allTerms.map(term => {
+        const slug = term.id.replace(/\.(md|mdx)$/, '');
+        return (
+          <div class="bg-white p-6 rounded-2xl border border-surface-border shadow-xs hover:border-brand-400 hover:shadow-sm transition flex flex-col justify-between">
+            <div>
+              <span class="px-2.5 py-0.5 rounded bg-brand-50 text-brand-700 font-semibold text-xs inline-block mb-3">
+                {term.data.category}
+              </span>
+              <h2 class="text-lg font-bold text-slate-900 mb-2">
+                <a href={`/glossary/${slug}/`} class="hover:text-brand-600 transition">
+                  {term.data.term}
+                </a>
+              </h2>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4 line-clamp-3">
+                {term.data.description}
+              </p>
+            </div>
+            <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+              <span class="text-slate-400">核验: {term.data.updatedDate}</span>
+              <a href={`/glossary/${slug}/`} class="font-semibold text-brand-600 hover:text-brand-700">
+                查看词条详情 →
+              </a>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</BaseLayout>

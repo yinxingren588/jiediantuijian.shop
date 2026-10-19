@@ -1,0 +1,400 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AirportCard from '../components/AirportCard.astro';
+import RankingTable from '../components/RankingTable.astro';
+import FAQSection from '../components/FAQSection.astro';
+import { airports, getRankings } from '../data/airports';
+
+const overallRankings = getRankings('overall');
+const featuredAirports = airports.slice(0, 3);
+
+const quickAnswers = [
+  {
+    title: "新手小白首选：月付试错与一键导入",
+    content: "初次接触机场节点的用户，切忌直接购买昂贵的年付套餐。优先选择支持月付（9.9-20元）、提供直观客户端或一键导入订阅的服务商，验证在本地网络（如电信/联通/移动）下的实际表现后再做长期决定。",
+  },
+  {
+    title: "核心考量维度：线路类型重于节点总数",
+    content: "不要被宣传的‘几百个全球节点’所迷惑。决定晚高峰体验的是线路架构：全IEPL/IPLC内网专线由于不经过公网GFW，延迟极低且全天不丢包；而普通直连公网线路在晚间极易受QoS限速与拥堵影响。",
+  },
+  {
+    title: "套餐性价比折算：防范倍率扣费陷阱",
+    content: "计算每GB真实成本时，必须关注倍率规则。部分机场标称每月1000G，但高速专线节点倍率为3x甚至5x，实际可用流量缩水严重。本站排行榜均采用‘实际折算可用流量’计算真实单价。",
+  },
+  {
+    title: "下单前必须自查：设备数与特定平台解锁",
+    content: "检查是否支持自己的主力设备（Windows/Mac/iOS/Android），家庭或团队多设备需确认并发IP限制。如需使用ChatGPT或Netflix，需确认机场是否提供原生双ISP解锁节点以防封号。",
+  },
+];
+
+const homeFAQs = [
+  {
+    question: "什么是优质的机场节点？如何辨别虚假宣传？",
+    answer: "优质机场节点的核心指标是‘晚高峰低丢包率’与‘网络链路冗余度’，而非单纯看测速峰值。许多劣质服务商在闲时测速能跑满千兆，但在20:00-23:00晚高峰严重丢包、网页甚至无法打开。辨别时应关注其是否采用正规BGP入口及内网专线（IEPL/IPLC），并优先选择提供月付周期、售后工单响应及时的品牌。",
+  },
+  {
+    question: "节点推荐中常说的‘内网专线（IEPL/IPLC）’和普通中转有什么区别？",
+    answer: "普通中转节点的数据依然需要在公网长途传输，容易受到国际出口拥堵和运营商QoS限制；而IPLC/IEPL是点对点的跨境企业内网专线，数据在境内入口机房接收后，直接通过海底/陆地内网专用光缆传输到境外机房，不经过公网防火墙审查，具有极低网络抖动、零丢包及抗封锁的绝对优势。",
+  },
+  {
+    question: "为什么访问ChatGPT或Claude时经常提示Access Denied？",
+    answer: "OpenAI与Anthropic部署了极其严格的风控机制，会对公网IDC机房IP（如各大云服务器机房段）直接实施封锁或降智。想要顺畅使用AI工具，需要机场节点落地服务器采购本地住宅宽带或双ISP商业IP资源，并保持节点IP池的高纯净度。本站AI专用专题收录的节点均通过了持续的IP欺诈度检测。",
+  },
+  {
+    question: "如果遇到机场节点连接不上，通常应该如何排查？",
+    answer: "首先检查系统本地时间是否与北京时间精准同步（误差超过60秒会导致握手协议失败）；其次在客户端中更新订阅链接，确认套餐流量未耗尽或到期；第三测试切换不同入口的节点（如切换到备用香港或新加坡节点）；最后确认客户端内核是否开启了TUN虚拟网卡模式或系统代理开关。",
+  },
+];
+---
+
+<BaseLayout
+  title="2026节点推荐与机场推荐指南 - 优质稳定高速机场节点评测排行"
+  description="专注于中文网络环境的高速稳定节点推荐与机场节点选购指南。提供2026最新实测机场综合排行榜、性价比单价折算、全IEPL内网专线评测、多维对比工具及Windows/Android/iOS新手配置教程。"
+>
+  <!-- Hero Section -->
+  <section class="py-10 md:py-16 text-center max-w-4xl mx-auto space-y-6">
+    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-50 border border-brand-200 text-brand-700 text-xs font-semibold">
+      <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+      2026年度实测数据已同步更新 · 晚高峰连通性实测
+    </div>
+
+    <h1 class="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+      节点推荐与优质机场节点选购指南
+    </h1>
+
+    <p class="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto">
+      拒绝浮夸营销与虚假测速。我们通过全天候晚高峰丢包监测、倍率流量折算及真实资费核验，为你提供客观严谨的<span class="text-slate-900 font-semibold">机场推荐</span>、<span class="text-slate-900 font-semibold">机场节点推荐</span>与综合排行榜。
+    </p>
+
+    <!-- Hero CTA Buttons -->
+    <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+      <a
+        href="/ranking/overall/"
+        class="px-6 py-3 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm shadow-sm transition"
+      >
+        查看 2026 综合排行榜
+      </a>
+      <a
+        href="/compare/"
+        class="px-6 py-3 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 font-semibold text-sm transition"
+      >
+        机场在线参数比对
+      </a>
+      <a
+        href="/recommend/stable/"
+        class="px-6 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-sm transition"
+      >
+        稳定专线机场精选
+      </a>
+    </div>
+
+    <div class="pt-4 flex items-center justify-center gap-6 text-xs text-slate-500">
+      <span>🔒 100% 拒绝虚假刷榜</span>
+      <span>⚡ 真实晚高峰数据监测</span>
+      <span>💰 透明流量倍率折算</span>
+    </div>
+  </section>
+
+  <!-- Quick Answers (Section 3) -->
+  <section class="my-12">
+    <div class="bg-gradient-to-br from-blue-900 to-slate-900 text-white rounded-3xl p-6 sm:p-10 shadow-lg">
+      <div class="max-w-2xl mb-8">
+        <span class="text-xs font-semibold tracking-wider uppercase text-brand-300 block mb-2">快速答案 · 选购避坑总结</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">
+          挑选机场节点前，先掌握这 4 个核心决策依据
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {quickAnswers.map((item, idx) => (
+          <div class="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/10 hover:border-white/20 transition">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="w-6 h-6 rounded-lg bg-brand-500 text-white flex items-center justify-center font-bold text-xs">
+                0{idx + 1}
+              </span>
+              <h3 class="font-bold text-base text-white">{item.title}</h3>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed pl-9">
+              {item.content}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Airports (Section 4) -->
+  <section class="my-16">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+      <div>
+        <span class="text-xs font-semibold text-brand-600 uppercase tracking-wider block mb-1">年度精选推荐</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+          精选主流机场节点评测与推荐
+        </h2>
+        <p class="text-sm text-slate-500 mt-1">经过严格周期性网络监测、资费核实且运营记录良好的服务商：</p>
+      </div>
+      <a href="/ranking/overall/" class="text-sm font-semibold text-brand-600 hover:underline flex items-center gap-1 shrink-0">
+        查看完整排行榜
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {featuredAirports.map(airport => (
+        <AirportCard airport={airport} featured={airport.overallScore >= 9.3} />
+      ))}
+    </div>
+  </section>
+
+  <!-- Comprehensive Rankings (Section 5) -->
+  <section class="my-16">
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-semibold text-brand-600 uppercase tracking-wider block mb-1">多维评分机制</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+          2026 机场节点综合实力排行榜
+        </h2>
+        <p class="text-sm text-slate-500 mt-1">
+          根据晚高峰网络稳定性(30%)、下行带宽(25%)、每GB实际价格(20%)、售后客服(15%)与流媒体AI解锁(10%)加权折算。
+        </p>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="/ranking/value/" class="text-xs px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold transition">
+          每GB单价榜
+        </a>
+        <a href="/ranking/stable/" class="text-xs px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold transition">
+          专线稳定榜
+        </a>
+      </div>
+    </div>
+
+    <RankingTable items={overallRankings} />
+  </section>
+
+  <!-- Categories: 按需求选择 (Section 6) -->
+  <section class="my-16">
+    <div class="mb-8 text-center max-w-2xl mx-auto">
+      <span class="text-xs font-semibold text-brand-600 uppercase tracking-wider block mb-1">精准匹配场景</span>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+        按实际使用需求与预算选择
+      </h2>
+      <p class="text-sm text-slate-500 mt-1">每个人的网络使用场景不同，直达专属分类专题更高效：</p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <a href="/recommend/stable/" class="p-6 rounded-2xl bg-white border border-surface-border hover:border-brand-400 hover:shadow-md transition group">
+        <div class="w-12 h-12 rounded-xl bg-blue-50 text-brand-600 flex items-center justify-center font-bold text-xl mb-4 group-hover:bg-brand-600 group-hover:text-white transition">
+          🛡️
+        </div>
+        <h3 class="font-bold text-lg text-slate-900 group-hover:text-brand-600 transition">稳定优先 · 内网专线</h3>
+        <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+          全IEPL/IPLC独立专线架构，晚高峰零丢包，不经过公网审查，办公商务与省心用户首选。
+        </p>
+        <span class="inline-flex items-center gap-1 text-xs font-semibold text-brand-600 mt-4">
+          查看专题清单 →
+        </span>
+      </a>
+
+      <a href="/recommend/budget/" class="p-6 rounded-2xl bg-white border border-surface-border hover:border-brand-400 hover:shadow-md transition group">
+        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-xl mb-4 group-hover:bg-emerald-600 group-hover:text-white transition">
+          💰
+        </div>
+        <h3 class="font-bold text-lg text-slate-900 group-hover:text-emerald-600 transition">低预算 · 便宜高性价比</h3>
+        <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+          月付10-20元亲民起步，百G月流量，支持低门槛月付体验，试错成本极低。
+        </p>
+        <span class="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600 mt-4">
+          查看平价清单 →
+        </span>
+      </a>
+
+      <a href="/recommend/premium/" class="p-6 rounded-2xl bg-white border border-surface-border hover:border-brand-400 hover:shadow-md transition group">
+        <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold text-xl mb-4 group-hover:bg-purple-600 group-hover:text-white transition">
+          🚀
+        </div>
+        <h3 class="font-bold text-lg text-slate-900 group-hover:text-purple-600 transition">高端旗舰 · 企业级大带宽</h3>
+        <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+          华为云CC与高阶BGP入口，千兆端口独享冗余，支持团队多并发与外企跨境协作。
+        </p>
+        <span class="inline-flex items-center gap-1 text-xs font-semibold text-purple-600 mt-4">
+          查看高端清单 →
+        </span>
+      </a>
+
+      <a href="/recommend/ai/" class="p-6 rounded-2xl bg-white border border-surface-border hover:border-brand-400 hover:shadow-md transition group">
+        <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-xl mb-4 group-hover:bg-amber-600 group-hover:text-white transition">
+          🤖
+        </div>
+        <h3 class="font-bold text-lg text-slate-900 group-hover:text-amber-600 transition">ChatGPT & AI 工具专用</h3>
+        <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+          纯净双ISP住宅IP落地，深度解决OpenAI、Claude访问受限、403阻断与降智问题。
+        </p>
+        <span class="inline-flex items-center gap-1 text-xs font-semibold text-amber-600 mt-4">
+          查看AI专题 →
+        </span>
+      </a>
+
+      <a href="/recommend/streaming/" class="p-6 rounded-2xl bg-white border border-surface-border hover:border-brand-400 hover:shadow-md transition group">
+        <div class="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center font-bold text-xl mb-4 group-hover:bg-rose-600 group-hover:text-white transition">
+          🎬
+        </div>
+        <h3 class="font-bold text-lg text-slate-900 group-hover:text-rose-600 transition">4K 流媒体全解锁</h3>
+        <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+          原生解锁Netflix全部非自制剧、Disney+、YouTube Premium及HBO Max，超高清极速播放。
+        </p>
+        <span class="inline-flex items-center gap-1 text-xs font-semibold text-rose-600 mt-4">
+          查看流媒体清单 →
+        </span>
+      </a>
+
+      <a href="/recommend/beginner/" class="p-6 rounded-2xl bg-white border border-surface-border hover:border-brand-400 hover:shadow-md transition group">
+        <div class="w-12 h-12 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center font-bold text-xl mb-4 group-hover:bg-cyan-600 group-hover:text-white transition">
+          🔰
+        </div>
+        <h3 class="font-bold text-lg text-slate-900 group-hover:text-cyan-600 transition">新手入门 · 一键导入</h3>
+        <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+          支持一键导入主流客户端，提供全平台详细新手配置教程，不用折腾复杂技术参数。
+        </p>
+        <span class="inline-flex items-center gap-1 text-xs font-semibold text-cyan-600 mt-4">
+          查看新手指南 →
+        </span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Comparison Banner (Section 7) -->
+  <section class="my-16 bg-slate-100 rounded-3xl p-8 sm:p-10 border border-slate-200">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="space-y-2 max-w-xl">
+        <span class="px-2.5 py-1 rounded bg-brand-100 text-brand-800 text-xs font-bold">在线工具</span>
+        <h2 class="text-2xl font-bold text-slate-900">拿不准选哪个？使用机场节点多维对比工具</h2>
+        <p class="text-sm text-slate-600">
+          自由选择 2 ~ 4 家机场品牌，针对价格、每GB单价、支持协议、AI解锁、设备限制及优缺点进行横向参数比对。
+        </p>
+      </div>
+      <a
+        href="/compare/"
+        class="shrink-0 px-6 py-3.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm shadow-sm transition"
+      >
+        立即进入横向对比工具 →
+      </a>
+    </div>
+  </section>
+
+  <!-- Guides Center (Section 9) -->
+  <section class="my-16">
+    <div class="mb-8 flex items-center justify-between">
+      <div>
+        <span class="text-xs font-semibold text-brand-600 uppercase tracking-wider block mb-1">使用教程中心</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">各平台客户端配置与实战教程</h2>
+      </div>
+      <a href="/guides/windows/" class="text-sm font-semibold text-brand-600 hover:underline">全端指南 →</a>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <a href="/guides/windows/" class="bg-white p-5 rounded-2xl border border-surface-border hover:border-brand-400 hover:shadow-sm transition">
+        <div class="font-bold text-slate-900 text-base mb-1">💻 Windows 客户端</div>
+        <div class="text-xs text-brand-600 font-semibold mb-2">Clash Verge Rev / Sing-box</div>
+        <p class="text-xs text-slate-500 leading-relaxed">
+          详解Windows下的订阅导入、TUN虚拟网卡模式开启及系统分流配置。
+        </p>
+      </a>
+
+      <a href="/guides/android/" class="bg-white p-5 rounded-2xl border border-surface-border hover:border-brand-400 hover:shadow-sm transition">
+        <div class="font-bold text-slate-900 text-base mb-1">📱 Android 手机端</div>
+        <div class="text-xs text-brand-600 font-semibold mb-2">Clash Meta / v2rayNG</div>
+        <p class="text-xs text-slate-500 leading-relaxed">
+          安卓手机订阅一键导入教程，配置后台自启动与应用白名单免流。
+        </p>
+      </a>
+
+      <a href="/guides/ios/" class="bg-white p-5 rounded-2xl border border-surface-border hover:border-brand-400 hover:shadow-sm transition">
+        <div class="font-bold text-slate-900 text-base mb-1">🍏 iOS 苹果设备</div>
+        <div class="text-xs text-brand-600 font-semibold mb-2">Shadowrocket 小火箭 / Loon</div>
+        <p class="text-xs text-slate-500 leading-relaxed">
+          美区Apple ID准备、小火箭节点导入与分流规则懒人配置指南。
+        </p>
+      </a>
+
+      <a href="/guides/macos/" class="bg-white p-5 rounded-2xl border border-surface-border hover:border-brand-400 hover:shadow-sm transition">
+        <div class="font-bold text-slate-900 text-base mb-1">🖥️ macOS 苹果电脑</div>
+        <div class="text-xs text-brand-600 font-semibold mb-2">Clash Verge / Clash Nyanpasu</div>
+        <p class="text-xs text-slate-500 leading-relaxed">
+          M系列芯片原生客户端适配、权限开启与终端Terminal代理设置。
+        </p>
+      </a>
+    </div>
+  </section>
+
+  <!-- Glossary & Blog (Section 10 & 11) -->
+  <section class="my-16 grid grid-cols-1 md:grid-cols-2 gap-8">
+    <!-- Section 10: 知识百科 -->
+    <div class="bg-white p-6 sm:p-8 rounded-3xl border border-surface-border shadow-xs">
+      <div class="flex items-center justify-between mb-6 pb-3 border-b border-slate-100">
+        <div>
+          <h2 class="text-xl font-bold text-slate-900">📖 节点专业知识百科</h2>
+          <p class="text-xs text-slate-500 mt-1">弄清核心概念，避免被黑心商家误导：</p>
+        </div>
+        <a href="/glossary/what-is-airport-node/" class="text-xs font-semibold text-brand-600 hover:underline">查看全部</a>
+      </div>
+
+      <div class="space-y-3">
+        <a href="/glossary/what-is-airport-node/" class="block p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition">
+          <div class="font-semibold text-slate-900 text-sm">什么是机场节点？运行原理与核心架构解析</div>
+          <div class="text-xs text-slate-500 mt-1">为什么把网络代理服务商俗称为“机场”？节点是如何工作的？</div>
+        </a>
+        <a href="/glossary/iplc-vs-iepl/" class="block p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition">
+          <div class="font-semibold text-slate-900 text-sm">IPLC 与 IEPL 专线有什么技术区别？</div>
+          <div class="text-xs text-slate-500 mt-1">跨境企业内网专线的运行机制与抗公网QoS拥堵能力对比。</div>
+        </a>
+        <a href="/glossary/protocols-explained/" class="block p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition">
+          <div class="font-semibold text-slate-900 text-sm">常见代理协议解析：SS、Trojan、VLESS与Hysteria2</div>
+          <div class="text-xs text-slate-500 mt-1">各协议在加密强度、握手延迟与抗封锁上的优劣权衡。</div>
+        </a>
+        <a href="/glossary/node-multiplier/" class="block p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition">
+          <div class="font-semibold text-slate-900 text-sm">机场节点倍率机制与流量折算避坑指南</div>
+          <div class="text-xs text-slate-500 mt-1">0.1倍率到5.0倍率分别代表什么？如何防范隐形扣量？</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Section 11: 深度博客文章 -->
+    <div class="bg-white p-6 sm:p-8 rounded-3xl border border-surface-border shadow-xs">
+      <div class="flex items-center justify-between mb-6 pb-3 border-b border-slate-100">
+        <div>
+          <h2 class="text-xl font-bold text-slate-900">✍️ 技术博客与深度选购指南</h2>
+          <p class="text-xs text-slate-500 mt-1">持续更新实战经验与网络故障诊断技巧：</p>
+        </div>
+        <a href="/blog/" class="text-xs font-semibold text-brand-600 hover:underline">浏览博客</a>
+      </div>
+
+      <div class="space-y-3">
+        <a href="/blog/how-to-choose-reliable-airport/" class="block p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition">
+          <div class="font-semibold text-slate-900 text-sm">如何挑选适合自己的机场节点？2026新手选购全指南</div>
+          <div class="text-xs text-slate-500 mt-1">从预算、网络线路、协议兼容到付款周期的全套挑选方法论。</div>
+        </a>
+        <a href="/blog/prevent-airport-runaway-risks/" class="block p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition">
+          <div class="font-semibold text-slate-900 text-sm">防范机场跑路风险：从支付周期到备用节点容灾策略</div>
+          <div class="text-xs text-slate-500 mt-1">为什么严禁购买多年超长套餐？如何构建双机场容灾备份？</div>
+        </a>
+        <a href="/blog/solve-chatgpt-access-denied/" class="block p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition">
+          <div class="font-semibold text-slate-900 text-sm">ChatGPT提示访问受限/IP被封？节点选择与自查方案</div>
+          <div class="text-xs text-slate-500 mt-1">DNS泄露、WebRTC探测与IP欺诈度过高引起的阻断自查。</div>
+        </a>
+        <a href="/blog/evening-peak-slowdown-solutions/" class="block p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition">
+          <div class="font-semibold text-slate-900 text-sm">晚高峰节点卡顿掉速排查：国际出口拥堵与专线优化</div>
+          <div class="text-xs text-slate-500 mt-1">解析20点到23点的骨干网QoS拥堵机制及解决办法。</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section (Section 12) -->
+  <FAQSection
+    title="节点推荐与机场选购常见问题 (FAQ)"
+    subtitle="围绕 Bing 搜索用户最关心的节点质量、专线技术、资费及故障处理客观解答"
+    items={homeFAQs}
+  />
+</BaseLayout>
