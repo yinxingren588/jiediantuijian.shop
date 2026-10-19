@@ -4,13 +4,39 @@ import ArticleLayout from '../../layouts/ArticleLayout.astro';
 
 export async function getStaticPaths() {
   const terms = await getCollection('glossary');
-  return terms.map(term => ({
-    params: { slug: term.id.replace(/\.(md|mdx)$/, '') },
-    props: { term },
-  }));
+  const guides = await getCollection('guides');
+
+  return terms.map((term, idx) => {
+    const prevTerm = terms[(idx - 1 + terms.length) % terms.length];
+    const nextTerm = terms[(idx + 1) % terms.length];
+    const nextGuide = guides[idx % guides.length];
+
+    return {
+      params: { slug: term.id.replace(/\.(md|mdx)$/, '') },
+      props: {
+        term,
+        prevTerm: {
+          title: prevTerm.data.title,
+          url: `/glossary/${prevTerm.id.replace(/\.(md|mdx)$/, '')}/`,
+          category: prevTerm.data.category,
+        },
+        nextTerm: {
+          title: nextTerm.data.title,
+          url: `/glossary/${nextTerm.id.replace(/\.(md|mdx)$/, '')}/`,
+          category: nextTerm.data.category,
+        },
+        nextGuide: {
+          title: nextGuide.data.title,
+          url: `/guides/${nextGuide.id.replace(/\.(md|mdx)$/, '')}/`,
+          platform: nextGuide.data.platform,
+          description: nextGuide.data.description,
+        },
+      },
+    };
+  });
 }
 
-const { term } = Astro.props;
+const { term, prevTerm, nextTerm, nextGuide } = Astro.props;
 const { Content } = await render(term);
 ---
 
@@ -21,6 +47,10 @@ const { Content } = await render(term);
   updatedDate={term.data.updatedDate}
   category={term.data.category}
   tags={[term.data.term]}
+  type="guide"
+  prevItem={prevTerm}
+  nextItem={nextTerm}
+  crossLink={nextGuide}
   breadcrumbs={[
     { name: '专业词典', url: '/glossary/' },
     { name: term.data.term, url: `/glossary/${term.id.replace(/\.(md|mdx)$/, '')}/` },

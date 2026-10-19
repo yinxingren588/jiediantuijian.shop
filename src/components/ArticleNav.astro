@@ -1,0 +1,208 @@
+---
+export interface NavLink {
+  title: string;
+  url: string;
+  category?: string;
+  platform?: string;
+  description?: string;
+}
+
+export interface Props {
+  type: 'blog' | 'guide';
+  prevItem?: NavLink | null;
+  nextItem?: NavLink | null;
+  crossLink?: NavLink | null;
+  relatedItems?: NavLink[];
+}
+
+const { type, prevItem, nextItem, crossLink, relatedItems = [] } = Astro.props;
+
+const isBlog = type === 'blog';
+const currentTypeName = isBlog ? '文章' : '教程';
+const crossTypeName = isBlog ? '实操配置教程' : '深度技术博客';
+const crossIndexUrl = isBlog ? '/guides/' : '/blog/';
+const crossIndexText = isBlog ? '查看全部 34 篇教程库 →' : '查看全部 205 篇技术博客 →';
+---
+
+<div class="mt-12 pt-8 border-t border-purple-100 space-y-8">
+  <!-- Section 1: Previous & Next Navigation (上下篇翻页内链) -->
+  <div class="space-y-3">
+    <div class="flex items-center justify-between text-xs font-bold text-slate-500 uppercase tracking-wider">
+      <span>📑 连续阅读导航</span>
+      <span class="text-purple-600 font-mono">0 死链环形内链</span>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <!-- Previous Item -->
+      {prevItem ? (
+        <a
+          href={prevItem.url}
+          title={`上一篇${currentTypeName}：${prevItem.title}`}
+          class="p-4 rounded-2xl bg-slate-50/80 hover:bg-purple-50/50 border border-slate-200 hover:border-purple-200 transition-all group flex flex-col justify-between space-y-2 shadow-2xs hover:shadow-sm"
+        >
+          <div class="flex items-center gap-1.5 text-xs font-bold text-slate-500 group-hover:text-purple-600 transition">
+            <span>←</span>
+            <span>上一篇{currentTypeName}</span>
+            {(prevItem.category || prevItem.platform) && (
+              <span class="ml-auto px-2 py-0.5 rounded text-[10px] font-semibold bg-white border border-slate-200 text-slate-600">
+                {prevItem.category || prevItem.platform}
+              </span>
+            )}
+          </div>
+          <div class="text-sm font-bold text-slate-800 group-hover:text-purple-700 transition line-clamp-2 leading-snug">
+            {prevItem.title}
+          </div>
+        </a>
+      ) : (
+        <div class="hidden sm:block"></div>
+      )}
+
+      <!-- Next Item (Highlighted for Forward Flow) -->
+      {nextItem && (
+        <a
+          href={nextItem.url}
+          title={`下一篇${currentTypeName}：${nextItem.title}`}
+          class="p-4 rounded-2xl bg-gradient-to-br from-purple-50/80 via-indigo-50/40 to-white hover:from-purple-100/70 hover:to-indigo-50 border-2 border-purple-200 hover:border-purple-300 transition-all group flex flex-col justify-between space-y-2 shadow-xs hover:shadow-md"
+        >
+          <div class="flex items-center justify-between text-xs font-bold text-purple-700">
+            <span class="flex items-center gap-1">
+              <span>下一篇{currentTypeName}</span>
+              <span class="animate-pulse">→</span>
+            </span>
+            {(nextItem.category || nextItem.platform) && (
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-600 text-white shadow-2xs">
+                {nextItem.category || nextItem.platform}
+              </span>
+            )}
+          </div>
+          <div class="text-sm font-extrabold text-slate-900 group-hover:text-purple-800 transition line-clamp-2 leading-snug">
+            {nextItem.title}
+          </div>
+          {nextItem.description && (
+            <p class="text-xs text-slate-500 line-clamp-1">
+              {nextItem.description}
+            </p>
+          )}
+        </a>
+      )}
+    </div>
+  </div>
+
+  <!-- Section 2: Cross-Link Highlight Card (下一篇跨类目实操教程 / 技术文章内链) -->
+  {crossLink && (
+    <div class="p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-purple-900 via-indigo-950 to-slate-900 text-white shadow-md relative overflow-hidden space-y-4">
+      <!-- Glow ambient decorative backdrop -->
+      <div class="absolute top-0 right-0 -mr-16 -mt-16 w-48 h-48 rounded-full bg-purple-500/20 blur-2xl pointer-events-none"></div>
+
+      <div class="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-white/10">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">{isBlog ? '🛠️' : '💡'}</span>
+          <div>
+            <h4 class="text-sm sm:text-base font-extrabold text-white tracking-tight">
+              {isBlog ? '配套实战推荐：下一篇客户端配置教程' : '进阶技术解析：下一篇核心原理解读'}
+            </h4>
+            <p class="text-[11px] text-purple-200">
+              {isBlog ? '结合实操配置，一步到位搞定各操作系统科学上网' : '掌握网络底层技术与抗封锁机理，避免踩坑跑路机场'}
+            </p>
+          </div>
+        </div>
+
+        {(crossLink.platform || crossLink.category) && (
+          <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-400 text-slate-950 shrink-0 shadow-xs">
+            {crossLink.platform || crossLink.category}
+          </span>
+        )}
+      </div>
+
+      <div class="relative z-10 space-y-2">
+        <a
+          href={crossLink.url}
+          class="block text-base sm:text-lg font-black text-amber-300 hover:text-white transition leading-snug group"
+        >
+          <span class="group-hover:underline">{crossLink.title}</span>
+          <span class="inline-block ml-1 transition group-hover:translate-x-1">→</span>
+        </a>
+        {crossLink.description && (
+          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed line-clamp-2">
+            {crossLink.description}
+          </p>
+        )}
+      </div>
+
+      <div class="relative z-10 pt-2 flex flex-wrap items-center justify-between gap-3 text-xs">
+        <a
+          href={crossLink.url}
+          class="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-extrabold transition shadow-sm hover:shadow flex items-center gap-1.5 active:scale-98"
+        >
+          <span>立即阅读该{crossTypeName}</span>
+          <span>→</span>
+        </a>
+        <a
+          href={crossIndexUrl}
+          class="text-purple-300 hover:text-white transition font-medium hover:underline text-[11px]"
+        >
+          {crossIndexText}
+        </a>
+      </div>
+    </div>
+  )}
+
+  <!-- Section 3: Related Reading Items (相关延伸内链网格) -->
+  {relatedItems.length > 0 && (
+    <div class="space-y-3 pt-2">
+      <div class="text-xs font-bold text-slate-700 flex items-center justify-between">
+        <span class="flex items-center gap-1.5">
+          <span>🔍</span>
+          <span>更多精选延伸推荐</span>
+        </span>
+        <span class="text-slate-400 font-normal">点击直接阅读</span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {relatedItems.map((item, idx) => (
+          <a
+            href={item.url}
+            title={item.title}
+            class="p-3.5 rounded-xl bg-white hover:bg-purple-50/40 border border-slate-200 hover:border-purple-200 transition-all flex flex-col justify-between space-y-1.5 group shadow-2xs hover:shadow-xs"
+          >
+            <div class="flex items-center justify-between text-[11px] text-slate-500">
+              <span class="font-mono text-purple-600 font-semibold">推荐 {idx + 1}</span>
+              {(item.category || item.platform) && (
+                <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">
+                  {item.category || item.platform}
+                </span>
+              )}
+            </div>
+            <div class="text-xs sm:text-sm font-bold text-slate-800 group-hover:text-purple-700 transition line-clamp-2 leading-snug">
+              {item.title}
+            </div>
+            {item.description && (
+              <p class="text-[11px] text-slate-400 line-clamp-1">
+                {item.description}
+              </p>
+            )}
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
+
+  <!-- Section 4: Quick Directory Switcher (中心索引快捷通道) -->
+  <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-600">
+    <div class="flex items-center gap-2">
+      <span>🧭 快速索引：</span>
+      <a href="/blog/" class="hover:text-purple-700 font-semibold hover:underline">博客文章中心 (205篇)</a>
+      <span class="text-slate-300">|</span>
+      <a href="/guides/" class="hover:text-purple-700 font-semibold hover:underline">使用教程中心 (34篇)</a>
+      <span class="text-slate-300">|</span>
+      <a href="/review/" class="hover:text-purple-700 font-semibold hover:underline">29款机场评测</a>
+    </div>
+    <a
+      href="/ranking/overall/"
+      class="text-purple-700 font-bold hover:underline flex items-center gap-1"
+    >
+      <span>🏆 2026机场综合排行榜</span>
+      <span>→</span>
+    </a>
+  </div>
+</div>

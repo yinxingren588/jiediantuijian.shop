@@ -1,6 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import type { BreadcrumbItem } from '../components/Breadcrumbs.astro';
+import ArticleNav, { type NavLink } from '../components/ArticleNav.astro';
 
 export interface Props {
   title: string;
@@ -11,6 +12,11 @@ export interface Props {
   category?: string;
   tags?: string[];
   breadcrumbs?: BreadcrumbItem[];
+  type?: 'blog' | 'guide';
+  prevItem?: NavLink | null;
+  nextItem?: NavLink | null;
+  crossLink?: NavLink | null;
+  relatedItems?: NavLink[];
 }
 
 const {
@@ -22,6 +28,11 @@ const {
   category,
   tags = [],
   breadcrumbs = [],
+  type = 'blog',
+  prevItem = null,
+  nextItem = null,
+  crossLink = null,
+  relatedItems = [],
 } = Astro.props;
 
 const pageTitle = title.includes('节点推荐') || title.includes('机场推荐')
@@ -140,34 +151,92 @@ const articleSchema = {
             <p>本站所有技术评测与教程均基于编辑部实操环境验证。如遇网络变动或客户端版本升级导致界面差异，欢迎通过联系页面向我们反馈以更新本文。</p>
           </div>
         </div>
+
+        <!-- Comprehensive Internal Link Navigation (上下篇与跨分类教程/文章内链) -->
+        {(prevItem || nextItem || crossLink || relatedItems.length > 0) && (
+          <ArticleNav
+            type={type}
+            prevItem={prevItem}
+            nextItem={nextItem}
+            crossLink={crossLink}
+            relatedItems={relatedItems}
+          />
+        )}
       </article>
 
       <!-- Sidebar -->
       <aside class="lg:col-span-4 space-y-6">
         <!-- Quick Nav Card -->
-        <div class="bg-white p-5 rounded-2xl border border-surface-border shadow-xs sticky top-24">
-          <h3 class="text-base font-bold text-slate-900 mb-4 pb-2 border-b border-slate-100 flex items-center justify-between">
-            <span>核心导航推荐</span>
-            <span class="text-xs font-normal text-brand-600 bg-brand-50 px-2 py-0.5 rounded">实测库</span>
-          </h3>
+        <div class="bg-white p-5 rounded-2xl border border-surface-border shadow-xs sticky top-24 space-y-5">
+          <!-- Next Up Quick Recommendation Widget in Sidebar -->
+          {(nextItem || crossLink) && (
+            <div class="p-4 rounded-xl bg-gradient-to-br from-purple-50/90 via-indigo-50/50 to-white border border-purple-200/90 space-y-2.5">
+              <div class="flex items-center justify-between text-xs font-bold text-purple-900 pb-1 border-b border-purple-100">
+                <span class="flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span>推荐继续阅读</span>
+                </span>
+                <span class="text-[10px] text-purple-600 font-mono">下一篇内链</span>
+              </div>
 
-          <div class="space-y-3 text-sm">
-            <a href="/ranking/overall/" class="block p-3 rounded-xl bg-slate-50 hover:bg-brand-50 border border-slate-100 hover:border-brand-200 transition group">
-              <div class="font-medium text-slate-900 group-hover:text-brand-600">🏆 2026年度综合实力排行榜</div>
-              <div class="text-xs text-slate-500 mt-1">综合测速、晚高峰丢包与性价比多维榜单</div>
-            </a>
-            <a href="/ranking/value/" class="block p-3 rounded-xl bg-slate-50 hover:bg-brand-50 border border-slate-100 hover:border-brand-200 transition group">
-              <div class="font-medium text-slate-900 group-hover:text-brand-600">💰 高性价比每GB单价榜</div>
-              <div class="text-xs text-slate-500 mt-1">自动折算倍率，找出真正划算的大流量套餐</div>
-            </a>
-            <a href="/compare/" class="block p-3 rounded-xl bg-slate-50 hover:bg-brand-50 border border-slate-100 hover:border-brand-200 transition group">
-              <div class="font-medium text-slate-900 group-hover:text-brand-600">⚖️ 机场节点多维对比工具</div>
-              <div class="text-xs text-slate-500 mt-1">自由挑选2-4家机场进行参数与资费横评</div>
-            </a>
+              {nextItem && (
+                <a
+                  href={nextItem.url}
+                  title={`下一篇${type === 'blog' ? '博客' : '教程'}：${nextItem.title}`}
+                  class="block p-2.5 rounded-lg bg-white hover:bg-purple-50 border border-slate-200 hover:border-purple-300 transition group shadow-2xs"
+                >
+                  <div class="text-[10px] text-purple-700 font-bold flex items-center justify-between">
+                    <span>👉 下一篇{type === 'blog' ? '文章' : '教程'}</span>
+                    <span class="group-hover:translate-x-0.5 transition">→</span>
+                  </div>
+                  <div class="text-xs font-bold text-slate-800 group-hover:text-purple-700 transition line-clamp-2 mt-0.5 leading-snug">
+                    {nextItem.title}
+                  </div>
+                </a>
+              )}
+
+              {crossLink && (
+                <a
+                  href={crossLink.url}
+                  title={`推荐${type === 'blog' ? '实操教程' : '技术博客'}：${crossLink.title}`}
+                  class="block p-2.5 rounded-lg bg-white hover:bg-indigo-50 border border-slate-200 hover:border-indigo-300 transition group shadow-2xs"
+                >
+                  <div class="text-[10px] text-indigo-700 font-bold flex items-center justify-between">
+                    <span>{type === 'blog' ? '🛠️ 推荐实操教程' : '💡 推荐深度博客'}</span>
+                    <span class="group-hover:translate-x-0.5 transition">→</span>
+                  </div>
+                  <div class="text-xs font-bold text-slate-800 group-hover:text-indigo-700 transition line-clamp-2 mt-0.5 leading-snug">
+                    {crossLink.title}
+                  </div>
+                </a>
+              )}
+            </div>
+          )}
+
+          <div>
+            <h3 class="text-base font-bold text-slate-900 mb-3 pb-2 border-b border-slate-100 flex items-center justify-between">
+              <span>核心导航推荐</span>
+              <span class="text-xs font-normal text-brand-600 bg-brand-50 px-2 py-0.5 rounded">实测库</span>
+            </h3>
+
+            <div class="space-y-2.5 text-sm">
+              <a href="/ranking/overall/" class="block p-3 rounded-xl bg-slate-50 hover:bg-brand-50 border border-slate-100 hover:border-brand-200 transition group">
+                <div class="font-medium text-slate-900 group-hover:text-brand-600 text-xs sm:text-sm">🏆 2026年度综合实力排行榜</div>
+                <div class="text-[11px] text-slate-500 mt-0.5">综合测速、晚高峰丢包与性价比多维榜单</div>
+              </a>
+              <a href="/ranking/value/" class="block p-3 rounded-xl bg-slate-50 hover:bg-brand-50 border border-slate-100 hover:border-brand-200 transition group">
+                <div class="font-medium text-slate-900 group-hover:text-brand-600 text-xs sm:text-sm">💰 高性价比每GB单价榜</div>
+                <div class="text-[11px] text-slate-500 mt-0.5">自动折算倍率，找出真正划算的大流量套餐</div>
+              </a>
+              <a href="/compare/" class="block p-3 rounded-xl bg-slate-50 hover:bg-brand-50 border border-slate-100 hover:border-brand-200 transition group">
+                <div class="font-medium text-slate-900 group-hover:text-brand-600 text-xs sm:text-sm">⚖️ 机场节点多维对比工具</div>
+                <div class="text-[11px] text-slate-500 mt-0.5">自由挑选2-4家机场进行参数与资费横评</div>
+              </a>
+            </div>
           </div>
 
-          <div class="mt-6 pt-4 border-t border-slate-100">
-            <h4 class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">各端配置指南</h4>
+          <div class="pt-3 border-t border-slate-100">
+            <h4 class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2.5">各端配置指南</h4>
             <div class="grid grid-cols-2 gap-2 text-xs">
               <a href="/guides/windows/" class="p-2 rounded-lg bg-slate-50 hover:bg-slate-100 text-center font-medium text-slate-700">Windows 客户端</a>
               <a href="/guides/android/" class="p-2 rounded-lg bg-slate-50 hover:bg-slate-100 text-center font-medium text-slate-700">Android 安卓端</a>

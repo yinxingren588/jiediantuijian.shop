@@ -3,14 +3,62 @@ import { getCollection, render } from 'astro:content';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 
 export async function getStaticPaths() {
-  const guides = await getCollection('guides');
-  return guides.map(guide => ({
-    params: { slug: guide.id.replace(/\.(md|mdx)$/, '') },
-    props: { guide },
-  }));
+  const rawPosts = await getCollection('blog');
+  const rawGuides = await getCollection('guides');
+
+  const posts = [...rawPosts].sort((a, b) => {
+    const diff = new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime();
+    return diff !== 0 ? diff : a.id.localeCompare(b.id);
+  });
+
+  const guides = [...rawGuides].sort((a, b) => {
+    const diff = new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime();
+    return diff !== 0 ? diff : a.id.localeCompare(b.id);
+  });
+
+  return guides.map((guide, idx) => {
+    const prevGuide = guides[(idx - 1 + guides.length) % guides.length];
+    const nextGuide = guides[(idx + 1) % guides.length];
+    const nextPost = posts[idx % posts.length];
+    const relatedGuides = [
+      guides[(idx + 2) % guides.length],
+      guides[(idx + 3) % guides.length],
+    ];
+
+    return {
+      params: { slug: guide.id.replace(/\.(md|mdx)$/, '') },
+      props: {
+        guide,
+        prevGuide: {
+          title: prevGuide.data.title,
+          url: `/guides/${prevGuide.id.replace(/\.(md|mdx)$/, '')}/`,
+          platform: prevGuide.data.platform,
+          description: prevGuide.data.description,
+        },
+        nextGuide: {
+          title: nextGuide.data.title,
+          url: `/guides/${nextGuide.id.replace(/\.(md|mdx)$/, '')}/`,
+          platform: nextGuide.data.platform,
+          description: nextGuide.data.description,
+        },
+        nextPost: {
+          title: nextPost.data.title,
+          url: `/blog/${nextPost.id.replace(/\.(md|mdx)$/, '')}/`,
+          category: nextPost.data.category,
+          description: nextPost.data.description,
+        },
+        relatedGuides: relatedGuides.map(g => ({
+          title: g.data.title,
+          url: `/guides/${g.id.replace(/\.(md|mdx)$/, '')}/`,
+          platform: g.data.platform,
+          description: g.data.description,
+        })),
+      },
+    };
+  });
 }
 
-const { guide } = Astro.props;
+const { guide, prevGuide, nextGuide, nextPost, relatedGuides } = Astro.props;
 const { Content } = await render(guide);
 ---
 
@@ -22,6 +70,11 @@ const { Content } = await render(guide);
   author={guide.data.author}
   category="客户端配置教程"
   tags={guide.data.recommendedClients}
+  type="guide"
+  prevItem={prevGuide}
+  nextItem={nextGuide}
+  crossLink={nextPost}
+  relatedItems={relatedGuides}
   breadcrumbs={[
     { name: '使用教程中心', url: '/guides/' },
     { name: guide.data.title, url: `/guides/${guide.id.replace(/\.(md|mdx)$/, '')}/` },
