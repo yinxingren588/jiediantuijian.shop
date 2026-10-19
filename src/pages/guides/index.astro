@@ -3,64 +3,198 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
 const allGuides = await getCollection('guides');
+
+// Sort by updatedDate descending
+allGuides.sort((a, b) => (b.data.updatedDate || '').localeCompare(a.data.updatedDate || ''));
+
+const platforms = ['全部', 'Windows', 'macOS', 'iOS', 'Android', 'Linux', '路由器', '智能设备', '专项解决方案', '开发与办公', '进阶调优', '安全与隐私'];
 ---
 
 <BaseLayout
-  title="客户端配置教程中心 - Windows/Android/iOS/macOS全平台指南"
-  description="提供Windows电脑、Android安卓手机、iPhone/iPad苹果设备及Mac电脑的机场节点配置教程。涵盖Clash Verge Rev、Shadowrocket小火箭、Sing-box及v2rayNG设置。"
+  title="客户端配置使用教程中心 (34篇) - Windows/macOS/iOS/Android/路由全平台实战手册"
+  description="包含34篇高阶技术使用教程：涵盖Clash Verge Rev、Shadowrocket小火箭、Sing-box、v2rayNG、Surge、PassWall软路由、Apple TV、ChatGPT防封锁及TUN模式配置。"
   breadcrumbs={[
     { name: '使用教程中心', url: '/guides/' },
   ]}
 >
   <div class="py-6 space-y-8">
-    <header class="border-b border-slate-200 pb-8">
-      <div class="inline-block px-3 py-1 rounded-full bg-brand-50 border border-brand-200 text-brand-700 text-xs font-semibold mb-3">
-        全平台实战手册
+    <!-- Header -->
+    <header class="border-b border-purple-100 pb-8">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-50 border border-purple-200 text-purple-700 text-xs font-semibold mb-3">
+        <span class="w-2 h-2 rounded-full bg-purple-600"></span>
+        全平台实战手册 · 34 篇图文并茂专业指南
       </div>
-      <h1 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
-        客户端配置使用教程中心
+      <h1 class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight leading-tight">
+        客户端配置与进阶使用教程中心
       </h1>
       <p class="text-sm sm:text-base text-slate-600 leading-relaxed mt-4 max-w-3xl">
-        无论你是 Windows 电脑、Android 手机、iPhone / iPad 还是 Mac 用户，均可在这里找到最清晰图文并茂的客户端下载、订阅导入及分流避坑指南。
+        涵盖 Windows 电脑、macOS 苹果电脑、iPhone / iPad、Android 安卓手机、Linux 命令行、OpenWrt 软路由、Apple TV 及专项 AI / 跨区流媒体优化。助你从零到精通，轻松排查各类网络报错。
       </p>
+
+      <!-- Quick Platform Tabs -->
+      <div class="flex flex-wrap gap-2 mt-6" id="platform-tabs">
+        {platforms.map(p => (
+          <button
+            type="button"
+            data-platform-filter={p}
+            class={`platform-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+              p === '全部'
+                ? 'bg-purple-600 text-white shadow-xs'
+                : 'bg-white hover:bg-purple-50 text-slate-700 border border-slate-200 hover:border-purple-300'
+            }`}
+          >
+            {p}
+          </button>
+        ))}
+      </div>
+
+      <!-- Quick Search Input -->
+      <div class="mt-4">
+        <input
+          type="text"
+          id="guide-search-input"
+          placeholder="🔍 搜索教程：输入关键词（如 Clash、小火箭、Sing-box、ChatGPT、OpenWrt、TUN）..."
+          class="w-full text-xs sm:text-sm px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition"
+        />
+      </div>
     </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Guide Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="guides-grid">
       {allGuides.map(guide => {
         const slug = guide.id.replace(/\.(md|mdx)$/, '');
+        const platform = guide.data.platform;
+        const title = guide.data.title;
+        const desc = guide.data.description;
+        const clients = guide.data.recommendedClients.join('、');
         return (
-          <div class="bg-white p-6 rounded-2xl border border-surface-border shadow-xs hover:border-brand-400 hover:shadow-sm transition flex flex-col justify-between">
+          <div
+            data-guide-card
+            data-platform={platform}
+            data-keywords={`${title} ${desc} ${platform} ${clients}`.toLowerCase()}
+            class="bg-white p-6 rounded-3xl border border-purple-100/80 shadow-xs hover:border-purple-300 hover:shadow-md transition flex flex-col justify-between group"
+          >
             <div>
-              <div class="flex items-center gap-2 mb-2">
-                <span class="px-2 py-0.5 rounded bg-brand-50 text-brand-700 font-bold text-xs uppercase">
-                  {guide.data.platform}
+              <div class="flex items-center justify-between gap-2 mb-3">
+                <span class="px-2.5 py-0.5 rounded-md bg-purple-50 text-purple-700 font-bold text-[11px] border border-purple-200/60">
+                  {platform}
                 </span>
-                <span class="text-xs text-slate-400">更新: {guide.data.updatedDate}</span>
+                <span class="text-[11px] text-slate-400 font-mono">{guide.data.updatedDate}</span>
               </div>
-              <h2 class="text-lg font-bold text-slate-900 mb-2">
-                <a href={`/guides/${slug}/`} class="hover:text-brand-600 transition">
-                  {guide.data.title}
+              <h2 class="text-base font-bold text-slate-900 group-hover:text-purple-700 transition leading-snug mb-2">
+                <a href={`/guides/${slug}/`}>
+                  {title}
                 </a>
               </h2>
-              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-3 mb-4">
-                {guide.data.description}
+              <p class="text-xs text-slate-500 leading-relaxed line-clamp-3 mb-4">
+                {desc}
               </p>
             </div>
 
-            <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
-              <span class="text-xs text-slate-500">
-                推荐：{guide.data.recommendedClients[0]}
+            <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+              <span class="text-slate-400 text-[11px] truncate max-w-[150px]" title={clients}>
+                适配：{guide.data.recommendedClients[0] || platform}
               </span>
               <a
                 href={`/guides/${slug}/`}
-                class="text-xs font-semibold text-brand-600 hover:text-brand-700 flex items-center gap-1"
+                class="font-bold text-purple-600 group-hover:text-purple-700 group-hover:translate-x-0.5 transition flex items-center gap-1 shrink-0"
               >
-                阅读完整图文 →
+                阅读实操 →
               </a>
             </div>
           </div>
         );
       })}
     </div>
+
+    <!-- Empty search result state -->
+    <div id="guide-empty-state" class="hidden p-12 text-center bg-white rounded-3xl border border-purple-200/70 shadow-sm">
+      <div class="w-12 h-12 mx-auto mb-3 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl font-bold">
+        🔍
+      </div>
+      <h3 class="text-base font-bold text-slate-900">未检索到匹配的教程</h3>
+      <p class="text-slate-500 text-xs mt-1">请尝试更换搜索关键词，或点击“全部”查看所有平台分类。</p>
+    </div>
+
+    <!-- Bottom cross-link cards -->
+    <section class="mt-12 bg-gradient-to-r from-purple-50 via-indigo-50 to-purple-50 p-6 sm:p-8 rounded-3xl border border-purple-100 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div>
+        <h3 class="text-base font-black text-slate-900">客户端准备好了，还需要高速稳定的节点？</h3>
+        <p class="text-xs text-slate-600 mt-1">
+          本站对全网 29 款主流机场建立独立评测与价格核验档案，支持专属立减优惠券：
+        </p>
+      </div>
+      <div class="flex items-center gap-2 shrink-0">
+        <a
+          href="/ranking/overall/"
+          class="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs shadow-sm transition"
+        >
+          查看综合排行榜
+        </a>
+        <a
+          href="/compare/"
+          class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-700 font-semibold text-xs border border-purple-200 transition"
+        >
+          进入在线对比工具
+        </a>
+      </div>
+    </section>
   </div>
 </BaseLayout>
+
+<script is:inline>
+  (function() {
+    const filterBtns = document.querySelectorAll('.platform-filter-btn');
+    const searchInput = document.getElementById('guide-search-input');
+    const cards = document.querySelectorAll('[data-guide-card]');
+    const emptyState = document.getElementById('guide-empty-state');
+    const grid = document.getElementById('guides-grid');
+
+    let currentPlatform = '全部';
+    let currentQuery = '';
+
+    function filterGuides() {
+      let visibleCount = 0;
+      cards.forEach(card => {
+        const platform = card.getAttribute('data-platform') || '';
+        const keywords = card.getAttribute('data-keywords') || '';
+
+        const matchPlatform = currentPlatform === '全部' || platform === currentPlatform;
+        const matchQuery = !currentQuery || keywords.includes(currentQuery);
+
+        if (matchPlatform && matchQuery) {
+          card.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      if (visibleCount === 0) {
+        emptyState.classList.remove('hidden');
+        grid.classList.add('hidden');
+      } else {
+        emptyState.classList.add('hidden');
+        grid.classList.remove('hidden');
+      }
+    }
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        filterBtns.forEach(b => {
+          b.className = 'platform-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer bg-white hover:bg-purple-50 text-slate-700 border border-slate-200 hover:border-purple-300';
+        });
+        this.className = 'platform-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer bg-purple-600 text-white shadow-xs';
+        currentPlatform = this.getAttribute('data-platform-filter') || '全部';
+        filterGuides();
+      });
+    });
+
+    if (searchInput) {
+      searchInput.addEventListener('input', function(e) {
+        currentQuery = (e.target.value || '').trim().toLowerCase();
+        filterGuides();
+      });
+    }
+  })();
+</script>
