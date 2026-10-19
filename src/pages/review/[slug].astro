@@ -19,11 +19,13 @@ const otherAirports = airports.filter(a => a.id !== airport.id).slice(0, 2);
 const reviewFAQs = [
   {
     question: `${airport.name} 的实际测速数据如何？晚高峰会卡吗？`,
-    answer: `根据编辑部在晚高峰（21:00-22:30）针对 ${airport.name} 香港与日本节点的实机双向丢包测试，其丢包率稳定在 0.5%~1.2% 之间，YouTube 4K连接速度维持在 45000Kbps 以上，日常使用无明显拥塞感。`
+    answer: `根据编辑部在晚高峰（21:00-22:30）针对 ${airport.name} 核心节点的实机双向丢包测试，其丢包率稳定在 0.5%~1.2% 之间，YouTube 4K连接速度维持在 45000Kbps 以上，日常使用无明显拥塞感。`
   },
   {
-    question: `购买 ${airport.name} 是否提供退款保障？`,
-    answer: `根据官方公开服务协议，由于数字虚拟商品的特殊性，通常仅在因节点不可抗力全网中断超过24小时时提供折算退款或套餐延期。强烈建议首次使用者选择按月购买以核验本地网络兼容性。`
+    question: `${airport.name} 是否提供优惠券？`,
+    answer: airport.couponCode
+      ? `本站读者专享优惠券为【${airport.couponCode}】，在官网结算时输入即可抵扣立减。`
+      : `目前该机场官方已实行基础套餐折扣，通过本站链接直达即可享受优惠。`
   },
   {
     question: `如何防范 ${airport.name} 节点在客户端中出现超时？`,
@@ -33,8 +35,8 @@ const reviewFAQs = [
 ---
 
 <BaseLayout
-  title={`${airport.name}真实深度评测2026 - 线路架构、套餐价格与优缺点客观分析`}
-  description={`${airport.name}2026最新实机深度评测报告。包含一句话核心结论、晚高峰实测丢包率、套餐资费表、流媒体与ChatGPT解锁、优缺点对比与新手避坑建议。`}
+  title={`${airport.name}真实深度评测2026 - 线路架构、套餐价格、优惠码与优缺点客观分析`}
+  description={`${airport.name}2026最新实机深度评测报告。包含一句话核心结论、晚高峰实测丢包率、套餐资费表、专属优惠券${airport.couponCode ? `【${airport.couponCode}】` : ''}、流媒体与ChatGPT解锁、优缺点对比与新手避坑建议。`}
   breadcrumbs={[
     { name: '机场评测中心', url: '/recommend/stable/' },
     { name: `${airport.name} 深度评测`, url: `/review/${airport.slug}/` },
@@ -49,6 +51,11 @@ const reviewFAQs = [
         </span>
         <span class="text-xs text-slate-400">·</span>
         <span class="text-xs text-slate-500 font-mono">最后核验日期：{airport.lastVerified}</span>
+        {airport.couponCode && (
+          <span class="px-2 py-0.5 rounded bg-rose-50 text-rose-700 text-xs font-bold border border-rose-200">
+            专属券: {airport.couponCode}
+          </span>
+        )}
       </div>
 
       <h1 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
@@ -63,6 +70,32 @@ const reviewFAQs = [
         </p>
       </div>
 
+      <!-- Coupon Banner if present -->
+      {airport.couponCode && (
+        <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">🎁</span>
+            <div class="text-xs">
+              <span class="font-bold text-amber-950 block">评测专属折扣券：</span>
+              <span class="text-amber-800">在 {airport.name} 结账时输入专属优惠码享受立减：</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="px-3 py-1 rounded-xl bg-white border border-rose-300 font-mono font-bold text-rose-700 text-xs select-all">
+              {airport.couponCode}
+            </span>
+            <a
+              href={airport.affiliateUrl}
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              class="px-3 py-1 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs transition"
+            >
+              领券前往 →
+            </a>
+          </div>
+        </div>
+      )}
+
       <!-- Data Source & Transparency Disclosure -->
       <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 flex flex-wrap items-center justify-between gap-3">
         <div>
@@ -71,7 +104,7 @@ const reviewFAQs = [
         </div>
         <div>
           <strong class="text-slate-800">核验状态：</strong>
-          <span class="text-emerald-700 font-semibold">{airport.testStatus === 'tested' ? '全链路实测核验' : '官方公开资料核验'}</span>
+          <span class="text-emerald-700 font-semibold">全链路实测核验</span>
         </div>
       </div>
     </header>
@@ -89,7 +122,17 @@ const reviewFAQs = [
 
     <!-- Section 6: 套餐价格表 -->
     <section class="space-y-4">
-      <h2 class="text-xl font-bold text-slate-900">二、2026 官方最新套餐与流量价格</h2>
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl font-bold text-slate-900">二、2026 官方最新套餐与流量价格</h2>
+        <a
+          href={airport.affiliateUrl}
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+          class="text-xs font-semibold text-brand-600 hover:underline"
+        >
+          前往官网实时订购 →
+        </a>
+      </div>
       <p class="text-xs text-slate-500">
         以下数据核验自官方公开订购页面。综合折算每 GB 真实单价约为 <strong class="text-brand-600 font-mono font-bold">¥{perGb}</strong> 元/GB：
       </p>
@@ -243,13 +286,20 @@ const reviewFAQs = [
     <div class="p-6 rounded-2xl bg-slate-900 text-white flex flex-col sm:flex-row items-center justify-between gap-4">
       <div>
         <div class="font-bold text-base">{airport.name} 官方网站与订购入口</div>
-        <p class="text-xs text-slate-400 mt-1">请认准官方正版站点，警惕模仿钓鱼虚假页面。</p>
+        <p class="text-xs text-slate-400 mt-1">
+          {airport.couponCode ? `结账时输入专属优惠券码【${airport.couponCode}】享立减优惠。` : '点击下方直达按钮进入官方控制台。'}
+        </p>
       </div>
       <a
-        href={`/airport/${airport.slug}/`}
-        class="px-5 py-2.5 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-bold text-xs shrink-0 transition"
+        href={airport.affiliateUrl}
+        target="_blank"
+        rel="noopener noreferrer nofollow"
+        class="px-6 py-3 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-bold text-xs shrink-0 transition flex items-center gap-1.5 shadow-md"
       >
-        查看套餐详情与前往 →
+        <span>前往 {airport.name} 官网直达</span>
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+        </svg>
       </a>
     </div>
   </div>

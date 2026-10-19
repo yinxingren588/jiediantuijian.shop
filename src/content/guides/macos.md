@@ -37,7 +37,7 @@ recommendedClients:
 
 ## 步骤二：导入订阅与激活
 
-1. 登录机场用户中心（如 [FlyCloud 飞天云](/airport/flycloud/)），复制 Clash/Meta 格式订阅链接。
+1. 登录机场用户中心（如 [隐形人](/airport/yinxingren/)），复制 Clash/Meta 格式订阅链接。
 2. 打开 Clash Verge Rev 客户端，点击左侧导航的 **“订阅” (Profiles)**。
 3. 将链接粘贴至顶部输入框，点击“保存并下载”。
 4. 成功拉取配置后，右键点击该订阅卡片，选择“使用”将其设为主力配置。

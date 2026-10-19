@@ -6,6 +6,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { airports } from '../src/data/airports';
 
 const HOST = 'jiediantuijian.shop';
 const KEY = 'd7a5e8c1b92049e7b28d6139f40e79ac';
@@ -13,8 +14,8 @@ const KEY_LOCATION = `https://${HOST}/${KEY}.txt`;
 const ENDPOINT = 'https://api.indexnow.org/indexnow';
 const STATE_FILE = path.resolve('.indexnow-state.json');
 
-// Core Priority URLs
-const CORE_URLS = [
+// Core Priority Static URLs
+const STATIC_URLS = [
   `https://${HOST}/`,
   `https://${HOST}/recommend/stable/`,
   `https://${HOST}/recommend/budget/`,
@@ -27,36 +28,36 @@ const CORE_URLS = [
   `https://${HOST}/ranking/stable/`,
   `https://${HOST}/ranking/budget/`,
   `https://${HOST}/compare/`,
+  `https://${HOST}/guides/`,
   `https://${HOST}/guides/windows/`,
   `https://${HOST}/guides/android/`,
   `https://${HOST}/guides/ios/`,
   `https://${HOST}/guides/macos/`,
+  `https://${HOST}/blog/`,
   `https://${HOST}/blog/how-to-choose-reliable-airport/`,
   `https://${HOST}/blog/prevent-airport-runaway-risks/`,
   `https://${HOST}/blog/latency-vs-speed-bandwidth/`,
   `https://${HOST}/blog/solve-chatgpt-access-denied/`,
   `https://${HOST}/blog/evening-peak-slowdown-solutions/`,
+  `https://${HOST}/glossary/`,
   `https://${HOST}/glossary/what-is-airport-node/`,
   `https://${HOST}/glossary/iplc-vs-iepl/`,
   `https://${HOST}/glossary/protocols-explained/`,
   `https://${HOST}/glossary/node-multiplier/`,
   `https://${HOST}/glossary/routing-and-tun-mode/`,
-  `https://${HOST}/airport/flycloud/`,
-  `https://${HOST}/airport/westdata/`,
-  `https://${HOST}/airport/starnet/`,
-  `https://${HOST}/airport/lightspeed/`,
-  `https://${HOST}/airport/speedcat/`,
-  `https://${HOST}/review/flycloud/`,
-  `https://${HOST}/review/westdata/`,
-  `https://${HOST}/review/starnet/`,
-  `https://${HOST}/review/lightspeed/`,
-  `https://${HOST}/review/speedcat/`,
   `https://${HOST}/about/`,
   `https://${HOST}/editorial-policy/`,
   `https://${HOST}/privacy-policy/`,
   `https://${HOST}/disclaimer/`,
   `https://${HOST}/contact/`
 ];
+
+const AIRPORT_URLS = airports.flatMap(a => [
+  `https://${HOST}/airport/${a.slug}/`,
+  `https://${HOST}/review/${a.slug}/`,
+]);
+
+const CORE_URLS = [...STATIC_URLS, ...AIRPORT_URLS];
 
 interface StateData {
   submitted: Record<string, string>; // url -> lastSubmittedISO
@@ -87,7 +88,10 @@ async function postToIndexNow(urlList: string[], retries = 3): Promise<boolean> 
   };
 
   console.log(`\n[IndexNow] 正在向 ${ENDPOINT} 提交 ${urlList.length} 个 URL...`);
-  urlList.forEach(u => console.log(` - ${u}`));
+  urlList.slice(0, 10).forEach(u => console.log(` - ${u}`));
+  if (urlList.length > 10) {
+    console.log(` ... 以及其余 ${urlList.length - 10} 个 URL`);
+  }
 
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
@@ -145,22 +149,19 @@ async function main() {
   let targetUrls: string[] = [];
 
   if (args.length > 0 && !args.includes('--all') && !args.includes('--batch')) {
-    // Single or specified URLs from CLI
     targetUrls = args.filter(a => a.startsWith('http'));
   } else if (args.includes('--all')) {
-    // Explicit force submit all
     console.log('[IndexNow] 模式：全量提交 (--all)');
     targetUrls = CORE_URLS;
   } else {
-    // Smart incremental mode: submit URLs not submitted in last 7 days or new
     console.log('[IndexNow] 模式：增量更新 (默认智能模式，防无差别泛滥提交)');
     const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
     const nowTime = Date.now();
 
     targetUrls = CORE_URLS.filter(url => {
       const lastSub = state.submitted[url];
-      if (!lastSub) return true; // new
-      return (nowTime - new Date(lastSub).getTime()) > SEVEN_DAYS_MS; // older than 7 days
+      if (!lastSub) return true;
+      return (nowTime - new Date(lastSub).getTime()) > SEVEN_DAYS_MS;
     });
 
     if (targetUrls.length === 0) {

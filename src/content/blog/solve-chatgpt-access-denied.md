@@ -46,7 +46,7 @@ OpenAI 部署了 Cloudflare 企业级安全套件与专业的 IP 声誉数据库
 
 ### 第一步：选用配备“双 ISP 原生住宅 IP”的专业机场
 普通便宜机场为了削减成本，落地机房全采购廉价的大厂云主机，极易集体遭封。
-在我们的 [ChatGPT与AI专用机场推荐](/recommend/ai/) 专题中，精选了如 [StarNet 星链网络](/airport/starnet/)、[FlyCloud 飞天云](/airport/flycloud/) 等具备原生双 ISP 住宅 IP 资源池的服务商，从物理源头上避开机房标记。
+在我们的 [ChatGPT与AI专用机场推荐](/recommend/ai/) 专题中，精选了如 [隐形人](/airport/yinxingren/)、[Firefly机场](/airport/firefly/) 等具备原生双 ISP 住宅 IP 资源池的服务商，从物理源头上避开机房标记。
 
 ### 第二步：检查并修复 DNS 泄漏
 1. 打开浏览器访问 `https://browserleaks.com/ip`。

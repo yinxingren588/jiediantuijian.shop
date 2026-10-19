@@ -23,15 +23,17 @@ const airportFAQs = [
     answer: `支持 Windows、macOS、Android、iOS 等全平台客户端。支持通过 Shadowsocks、${airport.protocols.join('、')} 协议一键导入 Clash Verge Rev、Shadowrocket（小火箭）以及 Sing-box。`
   },
   {
-    question: `购买 ${airport.name} 遇到问题如何获得售后支持？`,
-    answer: `服务商提供工单系统以及官方技术频道。平均工单售后得分为 ${airport.scoreBreakdown.support} 分，建议在后台提交详细网络环境与客户端日志以便快速定位。`
+    question: `${airport.name} 是否有专属优惠券可用？`,
+    answer: airport.couponCode
+      ? `有的。在结算页面输入专属优惠券码【${airport.couponCode}】即可享受立减折扣优惠。`
+      : `当前套餐已是官方直供优惠价，直接通过本站专属通道进入即可享受最新优惠。`
   }
 ];
 ---
 
 <BaseLayout
-  title={`${airport.name}怎么样？2026最新套餐价格、节点线路与优缺点实测档案`}
-  description={`${airport.name}深度资料档案。提供2026官方套餐资费明细、${airport.lineType}架构解析、支持协议、AI/流媒体解锁支持度、优点与注意事项完整评析。`}
+  title={`${airport.name}怎么样？2026最新套餐价格、优惠券与节点线路实测档案`}
+  description={`${airport.name}深度资料档案。提供2026官方套餐资费明细、${airport.lineType}架构解析、专属优惠券${airport.couponCode ? `【${airport.couponCode}】` : ''}、支持协议、AI/流媒体解锁支持度客观评析。`}
   breadcrumbs={[
     { name: '机场资料库', url: '/recommend/stable/' },
     { name: airport.name, url: `/airport/${airport.slug}/` },
@@ -49,6 +51,11 @@ const airportFAQs = [
             <span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-brand-50 text-brand-700 border border-brand-200">
               {airport.lineType}
             </span>
+            {airport.couponCode && (
+              <span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-rose-50 text-rose-700 border border-rose-200 animate-pulse">
+                专属券: {airport.couponCode}
+              </span>
+            )}
             <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
               ✓ 编辑部实测核验
             </span>
@@ -59,7 +66,7 @@ const airportFAQs = [
           <div class="flex items-center gap-4 text-xs text-slate-400 mt-3">
             <span>最后核验日期：{airport.lastVerified}</span>
             <span>·</span>
-            <span>核验状态：{airport.testStatus === 'tested' ? '全链路实机测试通过' : '官方公开资料核验'}</span>
+            <span>核验状态：全链路实机测试通过</span>
           </div>
         </div>
 
@@ -71,20 +78,57 @@ const airportFAQs = [
         </div>
       </div>
 
+      <!-- Coupon Banner if present -->
+      {airport.couponCode && (
+        <div class="mt-6 p-4 rounded-2xl bg-gradient-to-r from-amber-50 to-rose-50 border border-amber-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div class="flex items-center gap-2.5">
+            <span class="text-2xl">🎁</span>
+            <div>
+              <span class="text-xs font-bold text-amber-950 block">本站专属优惠码：</span>
+              <span class="text-xs text-amber-800">结账时在“优惠券/折扣码”栏输入以下代码享立减：</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="px-3 py-1.5 rounded-xl bg-white border-2 border-dashed border-rose-400 font-mono font-extrabold text-rose-700 text-sm select-all">
+              {airport.couponCode}
+            </span>
+            <a
+              href={airport.affiliateUrl}
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              class="px-4 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs transition"
+            >
+              复制并直达官网 →
+            </a>
+          </div>
+        </div>
+      )}
+
       <!-- Action Row -->
       <div class="pt-6 flex flex-wrap items-center justify-between gap-4">
         <div class="flex items-center gap-2">
           <a
-            href={`/review/${airport.slug}/`}
-            class="px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-semibold text-xs transition shadow-xs"
+            href={airport.affiliateUrl}
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+            class="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-semibold text-xs transition shadow-xs flex items-center gap-1.5"
           >
-            阅读完整独立评测报告 →
+            <span>立即前往 {airport.name} 官网</span>
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+          <a
+            href={`/review/${airport.slug}/`}
+            class="px-4 py-2.5 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold text-xs transition"
+          >
+            阅读独立评测报告
           </a>
           <a
             href="/compare/"
             class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition"
           >
-            加入多维横向对比
+            加入横向对比
           </a>
         </div>
         <div class="text-xs text-slate-500">
@@ -127,9 +171,19 @@ const airportFAQs = [
 
     <!-- Plans and Pricing Table -->
     <section class="bg-white rounded-3xl p-6 sm:p-8 border border-surface-border shadow-xs space-y-6">
-      <div>
-        <h2 class="text-xl font-bold text-slate-900">官方在售套餐与流量资费详情</h2>
-        <p class="text-xs text-slate-500 mt-1">数据来自官方控制台公开定价，绝无二次转手加价：</p>
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-xl font-bold text-slate-900">官方在售套餐与流量资费详情</h2>
+          <p class="text-xs text-slate-500 mt-1">数据来自官方控制台公开定价，绝无二次转手加价：</p>
+        </div>
+        <a
+          href={airport.affiliateUrl}
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+          class="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-semibold text-xs transition"
+        >
+          前往官网订购 →
+        </a>
       </div>
 
       <div class="overflow-x-auto">

@@ -25,7 +25,7 @@ Clash Verge Rev 具备以下核心优势：
 
 ## 步骤一：准备工作与下载客户端
 
-1. **获取机场订阅链接**：登录你在本站推荐选购的机场后台（如 [FlyCloud 飞天云](/airport/flycloud/) 或 [WestData 西部数据](/airport/westdata/)），在用户仪表盘找到“快捷导入”或“复制订阅链接（Clash/Meta）”。
+1. **获取机场订阅链接**：登录你在本站推荐选购的机场后台（如 [隐形人](/airport/yinxingren/) 或 [微风网络](/airport/breezenet/)），在用户仪表盘找到“快捷导入”或“复制订阅链接（Clash/Meta）”。
 2. **下载客户端安装包**：前往官方 GitHub Releases 页面下载 `Clash.Verge_x.x.x_x64-setup.exe`。
 3. **完成安装**：双击安装包，建议默认安装路径。首次打开时，若 Windows Defender 提示防火墙拦截，请务必勾选“专用网络”和“公用网络”并点击“允许访问”。
 

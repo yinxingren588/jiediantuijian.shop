@@ -18,6 +18,8 @@ const initialAirports = airports.map(a => ({
   advantages: a.advantages.slice(0, 3),
   disadvantages: a.disadvantages.slice(0, 2),
   overallScore: a.overallScore,
+  couponCode: a.couponCode || '',
+  affiliateUrl: a.affiliateUrl,
 }));
 ---
 
@@ -27,7 +29,7 @@ const initialAirports = airports.map(a => ({
     <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
       <div>
         <h2 class="text-lg font-bold text-slate-900">选择待对比的机场品牌 (可选 2 ~ 4 家)</h2>
-        <p class="text-xs text-slate-500 mt-1">勾选下方品牌，对比表格将实时刷新各维度核心参数：</p>
+        <p class="text-xs text-slate-500 mt-1">勾选下方品牌，对比表格将实时刷新各维度核心参数与专属优惠券：</p>
       </div>
       <button
         id="reset-compare-btn"
@@ -39,19 +41,22 @@ const initialAirports = airports.map(a => ({
     </div>
 
     <!-- Airport Checkboxes / Selector -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mt-4" id="airport-selector-container">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mt-4 max-h-72 overflow-y-auto p-1" id="airport-selector-container">
       {initialAirports.map((item, index) => (
-        <label class="flex items-center gap-2 p-3 rounded-xl border border-slate-200 hover:border-brand-300 hover:bg-brand-50/30 cursor-pointer transition select-none">
+        <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 hover:border-brand-300 hover:bg-brand-50/30 cursor-pointer transition select-none">
           <input
             type="checkbox"
             name="selected-airports"
             value={item.id}
             checked={index < 3}
-            class="airport-checkbox rounded text-brand-600 focus:ring-brand-500 w-4 h-4"
+            class="airport-checkbox rounded text-brand-600 focus:ring-brand-500 w-4 h-4 shrink-0"
           />
-          <div class="min-w-0">
-            <span class="text-sm font-semibold text-slate-900 block truncate">{item.name}</span>
-            <span class="text-[11px] text-slate-500 font-mono">¥{item.startingPrice}/月起</span>
+          <div class="min-w-0 flex-1">
+            <div class="text-xs font-bold text-slate-900 truncate">{item.name}</div>
+            <div class="flex items-center justify-between text-[10px] text-slate-500 font-mono mt-0.5">
+              <span>¥{item.startingPrice}/月起</span>
+              {item.couponCode && <span class="text-rose-600 font-bold">券</span>}
+            </div>
           </div>
         </label>
       ))}
@@ -61,7 +66,7 @@ const initialAirports = airports.map(a => ({
   <!-- Dynamic Comparison Table Container -->
   <div id="comparison-table-wrapper" class="bg-white rounded-2xl border border-surface-border shadow-xs overflow-hidden">
     <div class="overflow-x-auto">
-      <table class="w-full text-left text-sm border-collapse min-w-[700px]" id="comparison-table">
+      <table class="w-full text-left text-sm border-collapse min-w-[720px]" id="comparison-table">
         <!-- Rendered via JavaScript -->
       </table>
     </div>
@@ -110,13 +115,21 @@ const initialAirports = airports.map(a => ({
               <div class="text-xs text-brand-600 font-medium mt-0.5">${item.lineType}</div>
               <div class="mt-2 flex items-center justify-center gap-2">
                 <a href="/review/${item.slug}/" class="text-[11px] px-2 py-0.5 rounded bg-brand-50 text-brand-700 hover:bg-brand-100 font-medium">深度评测</a>
-                <a href="/airport/${item.slug}/" class="text-[11px] px-2 py-0.5 rounded bg-slate-900 text-white hover:bg-slate-800 font-medium">详情入口</a>
+                <a href="${item.affiliateUrl}" target="_blank" rel="noopener noreferrer nofollow" class="text-[11px] px-2 py-0.5 rounded bg-brand-600 text-white hover:bg-brand-700 font-medium">直达官网</a>
               </div>
             </th>
           `).join('')}
         </tr>
       </thead>
       <tbody class="divide-y divide-slate-100 text-xs sm:text-sm">
+        <tr>
+          <td class="py-3 px-4 font-semibold text-slate-700 bg-slate-50">专属优惠券</td>
+          ${selected.map(item => `
+            <td class="py-3 px-4 text-center">
+              ${item.couponCode ? `<span class="inline-block px-2 py-0.5 rounded bg-rose-50 text-rose-700 font-mono font-bold border border-rose-200 select-all">${item.couponCode}</span>` : '<span class="text-slate-400 text-xs">暂无额外券</span>'}
+            </td>
+          `).join('')}
+        </tr>
         <tr>
           <td class="py-3 px-4 font-semibold text-slate-700 bg-slate-50">综合评分</td>
           ${selected.map(item => `
@@ -218,6 +231,5 @@ const initialAirports = airports.map(a => ({
     });
   }
 
-  // Initial render
   renderTable();
 </script>
