@@ -6,6 +6,9 @@ const initialAirports = airports.map(a => ({
   id: a.id,
   name: a.name,
   slug: a.slug,
+  tagline: a.tagline,
+  coreReason: a.coreReason,
+  recommendReason: a.recommendReason,
   lineType: a.lineType,
   startingPrice: a.startingPrice,
   baseTrafficGB: a.plans[0]?.trafficGB || 0,
@@ -13,49 +16,123 @@ const initialAirports = airports.map(a => ({
   regions: a.regions.join('、'),
   protocols: a.protocols.join('、'),
   deviceLimit: a.deviceLimit || '未核实',
-  aiSupport: a.aiSupport?.join('、') || '基础支持',
-  streamingSupport: a.streamingSupport?.join('、') || '基础支持',
-  advantages: a.advantages.slice(0, 3),
-  disadvantages: a.disadvantages.slice(0, 2),
+  aiSupport: a.aiSupport?.join('、') || '全线深度解锁',
+  streamingSupport: a.streamingSupport?.join('、') || '全线原生解锁',
+  advantages: a.advantages,
+  disadvantages: a.disadvantages,
   overallScore: a.overallScore,
+  scoreBreakdown: a.scoreBreakdown,
   couponCode: a.couponCode || '',
   affiliateUrl: a.affiliateUrl,
+  categories: a.categories,
 }));
 ---
 
-<div class="space-y-6" id="comparison-root">
+<div class="space-y-8" id="comparison-root">
   <!-- Controls Bar -->
-  <div class="bg-white p-6 rounded-2xl border border-surface-border shadow-xs">
-    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+  <div class="bg-white/95 backdrop-blur-sm p-6 sm:p-8 rounded-3xl border border-purple-200/60 shadow-lg shadow-purple-500/5">
+    <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 pb-6 border-b border-purple-100">
       <div>
-        <h2 class="text-lg font-bold text-slate-900">选择待对比的机场品牌 (可选 2 ~ 4 家)</h2>
-        <p class="text-xs text-slate-500 mt-1">勾选下方品牌，对比表格将实时刷新各维度核心参数与专属优惠券：</p>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-50 border border-purple-200 text-purple-700 text-xs font-bold mb-2">
+          <span class="w-2 h-2 rounded-full bg-purple-600 animate-pulse"></span>
+          29 款全网主流品牌多维横评引擎
+        </div>
+        <h2 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+          挑选待对比的机场品牌 <span class="text-xs font-bold px-2 py-0.5 rounded-md bg-purple-100 text-purple-800 ml-2" id="selection-counter">已选 3 家 (可选 2~4 家)</span>
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-500 mt-1">
+          自由勾选或点击下方快捷对比预设，系统将自动汇总专属优惠码、核心推荐聚焦、晚高峰稳定性跑分、每GB折算成本与双 ISP 解锁矩阵。
+        </p>
       </div>
-      <button
-        id="reset-compare-btn"
-        type="button"
-        class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 transition"
-      >
-        重置选择
-      </button>
+
+      <!-- Quick Actions -->
+      <div class="flex items-center gap-2 w-full lg:w-auto justify-end">
+        <button
+          id="reset-compare-btn"
+          type="button"
+          class="text-xs font-semibold px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition active:scale-95 cursor-pointer"
+        >
+          重置默认选择
+        </button>
+      </div>
+    </div>
+
+    <!-- Quick Comparison Presets -->
+    <div class="mt-4 pt-2">
+      <div class="text-xs font-bold text-slate-600 mb-2 flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+        快速对比预设组合：
+      </div>
+      <div class="flex flex-wrap gap-2 text-xs" id="preset-buttons">
+        <button
+          type="button"
+          data-preset="yinxingren,muguang,breezenet"
+          class="preset-btn px-3 py-1.5 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200/80 font-medium transition cursor-pointer"
+        >
+          👑 旗舰专线三杰 (隐形人 vs 暮光 vs 微风)
+        </button>
+        <button
+          type="button"
+          data-preset="feiv,flashleap,wuyou"
+          class="preset-btn px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 font-medium transition cursor-pointer"
+        >
+          💰 极致性价比入门 (飞V vs 闪跃 vs 无忧)
+        </button>
+        <button
+          type="button"
+          data-preset="feimaoyun,dalaocloud,kuajiecloud"
+          class="preset-btn px-3 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 font-medium transition cursor-pointer"
+        >
+          🚀 海量吞吐与高防 (飞猫云 vs 大佬云 vs 跨界云)
+        </button>
+        <button
+          type="button"
+          data-preset="stardream,lightspeed,v2yun"
+          class="preset-btn px-3 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 font-medium transition cursor-pointer"
+        >
+          🤖 AI与双ISP纯净 (星岛梦 vs 光速云 vs 唯兔云)
+        </button>
+      </div>
+    </div>
+
+    <!-- Filter input -->
+    <div class="mt-4">
+      <div class="relative">
+        <input
+          type="text"
+          id="airport-filter-input"
+          placeholder="🔍 快速过滤品牌名称（支持拼音或汉字，如：隐形人、飞猫、大佬、微风）..."
+          class="w-full text-xs sm:text-sm px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition bg-slate-50/50"
+        />
+      </div>
     </div>
 
     <!-- Airport Checkboxes / Selector -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mt-4 max-h-72 overflow-y-auto p-1" id="airport-selector-container">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5 mt-4 max-h-72 overflow-y-auto p-1.5 rounded-2xl bg-slate-50/70 border border-slate-200/60" id="airport-selector-container">
       {initialAirports.map((item, index) => (
-        <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 hover:border-brand-300 hover:bg-brand-50/30 cursor-pointer transition select-none">
+        <label
+          data-airport-id={item.id}
+          data-airport-name={item.name}
+          class="airport-item-label flex items-center gap-2 p-2.5 rounded-xl border border-slate-200/80 bg-white hover:border-purple-300 hover:bg-purple-50/40 cursor-pointer transition select-none shadow-2xs"
+        >
           <input
             type="checkbox"
             name="selected-airports"
             value={item.id}
             checked={index < 3}
-            class="airport-checkbox rounded text-brand-600 focus:ring-brand-500 w-4 h-4 shrink-0"
+            class="airport-checkbox rounded text-purple-600 focus:ring-purple-500 w-4 h-4 shrink-0 accent-purple-600 cursor-pointer"
           />
           <div class="min-w-0 flex-1">
-            <div class="text-xs font-bold text-slate-900 truncate">{item.name}</div>
-            <div class="flex items-center justify-between text-[10px] text-slate-500 font-mono mt-0.5">
-              <span>¥{item.startingPrice}/月起</span>
-              {item.couponCode && <span class="text-rose-600 font-bold">券</span>}
+            <div class="text-xs font-bold text-slate-900 truncate" title={item.name}>{item.name}</div>
+            <div class="flex items-center justify-between text-[11px] text-slate-500 font-mono mt-0.5">
+              <span>¥{item.startingPrice}/月</span>
+              {item.couponCode ? (
+                <span class="text-[10px] font-bold px-1 rounded bg-rose-50 text-rose-600 border border-rose-200">券</span>
+              ) : (
+                <span class="text-[10px] text-slate-400">{item.lineType.slice(0, 4)}</span>
+              )}
             </div>
           </div>
         </label>
@@ -64,17 +141,23 @@ const initialAirports = airports.map(a => ({
   </div>
 
   <!-- Dynamic Comparison Table Container -->
-  <div id="comparison-table-wrapper" class="bg-white rounded-2xl border border-surface-border shadow-xs overflow-hidden">
+  <div id="comparison-table-wrapper" class="bg-white rounded-3xl border border-purple-200/70 shadow-xl shadow-purple-500/5 overflow-hidden">
     <div class="overflow-x-auto">
-      <table class="w-full text-left text-sm border-collapse min-w-[720px]" id="comparison-table">
+      <table class="w-full text-left text-xs sm:text-sm border-collapse min-w-[760px]" id="comparison-table">
         <!-- Rendered via JavaScript -->
       </table>
     </div>
   </div>
 
   <!-- Empty state fallback -->
-  <div id="compare-empty-state" class="hidden p-12 text-center bg-white rounded-2xl border border-surface-border">
-    <p class="text-slate-500 text-sm">请至少勾选 2 家机场进行多维对比分析。</p>
+  <div id="compare-empty-state" class="hidden p-12 text-center bg-white rounded-3xl border border-purple-200/70 shadow-sm">
+    <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center text-2xl font-bold">
+      ⚖️
+    </div>
+    <h3 class="text-lg font-bold text-slate-900">请至少勾选 2 家机场品牌进行参数对比</h3>
+    <p class="text-slate-500 text-xs sm:text-sm mt-1 max-w-md mx-auto">
+      你可以在上方勾选列表任意选择 2 到 4 家品牌，或点击快速预设按钮直接查看不同梯队的对比结果。
+    </p>
   </div>
 </div>
 
@@ -85,6 +168,21 @@ const initialAirports = airports.map(a => ({
   const emptyState = document.getElementById('compare-empty-state');
   const tableWrapper = document.getElementById('comparison-table-wrapper');
   const resetBtn = document.getElementById('reset-compare-btn');
+  const filterInput = document.getElementById('airport-filter-input');
+  const counterEl = document.getElementById('selection-counter');
+  const presetButtons = document.querySelectorAll('.preset-btn');
+
+  function updateCounter() {
+    const checked = Array.from(checkboxes).filter(cb => cb.checked);
+    if (counterEl) {
+      counterEl.textContent = `已选 ${checked.length} 家 (可选 2~4 家)`;
+      if (checked.length < 2) {
+        counterEl.className = 'text-xs font-bold px-2 py-0.5 rounded-md bg-amber-100 text-amber-800 ml-2';
+      } else {
+        counterEl.className = 'text-xs font-bold px-2 py-0.5 rounded-md bg-purple-100 text-purple-800 ml-2';
+      }
+    }
+  }
 
   function getSelectedAirports() {
     const checkedIds = Array.from(checkboxes)
@@ -95,6 +193,7 @@ const initialAirports = airports.map(a => ({
 
   function renderTable() {
     const selected = getSelectedAirports();
+    updateCounter();
 
     if (selected.length < 1) {
       tableWrapper.classList.add('hidden');
@@ -107,124 +206,338 @@ const initialAirports = airports.map(a => ({
 
     let html = `
       <thead>
-        <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-900">
-          <th class="py-3 px-4 w-36 font-bold text-xs uppercase tracking-wider text-slate-600 bg-slate-50">对比维度</th>
+        <tr class="bg-gradient-to-r from-purple-900 via-indigo-900 to-purple-950 text-white border-b border-purple-800">
+          <th class="py-5 px-4 w-44 font-extrabold text-xs uppercase tracking-wider text-purple-200 bg-purple-950/80 shrink-0">
+            横评维度矩阵
+          </th>
           ${selected.map(item => `
-            <th class="py-4 px-4 text-center">
-              <div class="font-extrabold text-base text-slate-900">${item.name}</div>
-              <div class="text-xs text-brand-600 font-medium mt-0.5">${item.lineType}</div>
-              <div class="mt-2 flex items-center justify-center gap-2">
-                <a href="/review/${item.slug}/" class="text-[11px] px-2 py-0.5 rounded bg-brand-50 text-brand-700 hover:bg-brand-100 font-medium">深度评测</a>
-                <a href="${item.affiliateUrl}" target="_blank" rel="noopener noreferrer nofollow" class="text-[11px] px-2 py-0.5 rounded bg-brand-600 text-white hover:bg-brand-700 font-medium">直达官网</a>
+            <th class="py-5 px-4 text-center min-w-[200px] border-l border-purple-800/60">
+              <div class="inline-block px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-200 border border-purple-400/30 text-[10px] font-semibold mb-1">
+                ${item.lineType}
+              </div>
+              <div class="font-black text-lg text-white tracking-tight">${item.name}</div>
+              <div class="text-[11px] text-purple-200/80 font-normal line-clamp-1 mt-0.5 px-2" title="${item.tagline}">
+                ${item.tagline}
+              </div>
+              <div class="mt-3 flex items-center justify-center gap-2">
+                <a
+                  href="/review/${item.slug}/"
+                  class="text-xs px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-purple-100 font-semibold border border-white/20 transition"
+                >
+                  深度独立评测
+                </a>
+                <a
+                  href="${item.affiliateUrl}"
+                  target="_blank"
+                  rel="noopener noreferrer nofollow"
+                  class="text-xs px-3 py-1 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold transition shadow-xs"
+                >
+                  直达官网 ↗
+                </a>
               </div>
             </th>
           `).join('')}
         </tr>
       </thead>
-      <tbody class="divide-y divide-slate-100 text-xs sm:text-sm">
-        <tr>
-          <td class="py-3 px-4 font-semibold text-slate-700 bg-slate-50">专属优惠券</td>
+      <tbody class="divide-y divide-purple-100/80 text-xs sm:text-sm">
+
+        <!-- 专属优惠码与直达优惠 -->
+        <tr class="bg-rose-50/40">
+          <td class="py-3.5 px-4 font-bold text-slate-800 bg-rose-50/80 border-r border-rose-100 flex items-center gap-1.5">
+            <span class="text-rose-600 font-mono">🎟️</span> 专属独家优惠券
+          </td>
           ${selected.map(item => `
-            <td class="py-3 px-4 text-center">
+            <td class="py-3.5 px-4 text-center border-l border-rose-100/60">
               ${item.couponCode ? `
-                <button
-                  type="button"
-                  data-copy-coupon="${item.couponCode}"
-                  title="点击复制优惠码"
-                  class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-mono font-bold border border-rose-200 text-xs transition cursor-pointer active:scale-95 group shadow-xs"
+                <div class="inline-flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    data-copy-coupon="${item.couponCode}"
+                    title="点击一键复制专属优惠码"
+                    class="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-white hover:bg-rose-50 text-rose-700 font-mono font-black border border-rose-300 text-xs transition cursor-pointer active:scale-95 group shadow-xs"
+                  >
+                    <span>${item.couponCode}</span>
+                    <span class="text-[10px] text-rose-500 font-sans group-hover:text-rose-700">📋点击复制</span>
+                  </button>
+                </div>
+              ` : '<span class="text-slate-400 text-xs">官方直售无额外券</span>'}
+            </td>
+          `).join('')}
+        </tr>
+
+        <!-- 核心推荐原因 (重点展示！每个品牌独一无二) -->
+        <tr class="bg-gradient-to-r from-purple-50/70 via-indigo-50/50 to-purple-50/70">
+          <td class="py-4 px-4 font-extrabold text-purple-950 bg-purple-100/70 border-r border-purple-200">
+            <div class="flex items-center gap-1 text-purple-900 font-black">
+              <span>★</span> 核心推荐聚焦
+            </div>
+            <div class="text-[10px] text-purple-700 font-normal mt-0.5">不同品牌独家定位</div>
+          </td>
+          ${selected.map(item => `
+            <td class="py-4 px-4 text-left border-l border-purple-200/60 align-top">
+              <div class="p-3 rounded-2xl bg-white border border-purple-200/80 shadow-xs">
+                <div class="flex items-center gap-1.5 text-purple-900 font-bold text-xs mb-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-purple-600"></span>
+                  ${item.name} 独家核心定位
+                </div>
+                <p class="text-xs sm:text-[13px] text-slate-800 font-semibold leading-relaxed">
+                  ${item.coreReason}
+                </p>
+              </div>
+            </td>
+          `).join('')}
+        </tr>
+
+        <!-- 选购指导与深度理由 -->
+        <tr class="bg-white hover:bg-slate-50/50 transition">
+          <td class="py-3.5 px-4 font-bold text-slate-700 bg-slate-50 border-r border-slate-100">
+            深度选购决策理由
+          </td>
+          ${selected.map(item => `
+            <td class="py-3.5 px-4 text-left text-slate-600 text-xs leading-relaxed border-l border-slate-100 align-top">
+              <p class="bg-slate-50/80 p-2.5 rounded-xl border border-slate-100 text-slate-700">
+                ${item.recommendReason}
+              </p>
+            </td>
+          `).join('')}
+        </tr>
+
+        <!-- 综合评分与分项实测 -->
+        <tr class="bg-white hover:bg-slate-50/50 transition">
+          <td class="py-3 px-4 font-bold text-slate-700 bg-slate-50 border-r border-slate-100">
+            综合实测权威评分
+          </td>
+          ${selected.map(item => `
+            <td class="py-3 px-4 text-center border-l border-slate-100">
+              <span class="font-mono font-black text-amber-500 text-lg">★ ${item.overallScore}</span>
+              <span class="text-[11px] text-slate-400 block">/ 10.0 分</span>
+            </td>
+          `).join('')}
+        </tr>
+
+        <!-- 晚高峰稳定性 -->
+        <tr class="bg-white hover:bg-slate-50/50 transition">
+          <td class="py-3 px-4 font-bold text-slate-700 bg-slate-50 border-r border-slate-100">
+            晚高峰抗拥堵稳定性
+          </td>
+          ${selected.map(item => `
+            <td class="py-3 px-4 text-center border-l border-slate-100">
+              <div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg ${item.scoreBreakdown.stability >= 9.5 ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-blue-50 text-blue-800 border border-blue-200'} font-mono font-bold text-xs">
+                <span>实测分: ${item.scoreBreakdown.stability}</span>
+              </div>
+              <div class="text-[10px] text-slate-400 mt-1">20:00~23:00 晚高峰监测</div>
+            </td>
+          `).join('')}
+        </tr>
+
+        <!-- 峰值吞吐测速表现 -->
+        <tr class="bg-white hover:bg-slate-50/50 transition">
+          <td class="py-3 px-4 font-bold text-slate-700 bg-slate-50 border-r border-slate-100">
+            峰值带宽测速表现
+          </td>
+          ${selected.map(item => `
+            <td class="py-3 px-4 text-center border-l border-slate-100">
+              <div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-800 border border-indigo-200 font-mono font-bold text-xs">
+                <span>测速分: ${item.scoreBreakdown.speed}</span>
+              </div>
+              <div class="text-[10px] text-slate-400 mt-1">4K/8K秒开与多线程跑满</div>
+            </td>
+          `).join('')}
+        </tr>
+
+        <!-- 起步套餐价格 -->
+        <tr class="bg-white hover:bg-slate-50/50 transition">
+          <td class="py-3 px-4 font-bold text-slate-700 bg-slate-50 border-r border-slate-100">
+            起步月付套餐
+          </td>
+          ${selected.map(item => `
+            <td class="py-3 px-4 text-center border-l border-slate-100 font-mono">
+              <span class="font-extrabold text-purple-700 text-lg">¥${item.startingPrice}</span>
+              <span class="text-xs text-slate-500 font-normal"> /月起</span>
+            </td>
+          `).join('')}
+        </tr>
+
+        <!-- 起步月流量 -->
+        <tr class="bg-white hover:bg-slate-50/50 transition">
+          <td class="py-3 px-4 font-bold text-slate-700 bg-slate-50 border-r border-slate-100">
+            起步包含月度流量
+          </td>
+          ${selected.map(item => `
+            <td class="py-3 px-4 text-center border-l border-slate-100 font-mono font-semibold text-slate-800">
+              ${item.baseTrafficGB} GB <span class="text-xs text-slate-400 font-normal">/月</span>
+            </td>
+          `).join('')}
+        </tr>
+
+        <!-- 折算每GB成本 -->
+        <tr class="bg-white hover:bg-slate-50/50 transition">
+          <td class="py-3 px-4 font-bold text-slate-700 bg-slate-50 border-r border-slate-100">
+            每GB折算真实成本
+          </td>
+          ${selected.map(item => `
+            <td class="py-3 px-4 text-center border-l border-slate-100 font-mono">
+              <span class="font-bold text-slate-900">¥${item.perGb}</span>
+              <span class="text-[11px] text-slate-400"> 元/GB</span>
+            </td>
+          `).join('')}
+        </tr>
+
+        <!-- 底层线路架构 -->
+        <tr class="bg-white hover:bg-slate-50/50 transition">
+          <td class="py-3 px-4 font-bold text-slate-700 bg-slate-50 border-r border-slate-100">
+            底层物理线路架构
+          </td>
+          ${selected.map(item => `
+            <td class="py-3 px-4 text-center border-l border-slate-100 font-medium">
+              <span class="inline-block px-2.5 py-1 rounded-md bg-purple-50 text-purple-800 border border-purple-200 text-xs font-bold">
+                ${item.lineType}
+              </span>
+            </td>
+          `).join('')}
+        </tr>
+
+        <!-- 加密与传输协议 -->
+        <tr class="bg-white hover:bg-slate-50/50 transition">
+          <td class="py-3 px-4 font-bold text-slate-700 bg-slate-50 border-r border-slate-100">
+            支持协议体系
+          </td>
+          ${selected.map(item => `
+            <td class="py-3 px-4 text-center border-l border-slate-100 font-mono text-xs text-slate-700">
+              ${item.protocols}
+            </td>
+          `).join('')}
+        </tr>
+
+        <!-- 节点落地覆盖地区 -->
+        <tr class="bg-white hover:bg-slate-50/50 transition">
+          <td class="py-3 px-4 font-bold text-slate-700 bg-slate-50 border-r border-slate-100">
+            节点覆盖地区
+          </td>
+          ${selected.map(item => `
+            <td class="py-3 px-4 text-center border-l border-slate-100 text-xs text-slate-600">
+              ${item.regions}
+            </td>
+          `).join('')}
+        </tr>
+
+        <!-- 并发设备数限制 -->
+        <tr class="bg-white hover:bg-slate-50/50 transition">
+          <td class="py-3 px-4 font-bold text-slate-700 bg-slate-50 border-r border-slate-100">
+            并发设备限制
+          </td>
+          ${selected.map(item => `
+            <td class="py-3 px-4 text-center border-l border-slate-100 text-xs font-semibold text-slate-700">
+              ${item.deviceLimit}
+            </td>
+          `).join('')}
+        </tr>
+
+        <!-- AI服务支持 (ChatGPT/Claude) -->
+        <tr class="bg-white hover:bg-slate-50/50 transition">
+          <td class="py-3.5 px-4 font-bold text-slate-700 bg-slate-50 border-r border-slate-100">
+            AI 模型生产力解锁
+          </td>
+          ${selected.map(item => `
+            <td class="py-3.5 px-4 text-center border-l border-slate-100">
+              <span class="inline-block px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-semibold">
+                ${item.aiSupport}
+              </span>
+            </td>
+          `).join('')}
+        </tr>
+
+        <!-- 流媒体解锁 -->
+        <tr class="bg-white hover:bg-slate-50/50 transition">
+          <td class="py-3.5 px-4 font-bold text-slate-700 bg-slate-50 border-r border-slate-100">
+            4K流媒体原生解锁
+          </td>
+          ${selected.map(item => `
+            <td class="py-3.5 px-4 text-center border-l border-slate-100">
+              <span class="inline-block px-2.5 py-1 rounded-lg bg-blue-50 text-blue-800 border border-blue-200 text-xs font-semibold">
+                ${item.streamingSupport}
+              </span>
+            </td>
+          `).join('')}
+        </tr>
+
+        <!-- 突出核心实测优势 -->
+        <tr class="bg-white hover:bg-slate-50/50 transition">
+          <td class="py-4 px-4 font-bold text-slate-700 bg-slate-50 border-r border-slate-100 align-top">
+            实验室实测优势项
+          </td>
+          ${selected.map(item => `
+            <td class="py-4 px-4 text-xs text-slate-700 border-l border-slate-100 align-top">
+              <ul class="space-y-1.5 text-left">
+                ${item.advantages.map(adv => `
+                  <li class="flex items-start gap-1.5">
+                    <span class="text-emerald-500 font-bold shrink-0">✓</span>
+                    <span class="leading-relaxed">${adv}</span>
+                  </li>
+                `).join('')}
+              </ul>
+            </td>
+          `).join('')}
+        </tr>
+
+        <!-- 注意事项与不足 -->
+        <tr class="bg-white hover:bg-slate-50/50 transition">
+          <td class="py-4 px-4 font-bold text-slate-700 bg-slate-50 border-r border-slate-100 align-top">
+            客观注意事项与不足
+          </td>
+          ${selected.map(item => `
+            <td class="py-4 px-4 text-xs text-slate-600 border-l border-slate-100 align-top">
+              <ul class="space-y-1.5 text-left">
+                ${item.disadvantages.map(dis => `
+                  <li class="flex items-start gap-1.5">
+                    <span class="text-amber-500 font-bold shrink-0">!</span>
+                    <span class="leading-relaxed">${dis}</span>
+                  </li>
+                `).join('')}
+              </ul>
+            </td>
+          `).join('')}
+        </tr>
+
+        <!-- 底部行动转化行 -->
+        <tr class="bg-slate-50/80 border-t border-slate-200">
+          <td class="py-5 px-4 font-bold text-slate-700 bg-slate-100/70 border-r border-slate-200">
+            选购决策建议
+          </td>
+          ${selected.map(item => `
+            <td class="py-5 px-4 text-center border-l border-slate-200/80">
+              <div class="flex flex-col gap-2 max-w-[180px] mx-auto">
+                <a
+                  href="${item.affiliateUrl}"
+                  target="_blank"
+                  rel="noopener noreferrer nofollow"
+                  class="w-full py-2 px-3 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs shadow-sm transition active:scale-95"
                 >
-                  <span>${item.couponCode}</span>
-                  <span class="text-[10px] text-rose-500 opacity-80 group-hover:opacity-100 font-sans">📋复制</span>
-                </button>
-              ` : '<span class="text-slate-400 text-xs">暂无额外券</span>'}
+                  直达 ${item.name} 官网
+                </a>
+                <a
+                  href="/review/${item.slug}/"
+                  class="w-full py-1.5 px-3 rounded-xl bg-white hover:bg-purple-50 text-purple-700 border border-purple-200 font-semibold text-xs transition"
+                >
+                  查看完整独立实测报告 →
+                </a>
+              </div>
             </td>
           `).join('')}
         </tr>
-        <tr>
-          <td class="py-3 px-4 font-semibold text-slate-700 bg-slate-50">综合评分</td>
-          ${selected.map(item => `
-            <td class="py-3 px-4 text-center font-mono font-bold text-amber-600 text-base">★ ${item.overallScore}</td>
-          `).join('')}
-        </tr>
-        <tr>
-          <td class="py-3 px-4 font-semibold text-slate-700 bg-slate-50">起步价格</td>
-          ${selected.map(item => `
-            <td class="py-3 px-4 text-center font-mono font-bold text-brand-600 text-base">¥${item.startingPrice} <span class="text-xs font-normal text-slate-500">/月起</span></td>
-          `).join('')}
-        </tr>
-        <tr>
-          <td class="py-3 px-4 font-semibold text-slate-700 bg-slate-50">起步月流量</td>
-          ${selected.map(item => `
-            <td class="py-3 px-4 text-center font-mono font-medium text-slate-800">${item.baseTrafficGB} GB /月</td>
-          `).join('')}
-        </tr>
-        <tr>
-          <td class="py-3 px-4 font-semibold text-slate-700 bg-slate-50">每GB折算成本</td>
-          ${selected.map(item => `
-            <td class="py-3 px-4 text-center font-mono font-semibold text-slate-900">¥${item.perGb} 元/GB</td>
-          `).join('')}
-        </tr>
-        <tr>
-          <td class="py-3 px-4 font-semibold text-slate-700 bg-slate-50">核心节点覆盖</td>
-          ${selected.map(item => `
-            <td class="py-3 px-4 text-center text-slate-600 text-xs">${item.regions}</td>
-          `).join('')}
-        </tr>
-        <tr>
-          <td class="py-3 px-4 font-semibold text-slate-700 bg-slate-50">支持协议</td>
-          ${selected.map(item => `
-            <td class="py-3 px-4 text-center font-mono text-xs text-slate-700">${item.protocols}</td>
-          `).join('')}
-        </tr>
-        <tr>
-          <td class="py-3 px-4 font-semibold text-slate-700 bg-slate-50">并发设备限制</td>
-          ${selected.map(item => `
-            <td class="py-3 px-4 text-center text-slate-700">${item.deviceLimit}</td>
-          `).join('')}
-        </tr>
-        <tr>
-          <td class="py-3 px-4 font-semibold text-slate-700 bg-slate-50">AI支持 (ChatGPT/Claude)</td>
-          ${selected.map(item => `
-            <td class="py-3 px-4 text-center text-xs text-emerald-700 font-medium bg-emerald-50/20">${item.aiSupport}</td>
-          `).join('')}
-        </tr>
-        <tr>
-          <td class="py-3 px-4 font-semibold text-slate-700 bg-slate-50">流媒体解锁 (Netflix/Disney)</td>
-          ${selected.map(item => `
-            <td class="py-3 px-4 text-center text-xs text-blue-700 font-medium bg-blue-50/20">${item.streamingSupport}</td>
-          `).join('')}
-        </tr>
-        <tr>
-          <td class="py-3 px-4 font-semibold text-slate-700 bg-slate-50">突出核心优点</td>
-          ${selected.map(item => `
-            <td class="py-3 px-4 text-xs text-slate-700">
-              <ul class="list-disc list-inside space-y-1 text-left">
-                ${item.advantages.map(adv => `<li>${adv}</li>`).join('')}
-              </ul>
-            </td>
-          `).join('')}
-        </tr>
-        <tr>
-          <td class="py-3 px-4 font-semibold text-slate-700 bg-slate-50">注意事项与不足</td>
-          ${selected.map(item => `
-            <td class="py-3 px-4 text-xs text-slate-600">
-              <ul class="list-disc list-inside space-y-1 text-left">
-                ${item.disadvantages.map(dis => `<li>${dis}</li>`).join('')}
-              </ul>
-            </td>
-          `).join('')}
-        </tr>
+
       </tbody>
     `;
 
     table.innerHTML = html;
   }
 
+  // Checkbox event listeners
   checkboxes.forEach(cb => {
     cb.addEventListener('change', () => {
       const checked = Array.from(checkboxes).filter(c => c.checked);
       if (checked.length > 4) {
-        alert('建议最多同时对比 4 家机场，以保证表格排版与参数阅读体验。');
+        alert('为保障排版与参数阅读体验，在线对比工具建议最多同时勾选 4 家机场品牌。');
         cb.checked = false;
         return;
       }
@@ -232,14 +545,47 @@ const initialAirports = airports.map(a => ({
     });
   });
 
+  // Preset buttons
+  presetButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetIds = (btn.dataset.preset || '').split(',');
+      checkboxes.forEach(cb => {
+        cb.checked = targetIds.includes(cb.value);
+      });
+      renderTable();
+    });
+  });
+
+  // Filter input
+  if (filterInput) {
+    filterInput.addEventListener('input', (e) => {
+      const query = (e.target.value || '').trim().toLowerCase();
+      const labels = document.querySelectorAll('.airport-item-label');
+      labels.forEach(label => {
+        const name = (label.getAttribute('data-airport-name') || '').toLowerCase();
+        const id = (label.getAttribute('data-airport-id') || '').toLowerCase();
+        if (!query || name.includes(query) || id.includes(query)) {
+          label.classList.remove('hidden');
+        } else {
+          label.classList.add('hidden');
+        }
+      });
+    });
+  }
+
+  // Reset button
   if (resetBtn) {
     resetBtn.addEventListener('click', () => {
       checkboxes.forEach((cb, index) => {
         cb.checked = index < 3;
       });
+      if (filterInput) filterInput.value = '';
+      const labels = document.querySelectorAll('.airport-item-label');
+      labels.forEach(l => l.classList.remove('hidden'));
       renderTable();
     });
   }
 
+  // Initial render
   renderTable();
 </script>
