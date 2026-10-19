@@ -24,30 +24,102 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     </header>
 
     <div class="space-y-6 text-sm text-slate-700">
-      <div class="p-6 rounded-2xl bg-white border border-surface-border shadow-xs space-y-3">
-        <h2 class="text-lg font-bold text-slate-900">📧 官方电子邮箱</h2>
-        <p class="text-slate-600">
-          读者反馈、数据修正与纠错沟通：<br/>
-          <span class="font-mono font-bold text-brand-600 text-base">support@jiediantuijian.shop</span>
-        </p>
-        <p class="text-xs text-slate-400">
-          * 我们通常会在 1-2 个工作日内查阅并回复读者来信。
-        </p>
+      <!-- Business & Cooperation Telegram Card -->
+      <div class="p-6 sm:p-8 rounded-3xl bg-white border border-purple-200/80 shadow-xs space-y-5">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center text-xl shrink-0 border border-sky-100">
+              ✈️
+            </div>
+            <div>
+              <h2 class="text-lg font-bold text-slate-900">商务合作与推广联络</h2>
+              <span class="text-xs text-slate-500">Business Cooperation & Advertising Inquiries</span>
+            </div>
+          </div>
+          <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1.5 shrink-0">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            实时在线接洽
+          </span>
+        </div>
+
+        <div class="space-y-3">
+          <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
+            我们为海内外优质机场品牌、网络技术服务商及出海开发者提供客观测评、专栏推广、品牌专区及流量互推合作。如有合作推广、品牌实测收录、独家优惠码发布或广告赞助意向，欢迎通过官方 Telegram 专线直接接洽：
+          </p>
+
+          <div class="p-5 rounded-2xl bg-gradient-to-r from-sky-50/80 via-indigo-50/40 to-purple-50/40 border border-sky-200/90 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <div class="text-xs text-sky-900 font-semibold mb-1">官方专属 Telegram (电报) 商务联络通道：</div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-xl sm:text-2xl font-black font-mono text-sky-700 select-all tracking-wide">
+                  @yinxingren_588
+                </span>
+                <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-sky-100 text-sky-800 border border-sky-300">
+                  官方唯一认证
+                </span>
+              </div>
+              <p class="text-[11px] text-slate-500 mt-1">
+                * 认准唯一 Username: <strong class="text-slate-800 font-mono">@yinxingren_588</strong>，谨防任何同名或带后缀的高仿欺诈账号
+              </p>
+            </div>
+
+            <a
+              href="https://t.me/yinxingren_588"
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              class="px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-bold text-xs sm:text-sm transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2 shrink-0 active:scale-95"
+            >
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.52 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+              </svg>
+              <span>直达 Telegram 联络</span>
+              <span>→</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 text-xs text-slate-600">
+          <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100 space-y-1">
+            <div class="font-bold text-slate-900 flex items-center gap-1">
+              <span>⏱️</span>
+              <span>快速响应时效</span>
+            </div>
+            <p class="text-[11px] text-slate-500 leading-relaxed">工作时间实时在线，通常 30 分钟至 2 小时内极速回复对接沟通。</p>
+          </div>
+          <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100 space-y-1">
+            <div class="font-bold text-slate-900 flex items-center gap-1">
+              <span>🤝</span>
+              <span>多元合作模式</span>
+            </div>
+            <p class="text-[11px] text-slate-500 leading-relaxed">支持专属优惠码定制、品牌独立评测建档、排行榜参评及横向对比收录。</p>
+          </div>
+          <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100 space-y-1">
+            <div class="font-bold text-slate-900 flex items-center gap-1">
+              <span>🛡️</span>
+              <span>客观实测底线</span>
+            </div>
+            <p class="text-[11px] text-slate-500 leading-relaxed">所有合作品牌均需通过编辑部实机晚高峰丢包压测，拒绝虚假刷榜。</p>
+          </div>
+        </div>
       </div>
 
-      <div class="p-6 rounded-2xl bg-white border border-surface-border shadow-xs space-y-4">
-        <h2 class="text-lg font-bold text-slate-900">📝 节点评测申请与纠错说明</h2>
-        <p class="leading-relaxed">
-          如果您是机场运营方并希望将您的品牌纳入本站的实测数据库，或者您发现本站展示的套餐资费与您官网现有定价存在差异，请在来信中提供：
+      <!-- Review Application & Correction Guidelines -->
+      <div class="p-6 sm:p-8 rounded-3xl bg-white border border-surface-border shadow-xs space-y-4">
+        <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+          <span>📝</span>
+          <span>品牌入库评测申请与纠错说明</span>
+        </h2>
+        <p class="leading-relaxed text-slate-600 text-xs sm:text-sm">
+          如果您是机场运营方并希望将您的品牌纳入本站的 29 款实测数据库，或者您发现本站展示的套餐资费与您官网最新定价存在差异，请通过上述 Telegram (<strong class="text-sky-700 font-mono">@yinxingren_588</strong>) 与我们联系并附带以下材料：
         </p>
-        <ul class="list-disc list-inside space-y-1 text-xs text-slate-600">
-          <li>您的官网正式域名与公开控制台资费说明页面。</li>
-          <li>技术架构证明（如 IEPL 专线入口与落地服务器测试 IP 范围）。</li>
-          <li>用于编辑部为期两周晚高峰丢包率抽测的测试账号。</li>
+        <ul class="list-disc list-inside space-y-1.5 text-xs text-slate-600 pl-1">
+          <li>您的官网正式运营域名与公开控制台资费说明页面。</li>
+          <li>技术架构概况（如 IEPL / IPLC 专线入口及测试节点集群范围）。</li>
+          <li>供编辑部进行为期 7~14 天晚高峰（20:00~23:00）丢包率与测速抽检的测试订阅。</li>
         </ul>
-        <p class="text-xs text-amber-800 bg-amber-50 p-3 rounded-xl border border-amber-200">
-          <strong>特别说明：</strong>本站不接受任何“付费买榜”或“要求强行删除客观缺点”的商业要求。所有评测数据均必须接受客观网络监测。
-        </p>
+        <div class="text-xs text-amber-900 bg-amber-50/80 p-3.5 rounded-xl border border-amber-200 leading-relaxed">
+          <strong>特别说明：</strong>本站秉持客观独立原则，不接受任何“付费买榜”或“要求强行删除客观真实缺点”的要求。所有进入排行榜与评测库的数据均以真实监测采样为准。
+        </div>
       </div>
     </div>
   </div>
