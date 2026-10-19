@@ -73,9 +73,15 @@ const tableRows = items.map(({ airport, rank, score, highlight }) => {
                   </a>
                 </span>
                 {row.airport.couponCode && (
-                  <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-200 font-mono">
-                    券: {row.airport.couponCode}
-                  </span>
+                  <button
+                    type="button"
+                    data-copy-coupon={row.airport.couponCode}
+                    title={`点击复制专属优惠码：${row.airport.couponCode}`}
+                    class="text-[11px] font-bold px-2 py-0.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-mono transition-all cursor-pointer shadow-xs active:scale-95 flex items-center gap-1 group"
+                  >
+                    <span>券: {row.airport.couponCode}</span>
+                    <span class="text-[10px] text-rose-500 opacity-80 group-hover:opacity-100 font-sans">📋</span>
+                  </button>
                 )}
               </div>
               <div class="text-xs text-slate-500 mt-0.5 line-clamp-1">

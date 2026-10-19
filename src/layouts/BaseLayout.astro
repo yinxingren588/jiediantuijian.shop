@@ -63,5 +63,87 @@ const {
     </main>
 
     <Footer />
+
+    <!-- Global Floating Coupon Toast Notification -->
+    <div
+      id="coupon-toast"
+      class="fixed top-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 -translate-y-4 transition-all duration-300 ease-out flex items-center gap-3 px-5 py-3 rounded-2xl bg-slate-900/95 text-white shadow-2xl border border-purple-500/40 backdrop-blur-md text-xs sm:text-sm font-medium"
+      role="alert"
+    >
+      <span class="flex items-center justify-center w-6 h-6 rounded-full bg-emerald-500 text-white font-bold text-xs shrink-0 shadow-xs">✓</span>
+      <div>
+        <span class="font-bold text-amber-300 font-mono" id="coupon-toast-code"></span>
+        <span class="text-slate-200"> 已成功复制到剪贴板！</span>
+        <span class="text-slate-400 block text-[11px] mt-0.5">结账页面直接“粘贴”即可享受折上折扣抵扣</span>
+      </div>
+    </div>
+
+    <script is:inline>
+      (function() {
+        function showCouponToast(code) {
+          const toast = document.getElementById('coupon-toast');
+          const codeEl = document.getElementById('coupon-toast-code');
+          if (!toast || !codeEl) return;
+          codeEl.textContent = '优惠券【' + code + '】';
+          toast.classList.remove('opacity-0', '-translate-y-4', 'pointer-events-none');
+          toast.classList.add('opacity-100', 'translate-y-0');
+          clearTimeout(window.__couponToastTimer);
+          window.__couponToastTimer = setTimeout(function() {
+            toast.classList.remove('opacity-100', 'translate-y-0');
+            toast.classList.add('opacity-0', '-translate-y-4', 'pointer-events-none');
+          }, 2600);
+        }
+
+        function copyCouponText(text, btn) {
+          if (!text) return;
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).catch(function() {
+              fallbackCopy(text);
+            });
+          } else {
+            fallbackCopy(text);
+          }
+
+          showCouponToast(text);
+
+          if (btn) {
+            const originalHTML = btn.dataset.originalHtml || btn.innerHTML;
+            if (!btn.dataset.originalHtml) {
+              btn.dataset.originalHtml = originalHTML;
+            }
+            btn.innerHTML = '<span class="text-emerald-600 font-bold">✓ 已复制!</span>';
+            btn.classList.add('bg-emerald-50', 'border-emerald-300');
+            clearTimeout(btn.__resetTimer);
+            btn.__resetTimer = setTimeout(function() {
+              btn.innerHTML = originalHTML;
+              btn.classList.remove('bg-emerald-50', 'border-emerald-300');
+            }, 2500);
+          }
+        }
+
+        function fallbackCopy(text) {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          try {
+            document.execCommand('copy');
+          } catch(e) {}
+          document.body.removeChild(ta);
+        }
+
+        document.addEventListener('click', function(e) {
+          const btn = e.target.closest('[data-copy-coupon]');
+          if (!btn) return;
+          e.preventDefault();
+          e.stopPropagation();
+          const coupon = btn.getAttribute('data-copy-coupon');
+          copyCouponText(coupon, btn);
+        });
+      })();
+    </script>
   </body>
 </html>

@@ -29,9 +29,15 @@ const basePlan = airport.plans[0];
             {airport.lineType}
           </span>
           {airport.couponCode && (
-            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-rose-50 text-rose-700 border border-rose-200 animate-pulse">
-              券: {airport.couponCode}
-            </span>
+            <button
+              type="button"
+              data-copy-coupon={airport.couponCode}
+              title={`点击复制专属优惠码：${airport.couponCode}`}
+              class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 transition-all cursor-pointer shadow-xs active:scale-95 group"
+            >
+              <span>券: <strong class="font-mono">{airport.couponCode}</strong></span>
+              <span class="text-[10px] text-rose-500 opacity-80 group-hover:opacity-100 font-sans">📋复制</span>
+            </button>
           )}
         </div>
         <p class="text-xs text-slate-500 mt-1 font-medium">{airport.tagline}</p>

@@ -52,9 +52,15 @@ const airportFAQs = [
               {airport.lineType}
             </span>
             {airport.couponCode && (
-              <span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-rose-50 text-rose-700 border border-rose-200 animate-pulse">
-                专属券: {airport.couponCode}
-              </span>
+              <button
+                type="button"
+                data-copy-coupon={airport.couponCode}
+                title={`点击复制专属优惠码：${airport.couponCode}`}
+                class="px-2.5 py-1 rounded-lg text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 transition cursor-pointer shadow-xs flex items-center gap-1 active:scale-95 group"
+              >
+                <span>专属券: <strong class="font-mono">{airport.couponCode}</strong></span>
+                <span class="text-[10px] text-rose-500 opacity-80 group-hover:opacity-100 font-sans">📋复制</span>
+              </button>
             )}
             <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
               ✓ 编辑部实测核验
@@ -80,7 +86,7 @@ const airportFAQs = [
 
       <!-- Coupon Banner if present -->
       {airport.couponCode && (
-        <div class="mt-6 p-4 rounded-2xl bg-gradient-to-r from-amber-50 to-rose-50 border border-amber-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div class="mt-6 p-4 rounded-2xl bg-gradient-to-r from-amber-50 to-rose-50 border border-amber-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
           <div class="flex items-center gap-2.5">
             <span class="text-2xl">🎁</span>
             <div>
@@ -88,17 +94,24 @@ const airportFAQs = [
               <span class="text-xs text-amber-800">结账时在“优惠券/折扣码”栏输入以下代码享立减：</span>
             </div>
           </div>
-          <div class="flex items-center gap-2">
-            <span class="px-3 py-1.5 rounded-xl bg-white border-2 border-dashed border-rose-400 font-mono font-extrabold text-rose-700 text-sm select-all">
-              {airport.couponCode}
-            </span>
+          <div class="flex items-center gap-2 flex-wrap">
+            <button
+              type="button"
+              data-copy-coupon={airport.couponCode}
+              title={`点击复制专属优惠码：${airport.couponCode}`}
+              class="px-3.5 py-1.5 rounded-xl bg-white hover:bg-amber-50 border-2 border-dashed border-rose-400 font-mono font-extrabold text-rose-700 text-sm transition-all cursor-pointer flex items-center gap-1.5 shadow-xs active:scale-95 group"
+            >
+              <span>{airport.couponCode}</span>
+              <span class="text-xs text-rose-500 opacity-80 group-hover:opacity-100 font-sans">📋 点击复制</span>
+            </button>
             <a
               href={airport.affiliateUrl}
               target="_blank"
               rel="noopener noreferrer nofollow"
-              class="px-4 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs transition"
+              class="px-4 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs transition shadow-xs flex items-center gap-1"
             >
-              复制并直达官网 →
+              <span>前往官网使用</span>
+              <span>→</span>
             </a>
           </div>
         </div>

@@ -126,7 +126,17 @@ const initialAirports = airports.map(a => ({
           <td class="py-3 px-4 font-semibold text-slate-700 bg-slate-50">专属优惠券</td>
           ${selected.map(item => `
             <td class="py-3 px-4 text-center">
-              ${item.couponCode ? `<span class="inline-block px-2 py-0.5 rounded bg-rose-50 text-rose-700 font-mono font-bold border border-rose-200 select-all">${item.couponCode}</span>` : '<span class="text-slate-400 text-xs">暂无额外券</span>'}
+              ${item.couponCode ? `
+                <button
+                  type="button"
+                  data-copy-coupon="${item.couponCode}"
+                  title="点击复制优惠码"
+                  class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-mono font-bold border border-rose-200 text-xs transition cursor-pointer active:scale-95 group shadow-xs"
+                >
+                  <span>${item.couponCode}</span>
+                  <span class="text-[10px] text-rose-500 opacity-80 group-hover:opacity-100 font-sans">📋复制</span>
+                </button>
+              ` : '<span class="text-slate-400 text-xs">暂无额外券</span>'}
             </td>
           `).join('')}
         </tr>
