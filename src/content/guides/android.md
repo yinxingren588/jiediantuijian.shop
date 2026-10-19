@@ -11,6 +11,8 @@ recommendedClients:
   - "Sing-box for Android (现代轻快代理框架)"
 ---
 
+> 💡 **使用教程中心全新升级**：如果你需要查找特定客户端或专项场景（如 v2rayNG 分应用免流实操、SFA 极低功耗配置、NekoBox 全协议适配、安卓电视安装或分流防封等），欢迎前往 **[34 篇使用教程中心索引库](/guides/)** 自由筛选与快速搜索！
+
 ## Android 安卓客户端怎么选？
 
 在开源生态丰富的安卓系统上，目前主流用户使用最多的两款工具是 **Clash Meta for Android** 和 **v2rayNG**：

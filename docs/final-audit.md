@@ -1,6 +1,6 @@
 # 节点推荐网 (jiediantuijian.shop) 最终自动化验收报告
 
-**验收执行时间**：2026-10-19T08:53:29.678Z
+**验收执行时间**：2026-10-19T09:02:24.709Z
 **目标域名**：https://jiediantuijian.shop
 **主攻关键词**：节点推荐、机场推荐、机场节点推荐、机场节点
 
@@ -18,7 +18,7 @@
 | `SEO_CANONICAL` | 正式域名与规范化 Canonical | ✅ **PASS** | Canonical 统一指向正式域名 https://jiediantuijian.shop 并遵循斜杠规范 |
 | `SEO_ROBOTS` | 搜索引擎爬虫控制 (Robots Meta) | ✅ **PASS** | 所有页面均声明 robots meta，404 正确声明 noindex |
 | `SEO_SCHEMA` | Schema.org 结构化数据 (JSON-LD) | ✅ **PASS** | 包含 Organization, WebSite, BreadcrumbList, TechArticle, FAQPage 等 |
-| `INTERNAL_LINKS` | 全站内部链接连通性 (零死链) | ✅ **PASS** | 已检查全站 6891 个内部链接，零死链 |
+| `INTERNAL_LINKS` | 全站内部链接连通性 (零死链) | ✅ **PASS** | 已检查全站 7069 个内部链接，零死链 |
 | `NO_LEAKED_VARS` | 模板未替换变量检查 ({{...}} / localhost) | ✅ **PASS** | 全站 HTML 均已完成模板静态编译，无开发变量或 localhost 泄漏 |
 | `DATA_AIRPORTS` | 机场结构化数据库完整性 | ✅ **PASS** | 已核验 29 家机场全生命周期字段（资费、协议、线路、优缺点、评分及数据来源） |
 | `CONTENT_GUIDES` | 客户端配置教程中心 | ✅ **PASS** | 覆盖全部主流4大操作系统平台 (Windows, Android, iOS, macOS) |

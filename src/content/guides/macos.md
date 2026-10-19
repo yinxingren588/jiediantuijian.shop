@@ -12,6 +12,8 @@ recommendedClients:
   - "Surge for Mac (专业级网络调试神器，需付费授权)"
 ---
 
+> 💡 **使用教程中心全新升级**：如果你需要查找特定客户端或高阶专项场景（如 Surge 5 精细分流、Loon 桌面版、小火箭运行在 Mac、终端 Git 加速或 4K 流媒体跨区等），欢迎前往 **[34 篇使用教程中心索引库](/guides/)** 自由筛选与快速搜索！
+
 ## macOS 平台首选客户端推荐
 
 在 macOS 平台（包括 Sonoma、Sequoia 及更早版本），我们强烈推荐 **Clash Verge Rev (macOS 版)**。

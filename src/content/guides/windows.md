@@ -11,6 +11,8 @@ recommendedClients:
   - "Flclash (跨平台极简客户端)"
 ---
 
+> 💡 **使用教程中心全新升级**：如果你需要查找特定客户端或高阶专项场景（如 Sing-box 独立配置、NekoRay 链式代理、v2rayN 双内核、OpenWrt 软路由、Apple TV 或 ChatGPT 防封等），欢迎前往 **[34 篇使用教程中心索引库](/guides/)** 自由筛选与快速搜索！
+
 ## 为什么 Windows 平台首选 Clash Verge Rev？
 
 在 Windows 10 与 Windows 11 环境下，早期的 Clash for Windows 已于数年前停止维护。当前社区最受好评、维护最活跃的客户端是 **Clash Verge Rev** 与 **Sing-box**。
