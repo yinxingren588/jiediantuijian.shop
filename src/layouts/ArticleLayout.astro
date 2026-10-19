@@ -24,11 +24,23 @@ const {
   breadcrumbs = [],
 } = Astro.props;
 
+const pageTitle = title.includes('节点推荐') || title.includes('机场推荐')
+  ? `${title} - 节点推荐网`
+  : `${title} - 2026机场推荐与节点评测网`;
+
+const articleKeywords = tags.length > 0
+  ? [...tags, '机场推荐', '节点推荐', '2026机场推荐', '科学上网']
+  : ['机场推荐', '节点推荐', '2026机场推荐', '科学上网'];
+
 const articleSchema = {
   '@context': 'https://schema.org',
   '@type': 'TechArticle',
   headline: title,
   description: description,
+  image: 'https://jiediantuijian.shop/favicon.svg',
+  keywords: articleKeywords.join(', '),
+  articleSection: category || '技术教程与评测',
+  inLanguage: 'zh-CN',
   author: {
     '@type': 'Organization',
     name: author,
@@ -36,6 +48,7 @@ const articleSchema = {
   publisher: {
     '@type': 'Organization',
     name: '节点推荐网',
+    url: 'https://jiediantuijian.shop',
     logo: {
       '@type': 'ImageObject',
       url: 'https://jiediantuijian.shop/favicon.svg',
@@ -51,8 +64,9 @@ const articleSchema = {
 ---
 
 <BaseLayout
-  title={title}
+  title={pageTitle}
   description={description}
+  keywords={articleKeywords}
   breadcrumbs={breadcrumbs}
   ogType="article"
   publishDate={publishDate}

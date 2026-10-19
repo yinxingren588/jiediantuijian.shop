@@ -32,10 +32,11 @@ const airportFAQs = [
 ---
 
 <BaseLayout
-  title={`${airport.name}怎么样？2026最新套餐价格、优惠券与节点线路实测档案`}
+  title={`${airport.name}怎么样？2026套餐价格/优惠码/专线节点测速评测 - 节点推荐网`}
   description={`${airport.name}深度资料档案。提供2026官方套餐资费明细、${airport.lineType}架构解析、专属优惠券${airport.couponCode ? `【${airport.couponCode}】` : ''}、支持协议、AI/流媒体解锁支持度客观评析。`}
+  keywords={[`${airport.name}`, `${airport.name}怎么样`, `${airport.name}优惠码`, `${airport.name}官网`, '机场推荐', '节点推荐']}
   breadcrumbs={[
-    { name: '机场资料库', url: '/recommend/stable/' },
+    { name: '机场资料库', url: '/airport/' },
     { name: airport.name, url: `/airport/${airport.slug}/` },
   ]}
 >

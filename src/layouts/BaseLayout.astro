@@ -14,6 +14,7 @@ export interface Props {
   updatedDate?: string;
   schema?: Record<string, any>;
   noindex?: boolean;
+  keywords?: string | string[];
 }
 
 const {
@@ -26,6 +27,7 @@ const {
   updatedDate,
   schema,
   noindex = false,
+  keywords,
 } = Astro.props;
 ---
 
@@ -46,6 +48,7 @@ const {
       breadcrumbs={breadcrumbs}
       schema={schema}
       noindex={noindex}
+      keywords={keywords}
     />
   </head>
   <body class="bg-gradient-to-br from-[#f5f3ff] via-[#ede9fe] to-[#e0e7ff] text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-brand-600 selection:text-white relative">

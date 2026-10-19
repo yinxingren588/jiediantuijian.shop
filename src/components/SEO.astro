@@ -9,6 +9,7 @@ export interface Props {
   breadcrumbs?: Array<{ name: string; url: string }>;
   schema?: Record<string, any>;
   noindex?: boolean;
+  keywords?: string | string[];
 }
 
 const {
@@ -21,12 +22,16 @@ const {
   breadcrumbs = [],
   schema,
   noindex = false,
+  keywords,
 } = Astro.props;
 
 const siteUrl = 'https://jiediantuijian.shop';
 // Ensure trailing slash on canonical URL to prevent redirect loops or duplicates
 const currentPath = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
 const canonicalURL = canonical || new URL(currentPath, siteUrl).toString();
+
+const defaultKeywords = '机场推荐, 节点推荐, 2026机场推荐, 科学上网节点推荐, 专线机场推荐, 便宜机场推荐, 翻墙机场推荐, Clash节点, Sing-box订阅, 节点评测';
+const metaKeywords = Array.isArray(keywords) ? keywords.join(', ') : (keywords || defaultKeywords);
 
 // Base Organization & WebSite JSON-LD
 const orgSchema = {
@@ -50,17 +55,19 @@ const webSiteSchema = {
   },
 };
 
-// BreadcrumbList JSON-LD
+// BreadcrumbList JSON-LD with guaranteed root '首页' at position 1
 let breadcrumbSchema = null;
 if (breadcrumbs.length > 0) {
+  const hasRoot = breadcrumbs[0].url === '/' || breadcrumbs[0].name === '首页';
+  const list = hasRoot ? breadcrumbs : [{ name: '首页', url: '/' }, ...breadcrumbs];
   breadcrumbSchema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
-    itemListElement: breadcrumbs.map((crumb, index) => ({
+    itemListElement: list.map((crumb, index) => ({
       '@type': 'ListItem',
       position: index + 1,
       name: crumb.name,
-      item: crumb.url.startsWith('http') ? crumb.url : `${siteUrl}${crumb.url}`,
+      item: crumb.url.startsWith('http') ? crumb.url : `${siteUrl}${crumb.url.startsWith('/') ? crumb.url : `/${crumb.url}`}`,
     })),
   };
 }
@@ -70,9 +77,12 @@ if (breadcrumbs.length > 0) {
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
+<meta name="keywords" content={metaKeywords} />
 <link rel="canonical" href={canonicalURL} />
 <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
-<meta name="bingbot" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
+<meta name="bingbot" content={noindex ? 'noindex, nofollow' : 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1'} />
+<meta name="application-name" content="节点推荐网" />
+<meta name="msapplication-TileColor" content="#8b5cf6" />
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content={ogType} />

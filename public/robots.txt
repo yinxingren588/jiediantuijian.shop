@@ -1,13 +1,18 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /draft/
 
-# Bingbot explicit allowance
+# Bingbot explicit configuration (No crawl-delay to allow rapid re-indexing)
 User-agent: Bingbot
 Allow: /
-Crawl-delay: 1
+Disallow: /api/
+Disallow: /draft/
 
-# Disallow internal search parameters or temp paths
+User-agent: msnbot
+Allow: /
 Disallow: /api/
 Disallow: /draft/
 
 Sitemap: https://jiediantuijian.shop/sitemap-index.xml
+Sitemap: https://jiediantuijian.shop/sitemap-0.xml

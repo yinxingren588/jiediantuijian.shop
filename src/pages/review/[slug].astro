@@ -20,10 +20,11 @@ const otherAirports = airports.filter(a => a.id !== airport.id).slice(0, 3);
 ---
 
 <BaseLayout
-  title={`${airport.name}真实深度评测2026 - 线路架构、测速跑分、套餐价格与优缺点客观分析`}
+  title={`${airport.name}怎么样？2026评测与机场节点测速跑分、价格优缺点实测 - 节点推荐网`}
   description={`${airport.name}2026官方最新深度技术评测报告。涵盖${airport.lineType}底层物理拓扑、晚高峰实机丢包与延迟跑分基准、流媒体与ChatGPT双ISP原生解锁矩阵、套餐资费表、专属优惠券${airport.couponCode ? `【${airport.couponCode}】` : ''}与资深网络工程师选购指南。`}
+  keywords={[`${airport.name}`, `${airport.name}评测`, `${airport.name}怎么样`, `${airport.name}优惠码`, `${airport.name}官网`, '机场推荐', '节点推荐', '2026机场评测']}
   breadcrumbs={[
-    { name: '机场评测中心', url: '/recommend/stable/' },
+    { name: '机场评测中心', url: '/review/' },
     { name: `${airport.name} 深度技术评测`, url: `/review/${airport.slug}/` },
   ]}
 >

@@ -9,6 +9,7 @@ export interface Props {
 }
 
 const { items } = Astro.props;
+const displayItems = (items || []).filter(item => item.url !== '/' && item.name !== '首页');
 ---
 
 <nav aria-label="面包屑导航" class="my-4">
@@ -21,8 +22,8 @@ const { items } = Astro.props;
         首页
       </a>
     </li>
-    {items.map((item, index) => {
-      const isLast = index === items.length - 1;
+    {displayItems.map((item, index) => {
+      const isLast = index === displayItems.length - 1;
       return (
         <li class="flex items-center gap-2">
           <span class="text-slate-300">/</span>
