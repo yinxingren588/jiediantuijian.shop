@@ -48,7 +48,11 @@ const {
       noindex={noindex}
     />
   </head>
-  <body class="bg-surface-base text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-brand-500 selection:text-white">
+  <body class="bg-gradient-to-br from-[#f5f3ff] via-[#ede9fe] to-[#e0e7ff] text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-brand-600 selection:text-white relative">
+    <!-- Ambient Violet Glow Effects -->
+    <div class="fixed inset-0 pointer-events-none bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(139,92,246,0.22),rgba(255,255,255,0))] -z-10"></div>
+    <div class="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_90%_90%,rgba(192,132,252,0.18),rgba(255,255,255,0)_60%)] -z-10"></div>
+    
     <Header />
     
     <main class="flex-1 w-full max-w-content mx-auto px-4 sm:px-6 lg:px-8 py-6">
