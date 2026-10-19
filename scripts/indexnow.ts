@@ -57,7 +57,28 @@ const AIRPORT_URLS = airports.flatMap(a => [
   `https://${HOST}/review/${a.slug}/`,
 ]);
 
-const CORE_URLS = [...STATIC_URLS, ...AIRPORT_URLS];
+function getAllSiteUrls(): string[] {
+  const sitemapFile = path.resolve('dist/sitemap-0.xml');
+  if (fs.existsSync(sitemapFile)) {
+    const xml = fs.readFileSync(sitemapFile, 'utf-8');
+    const matches = xml.matchAll(/<loc>(https:\/\/[^<]+)<\/loc>/g);
+    const urls = Array.from(matches, m => m[1]);
+    if (urls.length > 0) {
+      return Array.from(new Set(urls));
+    }
+  }
+  const blogDir = path.resolve('src/content/blog');
+  const blogs = fs.existsSync(blogDir)
+    ? fs.readdirSync(blogDir).filter(f => f.endsWith('.md')).map(f => `https://${HOST}/blog/${f.replace(/\.md$/, '')}/`)
+    : [];
+  const guidesDir = path.resolve('src/content/guides');
+  const guides = fs.existsSync(guidesDir)
+    ? fs.readdirSync(guidesDir).filter(f => f.endsWith('.md')).map(f => `https://${HOST}/guides/${f.replace(/\.md$/, '')}/`)
+    : [];
+  return Array.from(new Set([...STATIC_URLS, ...AIRPORT_URLS, ...blogs, ...guides]));
+}
+
+const CORE_URLS = getAllSiteUrls();
 
 interface StateData {
   submitted: Record<string, string>; // url -> lastSubmittedISO
