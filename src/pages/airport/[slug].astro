@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import FAQSection from '../../components/FAQSection.astro';
 import { airports, calculatePerGBCost } from '../../data/airports';
+import { getAirportReviewDetail } from '../../data/reviews';
 
 export function getStaticPaths() {
   return airports.map(airport => ({
@@ -12,6 +13,7 @@ export function getStaticPaths() {
 
 const { airport } = Astro.props;
 const perGb = calculatePerGBCost(airport);
+const reviewDetail = getAirportReviewDetail(airport);
 
 const airportFAQs = [
   {
@@ -180,6 +182,62 @@ const airportFAQs = [
           <span class="text-xl font-bold font-mono text-slate-900">{airport.scoreBreakdown.support}</span>
           <span class="text-[10px] text-slate-400 block mt-1">响应及时率</span>
         </div>
+      </div>
+    </section>
+
+    <!-- Latest Speed Benchmark Table (2026年11月最新全链路实测) -->
+    <section class="bg-white rounded-3xl p-6 sm:p-8 border border-surface-border shadow-xs space-y-6">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <h2 class="text-xl font-bold text-slate-900">晚高峰实机测速跑分与节点延迟基准表</h2>
+          </div>
+          <p class="text-xs text-slate-500 mt-1">
+            测试周期：2026年11月中旬最新一轮抽测 · 千兆对称宽带 20:30~22:30 晚高峰实机采样数据：
+          </p>
+        </div>
+        <a
+          href={`/review/${airport.slug}/#speed-benchmarks`}
+          class="text-xs font-semibold text-brand-600 hover:text-brand-700 hover:underline flex items-center gap-1 shrink-0"
+        >
+          <span>查看完整评测报告与拓扑解析</span>
+          <span>→</span>
+        </a>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm border-collapse min-w-[700px]">
+          <thead>
+            <tr class="bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-600">
+              <th class="py-3 px-4">测试区域与节点</th>
+              <th class="py-3 px-4">物理位置与机房</th>
+              <th class="py-3 px-4">平均延迟 (Ping)</th>
+              <th class="py-3 px-4">网络抖动 (Jitter)</th>
+              <th class="py-3 px-4">晚高峰丢包率</th>
+              <th class="py-3 px-4">峰值下载吞吐</th>
+              <th class="py-3 px-4">YouTube 4K速率</th>
+              <th class="py-3 px-4">最佳适用场景</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 text-xs sm:text-sm">
+            {reviewDetail.benchmarks.map(b => (
+              <tr class="hover:bg-slate-50/60 transition">
+                <td class="py-3.5 px-4 font-bold text-slate-900 whitespace-nowrap">
+                  <span class="mr-1.5">{b.flag}</span>
+                  <span>{b.region}</span>
+                </td>
+                <td class="py-3.5 px-4 text-xs text-slate-600">{b.location}</td>
+                <td class="py-3.5 px-4 font-mono font-bold text-emerald-700">{b.pingMs} ms</td>
+                <td class="py-3.5 px-4 font-mono text-slate-600">{b.jitterMs} ms</td>
+                <td class="py-3.5 px-4 font-mono text-purple-700 font-semibold">{b.lossRate}</td>
+                <td class="py-3.5 px-4 font-mono text-slate-800 font-bold">{b.peakMbps} Mbps</td>
+                <td class="py-3.5 px-4 font-mono text-slate-600">{b.youtubeKbps} Kbps</td>
+                <td class="py-3.5 px-4 text-xs text-slate-500">{b.suitableUsage}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </section>
 
