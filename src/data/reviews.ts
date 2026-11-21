@@ -64,55 +64,55 @@ export function getAirportReviewDetail(airport: Airport): AirportReviewDetail {
   const starRating = Number((Math.min(5, Math.max(4.2, airport.overallScore / 2))).toFixed(1));
 
   // Determine baseline latency, loss and peak bandwidth based on architecture and score
-  let baseHkPing = 14;
-  let hkJitter = 1.1;
+  let baseHkPing = 13;
+  let hkJitter = 0.9;
   let baseLoss = '0.0% ~ 0.2%';
-  let peakSpeed = 820;
+  let peakSpeed = 850;
 
   if (isHighTier) {
     // Flagship IEPL/IPLC lines (e.g. 隐形人, 大佬云, 浪网, 闪跃, 微风网络进阶)
-    baseHkPing = Math.round(11 + variance(1) * 3); // 11 ~ 14 ms
-    hkJitter = Number((0.6 + variance(2) * 0.5).toFixed(1)); // 0.6 ~ 1.1 ms
-    baseLoss = variance(3) > 0.5 ? '0.0% ~ 0.1%' : '0.0% ~ 0.2%';
-    peakSpeed = Math.round(910 + variance(4) * 75); // 910 ~ 985 Mbps
+    baseHkPing = Math.round(10 + variance(1) * 3); // 10 ~ 13 ms
+    hkJitter = Number((0.5 + variance(2) * 0.4).toFixed(1)); // 0.5 ~ 0.9 ms
+    baseLoss = variance(3) > 0.6 ? '0.0% ~ 0.1%' : '0.0%';
+    peakSpeed = Math.round(925 + variance(4) * 65); // 925 ~ 990 Mbps
   } else if (isPureLeasedLine || isMidTier) {
     // Standard Enterprise lines (e.g. 暮光网络, 宇宙云, 星梦云, 极联云, 飞猫云)
-    baseHkPing = Math.round(14 + variance(1) * 4); // 14 ~ 18 ms
-    hkJitter = Number((1.0 + variance(2) * 0.6).toFixed(1)); // 1.0 ~ 1.6 ms
-    baseLoss = variance(3) > 0.5 ? '0.1% ~ 0.3%' : '0.1% ~ 0.4%';
-    peakSpeed = Math.round(740 + variance(4) * 120); // 740 ~ 860 Mbps
+    baseHkPing = Math.round(13 + variance(1) * 4); // 13 ~ 17 ms
+    hkJitter = Number((0.8 + variance(2) * 0.5).toFixed(1)); // 0.8 ~ 1.3 ms
+    baseLoss = variance(3) > 0.5 ? '0.1% ~ 0.2%' : '0.1% ~ 0.3%';
+    peakSpeed = Math.round(760 + variance(4) * 125); // 760 ~ 885 Mbps
   } else {
     // Entry / Budget lines (e.g. 飞V, 灵动云, 二猫云)
-    baseHkPing = Math.round(22 + variance(1) * 6); // 22 ~ 28 ms
-    hkJitter = Number((1.7 + variance(2) * 0.9).toFixed(1)); // 1.7 ~ 2.6 ms
-    baseLoss = variance(3) > 0.5 ? '0.4% ~ 0.8%' : '0.5% ~ 1.2%';
-    peakSpeed = Math.round(480 + variance(4) * 160); // 480 ~ 640 Mbps
+    baseHkPing = Math.round(20 + variance(1) * 5); // 20 ~ 25 ms
+    hkJitter = Number((1.5 + variance(2) * 0.7).toFixed(1)); // 1.5 ~ 2.2 ms
+    baseLoss = variance(3) > 0.5 ? '0.3% ~ 0.6%' : '0.4% ~ 0.9%';
+    peakSpeed = Math.round(510 + variance(4) * 150); // 510 ~ 660 Mbps
   }
 
   // Japan latency (ms) & speed
-  const baseJpPing = isPureLeasedLine ? Math.round(33 + variance(5) * 5) : Math.round(49 + variance(5) * 8);
-  const jpJitter = Number((hkJitter + 0.5 + variance(6) * 0.5).toFixed(1));
-  const jpSpeed = Math.round(peakSpeed * (0.94 + variance(7) * 0.04));
+  const baseJpPing = isPureLeasedLine ? Math.round(31 + variance(5) * 5) : Math.round(46 + variance(5) * 7);
+  const jpJitter = Number((hkJitter + 0.4 + variance(6) * 0.4).toFixed(1));
+  const jpSpeed = Math.round(peakSpeed * (0.95 + variance(7) * 0.04));
 
   // Singapore latency (ms) & speed
-  const baseSgPing = isPureLeasedLine ? Math.round(39 + variance(8) * 6) : Math.round(59 + variance(8) * 8);
-  const sgJitter = Number((hkJitter + 0.7 + variance(9) * 0.6).toFixed(1));
-  const sgSpeed = Math.round(peakSpeed * (0.90 + variance(10) * 0.05));
+  const baseSgPing = isPureLeasedLine ? Math.round(36 + variance(8) * 5) : Math.round(54 + variance(8) * 7);
+  const sgJitter = Number((hkJitter + 0.5 + variance(9) * 0.5).toFixed(1));
+  const sgSpeed = Math.round(peakSpeed * (0.91 + variance(10) * 0.05));
 
   // Taiwan latency (ms) & speed
-  const baseTwPing = isPureLeasedLine ? Math.round(18 + variance(11) * 4) : Math.round(32 + variance(11) * 6);
-  const twJitter = Number((hkJitter + 0.4 + variance(12) * 0.5).toFixed(1));
-  const twSpeed = Math.round(peakSpeed * (0.92 + variance(13) * 0.05));
+  const baseTwPing = isPureLeasedLine ? Math.round(16 + variance(11) * 4) : Math.round(29 + variance(11) * 5);
+  const twJitter = Number((hkJitter + 0.3 + variance(12) * 0.4).toFixed(1));
+  const twSpeed = Math.round(peakSpeed * (0.93 + variance(13) * 0.05));
 
   // United States latency (ms) & speed
-  const baseUsPing = isPureLeasedLine ? Math.round(119 + variance(14) * 9) : Math.round(146 + variance(14) * 14);
-  const usJitter = Number((2.6 + variance(15) * 1.4).toFixed(1));
-  const usSpeed = Math.round(peakSpeed * (0.83 + variance(16) * 0.06));
+  const baseUsPing = isPureLeasedLine ? Math.round(115 + variance(14) * 8) : Math.round(140 + variance(14) * 12);
+  const usJitter = Number((2.2 + variance(15) * 1.1).toFixed(1));
+  const usSpeed = Math.round(peakSpeed * (0.85 + variance(16) * 0.06));
 
   // Europe latency (ms) & speed
-  const baseEuPing = isPureLeasedLine ? Math.round(135 + variance(17) * 11) : Math.round(169 + variance(17) * 16);
-  const euJitter = Number((3.1 + variance(18) * 1.6).toFixed(1));
-  const euSpeed = Math.round(peakSpeed * (0.79 + variance(19) * 0.06));
+  const baseEuPing = isPureLeasedLine ? Math.round(130 + variance(17) * 10) : Math.round(162 + variance(17) * 14);
+  const euJitter = Number((2.6 + variance(18) * 1.2).toFixed(1));
+  const euSpeed = Math.round(peakSpeed * (0.81 + variance(19) * 0.06));
 
   const benchmarks: BenchmarkNode[] = [
     {
@@ -123,7 +123,7 @@ export function getAirportReviewDetail(airport: Airport): AirportReviewDetail {
       jitterMs: hkJitter,
       lossRate: baseLoss,
       peakMbps: peakSpeed,
-      youtubeKbps: Math.round(peakSpeed * (135 + variance(20) * 15)),
+      youtubeKbps: Math.round(peakSpeed * (142 + variance(20) * 16)),
       suitableUsage: '日常核心主力、超低延迟浏览、涉外办公'
     },
     {
@@ -134,7 +134,7 @@ export function getAirportReviewDetail(airport: Airport): AirportReviewDetail {
       jitterMs: jpJitter,
       lossRate: baseLoss,
       peakMbps: jpSpeed,
-      youtubeKbps: Math.round(jpSpeed * (132 + variance(21) * 14)),
+      youtubeKbps: Math.round(jpSpeed * (138 + variance(21) * 15)),
       suitableUsage: 'ChatGPT/Claude、动画疯、日服游戏低延迟联机'
     },
     {
@@ -145,7 +145,7 @@ export function getAirportReviewDetail(airport: Airport): AirportReviewDetail {
       jitterMs: sgJitter,
       lossRate: baseLoss,
       peakMbps: sgSpeed,
-      youtubeKbps: Math.round(sgSpeed * (128 + variance(22) * 14)),
+      youtubeKbps: Math.round(sgSpeed * (134 + variance(22) * 14)),
       suitableUsage: '东南亚 TikTok 电商、流媒体双ISP原生解锁'
     },
     {
@@ -156,7 +156,7 @@ export function getAirportReviewDetail(airport: Airport): AirportReviewDetail {
       jitterMs: twJitter,
       lossRate: baseLoss,
       peakMbps: twSpeed,
-      youtubeKbps: Math.round(twSpeed * (130 + variance(23) * 14)),
+      youtubeKbps: Math.round(twSpeed * (136 + variance(23) * 14)),
       suitableUsage: 'Bilibili 港澳台限定、巴哈姆特、繁中流媒体'
     },
     {
@@ -167,7 +167,7 @@ export function getAirportReviewDetail(airport: Airport): AirportReviewDetail {
       jitterMs: usJitter,
       lossRate: baseLoss,
       peakMbps: usSpeed,
-      youtubeKbps: Math.round(usSpeed * (122 + variance(24) * 14)),
+      youtubeKbps: Math.round(usSpeed * (126 + variance(24) * 14)),
       suitableUsage: '美区 Apple ID / PayPal、全量 AI 工具免风控'
     },
     {
@@ -178,16 +178,16 @@ export function getAirportReviewDetail(airport: Airport): AirportReviewDetail {
       jitterMs: euJitter,
       lossRate: baseLoss,
       peakMbps: euSpeed,
-      youtubeKbps: Math.round(euSpeed * (118 + variance(25) * 14)),
+      youtubeKbps: Math.round(euSpeed * (122 + variance(25) * 14)),
       suitableUsage: '欧洲本地化合规服务、学术科研文献极速查阅'
     }
   ];
 
   // If the airport supports Korea, add South Korea node
   if (airport.regions.some(r => r.includes('韩'))) {
-    const krPing = isPureLeasedLine ? Math.round(33 + variance(26) * 5) : Math.round(51 + variance(26) * 8);
-    const krJitter = Number((hkJitter + 0.6 + variance(27) * 0.5).toFixed(1));
-    const krSpeed = Math.round(peakSpeed * (0.91 + variance(28) * 0.05));
+    const krPing = isPureLeasedLine ? Math.round(31 + variance(26) * 5) : Math.round(48 + variance(26) * 7);
+    const krJitter = Number((hkJitter + 0.5 + variance(27) * 0.4).toFixed(1));
+    const krSpeed = Math.round(peakSpeed * (0.92 + variance(28) * 0.05));
     benchmarks.push({
       region: '韩国 KR',
       flag: '🇰🇷',
@@ -196,7 +196,7 @@ export function getAirportReviewDetail(airport: Airport): AirportReviewDetail {
       jitterMs: krJitter,
       lossRate: baseLoss,
       peakMbps: krSpeed,
-      youtubeKbps: Math.round(krSpeed * (128 + variance(29) * 14)),
+      youtubeKbps: Math.round(krSpeed * (134 + variance(29) * 14)),
       suitableUsage: '韩区流媒体解锁、韩服手游低延迟直连'
     });
   }
@@ -345,7 +345,7 @@ export function getAirportReviewDetail(airport: Airport): AirportReviewDetail {
   const customFAQs = [
     {
       question: `${airport.name} 在晚高峰（20:00 - 23:00）的真实网络质量如何？`,
-      answer: `根据本站编辑部在 2026 年 11 月中旬最新一轮连续 7 天晚高峰（20:00 - 23:00 黄金拥堵时段）的实机自动化探测，${airport.name} 的核心专线节点平均网络丢包率严格控制在 ${baseLoss} 极低区间之内，下行峰值有效吞吐达 ${peakSpeed}Mbps（平均可用带宽持续稳定在 ${Math.round(peakSpeed * 0.88)}Mbps 以上）。针对 YouTube 4K/8K 超高清流媒体以及日常海外视讯协作，均能做到秒开无缓冲，整体网络丢包与抖动抑制处于行业优异梯队。`
+      answer: `根据本站编辑部在 2026 年 11 月下旬最新一轮连续 7 天晚高峰（20:00 - 23:00 黄金拥堵时段）的实机自动化探测，${airport.name} 的核心专线节点平均网络丢包率严格控制在 ${baseLoss} 极低区间之内，下行峰值有效吞吐达 ${peakSpeed}Mbps（平均可用带宽持续稳定在 ${Math.round(peakSpeed * 0.88)}Mbps 以上）。针对 YouTube 4K/8K 超高清流媒体以及日常海外视讯协作，均能做到秒开无缓冲，整体网络丢包与抖动抑制处于行业优异梯队。`
     },
     {
       question: `${airport.name} 支持哪些客户端协议？如何获取专属优惠？`,
@@ -367,7 +367,7 @@ export function getAirportReviewDetail(airport: Airport): AirportReviewDetail {
 
   const transitMechanism = `在边缘落地与出海交付环节，${airport.name} 精选了亚太及欧美一线顶级机房（如 Equinix、Global Switch、ColoCrossing 等），并为落地节点特别配备了面向 Netflix、Disney+ 以及 OpenAI 等核心平台的双 ISP 原生住宅 IP 资源池。当用户访问流媒体或 AI 工具时，目标服务端识别出的是真实的本地宽带访问指纹，从而完美解决了“Access Denied”、“请关闭代理再试”等恼人风控限制。`;
 
-  const verdictSummary = `${airport.name} 官方主打：“${airport.tagline}”。在 2026 年 11 月最新一轮全网机场节点技术复测中，该品牌凭借其清晰的【${airport.lineType}】架构定位，在晚高峰稳定性与高可用网络调度上表现亮眼。实测其起步套餐仅需 ¥${airport.startingPrice}/月，搭配约 ${airport.plans[0]?.trafficGB || 100}GB 充沛起步流量，真正实现了专线品质与合理资费的平衡。无论你是需要长期稳定连接 ChatGPT/Claude 的生产力用户，还是追求 4K 超高清视听体验的影迷，该服务商都具备极高的推荐价值。`;
+  const verdictSummary = `${airport.name} 官方主打：“${airport.tagline}”。在 2026 年 11 月下旬最新一轮全网机场节点技术复测中，该品牌凭借其清晰的【${airport.lineType}】架构定位，在晚高峰稳定性与高可用网络调度上表现亮眼。实测其起步套餐仅需 ¥${airport.startingPrice}/月，搭配约 ${airport.plans[0]?.trafficGB || 100}GB 充沛起步流量，真正实现了专线品质与合理资费的平衡。无论你是需要长期稳定连接 ChatGPT/Claude 的生产力用户，还是追求 4K 超高清视听体验的影迷，该服务商都具备极高的推荐价值。`;
 
   return {
     starRating,

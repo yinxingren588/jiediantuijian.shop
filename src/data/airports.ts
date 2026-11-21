@@ -88,7 +88,7 @@ export const airports: Airport[] = [
     suitableFor: ["跨境电商与涉外办公团队", "ChatGPT与Claude重度用户", "追求晚高峰绝对稳定的影音爱好者"],
     categories: ["premium", "stable", "ai", "streaming"],
     sources: ["官方控制台资费表", "晚高峰双向Ping实测"],
-    lastVerified: "2026-11-16",
+    lastVerified: "2026-11-21",
     testStatus: "tested",
   },
   {
@@ -119,7 +119,7 @@ export const airports: Airport[] = [
     suitableFor: ["学生党与预算有限的大流量用户", "YouTube 4K日常播放与办公需求"],
     categories: ["budget", "beginner", "streaming", "stable"],
     sources: ["官方服务协议", "多点网络丢包率采样"],
-    lastVerified: "2026-11-16",
+    lastVerified: "2026-11-21",
     testStatus: "tested",
   },
   {
@@ -151,7 +151,7 @@ export const airports: Airport[] = [
     suitableFor: ["新手小白入门第一站", "日常高清流媒体与AI工具重度使用者"],
     categories: ["budget", "beginner", "streaming", "ai", "stable"],
     sources: ["官方控制台资费", "晚高峰全天候自动化测速"],
-    lastVerified: "2026-11-16",
+    lastVerified: "2026-11-21",
     testStatus: "tested",
   },
   {
@@ -183,7 +183,7 @@ export const airports: Airport[] = [
     suitableFor: ["预算有限的学生党与新手入门", "日常网络浏览与高清视频播放"],
     categories: ["beginner", "budget", "streaming"],
     sources: ["官方控制台公开资费", "客户端易用性实测"],
-    lastVerified: "2026-11-16",
+    lastVerified: "2026-11-21",
     testStatus: "tested",
   },
   {
@@ -214,7 +214,7 @@ export const airports: Airport[] = [
     suitableFor: ["跨境电商、企业团队办公", "高码率视频与外服游戏加速"],
     categories: ["premium", "stable", "ai"],
     sources: ["华为云与电信骨干监测数据", "实机并发压测"],
-    lastVerified: "2026-11-16",
+    lastVerified: "2026-11-21",
     testStatus: "tested",
   },
   {
@@ -245,7 +245,7 @@ export const airports: Airport[] = [
     suitableFor: ["学生与预算极低人群", "备用网络以防主力断连"],
     categories: ["budget", "beginner"],
     sources: ["官方套餐面板", "基础连通性测试"],
-    lastVerified: "2026-11-16",
+    lastVerified: "2026-11-21",
     testStatus: "tested",
   },
   {
@@ -276,7 +276,7 @@ export const airports: Airport[] = [
     suitableFor: ["大流量下载与多设备分享", "日常重度音视频与社交平台"],
     categories: ["streaming", "stable"],
     sources: ["官方控制台资费", "带宽峰值压测"],
-    lastVerified: "2026-11-16",
+    lastVerified: "2026-11-21",
     testStatus: "tested",
   },
   {
@@ -307,7 +307,7 @@ export const airports: Airport[] = [
     suitableFor: ["追求简单省心与流量均衡的用户", "日常办公与影音轻度娱乐"],
     categories: ["beginner", "budget", "streaming"],
     sources: ["官方套餐页面", "节点连通率统计"],
-    lastVerified: "2026-11-16",
+    lastVerified: "2026-11-21",
     testStatus: "tested",
   },
   {
@@ -339,7 +339,7 @@ export const airports: Airport[] = [
     suitableFor: ["轻度上网、查阅资料与日常交流", "预算有限的学生群体"],
     categories: ["budget", "beginner"],
     sources: ["官方资费公告", "多地网络监测"],
-    lastVerified: "2026-11-16",
+    lastVerified: "2026-11-21",
     testStatus: "tested",
   },
   {
@@ -370,7 +370,7 @@ export const airports: Airport[] = [
     suitableFor: ["对稳定性有较高要求的白领与办公人员", "4K流媒体剧迷"],
     categories: ["stable", "premium", "streaming"],
     sources: ["官方技术文档", "晚高峰丢包实测"],
-    lastVerified: "2026-11-16",
+    lastVerified: "2026-11-21",
     testStatus: "tested",
   },
   {
@@ -402,7 +402,7 @@ export const airports: Airport[] = [
     suitableFor: ["外服联机游戏玩家", "对延迟与晚高峰稳定性极度敏感者"],
     categories: ["stable", "premium", "streaming"],
     sources: ["官方控制台资费", "全球节点Ping延迟压测"],
-    lastVerified: "2026-11-16",
+    lastVerified: "2026-11-21",
     testStatus: "tested",
   },
   {
@@ -434,7 +434,7 @@ export const airports: Airport[] = [
     suitableFor: ["预算在20元以内且追求专线质量的用户", "轻中度日常办公学习"],
     categories: ["budget", "stable", "beginner"],
     sources: ["官方控制台资费", "双向丢包率采样"],
-    lastVerified: "2026-11-16",
+    lastVerified: "2026-11-21",
     testStatus: "tested",
   },
   {
@@ -465,7 +465,7 @@ export const airports: Airport[] = [
     suitableFor: ["跨境电商、多任务跨设备办公", "追求极简轻量连接的用户"],
     categories: ["stable", "premium", "streaming"],
     sources: ["官方服务协议", "长周期连通率监控"],
-    lastVerified: "2026-11-16",
+    lastVerified: "2026-11-21",
     testStatus: "tested",
   },
   {
@@ -497,7 +497,7 @@ export const airports: Airport[] = [
     suitableFor: ["性价比党、学生与经常需要稳定访问外网者", "日常多平台高清看剧"],
     categories: ["budget", "stable", "streaming", "beginner"],
     sources: ["官方控制台资费", "晚高峰双向连通测试"],
-    lastVerified: "2026-11-16",
+    lastVerified: "2026-11-21",
     testStatus: "tested",
   },
   {
@@ -529,7 +529,7 @@ export const airports: Airport[] = [
     suitableFor: ["根据自身多变需求选择不同套餐的用户", "大流量媒体浏览与日常使用"],
     categories: ["streaming", "beginner"],
     sources: ["官方控制台资费", "各省公网中转丢包监测"],
-    lastVerified: "2026-11-16",
+    lastVerified: "2026-11-21",
     testStatus: "tested",
   },
   {
@@ -561,7 +561,7 @@ export const airports: Airport[] = [
     suitableFor: ["严格控制预算同时必须使用IPLC专线的用户", "追求极致性价比的实用主义者"],
     categories: ["budget", "stable", "streaming", "beginner"],
     sources: ["官方资费公告", "晚高峰全天候自动化测速"],
-    lastVerified: "2026-11-16",
+    lastVerified: "2026-11-21",
     testStatus: "tested",
   },
   {
@@ -593,7 +593,7 @@ export const airports: Airport[] = [
     suitableFor: ["跨运营商家庭及移动端常客", "对国内入口连接延迟敏感的用户"],
     categories: ["stable", "premium", "streaming"],
     sources: ["三网网络探测", "官方资费表"],
-    lastVerified: "2026-11-16",
+    lastVerified: "2026-11-21",
     testStatus: "tested",
   },
   {
@@ -624,7 +624,7 @@ export const airports: Airport[] = [
     suitableFor: ["追求高性价比双专线保障的用户", "多终端日常学习与工作"],
     categories: ["budget", "stable", "streaming", "beginner"],
     sources: ["官方控制台资费", "双专线路由追踪分析"],
-    lastVerified: "2026-11-16",
+    lastVerified: "2026-11-21",
     testStatus: "tested",
   },
   {
@@ -656,7 +656,7 @@ export const airports: Airport[] = [
     suitableFor: ["日常网络浏览与音视频流媒体", "中等流量使用需求的上班族与学生"],
     categories: ["beginner", "streaming"],
     sources: ["官方控制台资费", "全网节点连通率统计"],
-    lastVerified: "2026-11-16",
+    lastVerified: "2026-11-21",
     testStatus: "tested",
   },
   {
@@ -687,7 +687,7 @@ export const airports: Airport[] = [
     suitableFor: ["追求专线品质但极度看重价格的用户", "流媒体与大流量日常深度使用者"],
     categories: ["budget", "stable", "streaming", "beginner"],
     sources: ["官方资费公告", "晚高峰丢包与速率压测"],
-    lastVerified: "2026-11-16",
+    lastVerified: "2026-11-21",
     testStatus: "tested",
   },
   {
@@ -718,7 +718,7 @@ export const airports: Airport[] = [
     suitableFor: ["外贸与企业级办公、涉外团队协作", "4K高码率视频长期播放"],
     categories: ["stable", "premium", "streaming"],
     sources: ["官方控制台资费", "企业专线丢包测试"],
-    lastVerified: "2026-11-16",
+    lastVerified: "2026-11-21",
     testStatus: "tested",
   },
   {
@@ -750,7 +750,7 @@ export const airports: Airport[] = [
     suitableFor: ["预算在15元以内的低成本用户", "追求专线稳定性日常轻度使用"],
     categories: ["budget", "stable", "beginner"],
     sources: ["官方套餐面板", "双专线延迟对比实测"],
-    lastVerified: "2026-11-16",
+    lastVerified: "2026-11-21",
     testStatus: "tested",
   },
   {
@@ -781,7 +781,7 @@ export const airports: Airport[] = [
     suitableFor: ["需要多地区IP切换的用户", "性价比与多节点需求兼顾者"],
     categories: ["beginner", "budget"],
     sources: ["官方控制台资费", "节点列表与覆盖地区统计"],
-    lastVerified: "2026-11-16",
+    lastVerified: "2026-11-21",
     testStatus: "tested",
   },
   {
@@ -812,7 +812,7 @@ export const airports: Airport[] = [
     suitableFor: ["日常追剧与多设备办公", "注重专线连通率的稳定型用户"],
     categories: ["stable", "streaming"],
     sources: ["官方服务协议", "多点网络丢包率采样"],
-    lastVerified: "2026-11-16",
+    lastVerified: "2026-11-21",
     testStatus: "tested",
   },
   {
@@ -843,7 +843,7 @@ export const airports: Airport[] = [
     suitableFor: ["长周期稳定需求用户", "追求极低月均成本的大流量使用者"],
     categories: ["budget", "stable", "beginner"],
     sources: ["官方资费公告", "年付套餐性价比测算"],
-    lastVerified: "2026-11-16",
+    lastVerified: "2026-11-21",
     testStatus: "tested",
   },
   {
@@ -874,7 +874,7 @@ export const airports: Airport[] = [
     suitableFor: ["预算在10元左右的学生与新手", "主力网络外的专线备用通道"],
     categories: ["budget", "stable", "beginner"],
     sources: ["官方控制台资费", "IPLC内网专线路径确认"],
-    lastVerified: "2026-11-16",
+    lastVerified: "2026-11-21",
     testStatus: "tested",
   },
   {
@@ -905,7 +905,7 @@ export const airports: Airport[] = [
     suitableFor: ["刚接触科学上网的小白用户", "不愿繁琐折腾配置的实用派"],
     categories: ["beginner", "streaming", "stable"],
     sources: ["官方教程文档", "新手上手可用性评估"],
-    lastVerified: "2026-11-16",
+    lastVerified: "2026-11-21",
     testStatus: "tested",
   },
   {
@@ -936,7 +936,7 @@ export const airports: Airport[] = [
     suitableFor: ["轻度浏览、外贸邮件与即时通讯", "移动端常驻轻量备用"],
     categories: ["budget", "stable", "beginner"],
     sources: ["官方套餐页面", "客户端功能测评"],
-    lastVerified: "2026-11-16",
+    lastVerified: "2026-11-21",
     testStatus: "tested",
   },
   {
@@ -967,7 +967,7 @@ export const airports: Airport[] = [
     suitableFor: ["高码率视频与重度网络使用群体", "追求高品质自研线路与大流量者"],
     categories: ["premium", "stable", "streaming", "ai"],
     sources: ["官方控制台公开资费", "自研线路稳定性监测"],
-    lastVerified: "2026-11-16",
+    lastVerified: "2026-11-21",
     testStatus: "tested",
   },
 ];
